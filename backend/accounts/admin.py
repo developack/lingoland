@@ -5,7 +5,6 @@ from accounts.models import User, UserProfile
 
 @admin.register(User)
 class UserAdmin(BaseUserAdmin):
-    readonly_fields = ('updated',)
     list_display = ('username', 'email', 'is_active', 'is_superuser')
     fieldsets = (
         ('Personal Info', {'fields': ('email', 'username', 'phone', 'password', 'first_name', 'last_name')}),
@@ -18,6 +17,7 @@ class UserAdmin(BaseUserAdmin):
         ('Role And Capabilities', {'fields': ('groups', 'user_permissions')}),
         ('Access Control', {'fields': ('is_active', 'is_staff', 'is_superuser')})
     )
+    readonly_fields = ('updated',)
 
 # ============================================================ #
 
