@@ -11,20 +11,18 @@ from accounts.serializers import UserDetailSerializer
 class UserRegisterView(APIView):
     def post(self, request):
         serializer = UserRegisterSerializer(data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
 
 # ============================================================ #
 
 class UserLoginView(APIView):
     def post(self, request):
         serializer = UserLoginSerializer(data=request.data)
-        if serializer.is_valid(raise_exception=True):
-            token, _ = Token.objects.get_or_create(user=serializer.validated_data['user'])
-            return Response({'token': token.key}, status=status.HTTP_200_OK)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        serializer.is_valid(raise_exception=True)
+        token, _ = Token.objects.get_or_create(user=serializer.validated_data['user'])
+        return Response({'token': token.key}, status=status.HTTP_200_OK)
 
 # ============================================================ #
 
@@ -37,7 +35,6 @@ class UserProfileView(APIView):
 
     def patch(self, request):
         serializer = UserDetailSerializer(instance=request.user, data=request.data, partial=True)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_200_OK)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        serializer.is_valid()
+        serializer.save()
+        return Response(serializer.data, status=status.HTTP_200_OK)
