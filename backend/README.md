@@ -1,7 +1,5 @@
-Lingoland Project Rules
-
+Project Rules
 unittest function names => test_<who>_<expected_behavior>
-
 
 API Test Check Rule
 
