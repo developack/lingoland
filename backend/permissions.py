@@ -1,5 +1,5 @@
-from courses.models import Enrollment
 from rest_framework import permissions
+from courses.models import Enrollment
 
 
 class IsEnrolledInCourse(permissions.BasePermission):
