@@ -17,12 +17,8 @@ class OrderItemSerializer(serializers.ModelSerializer):
 # ============================================================ #
 
 class OrderSerializer(serializers.ModelSerializer):
-    items = serializers.SerializerMethodField()
+    order_items = OrderItemSerializer(many=True, read_only=True)
 
     class Meta:
         model = Order
         fields = '__all__'
-
-    def get_items(self, obj):
-        objects = obj.order_items.all()
-        return OrderItemSerializer(instance=objects, many=True).data
