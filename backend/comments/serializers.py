@@ -48,7 +48,7 @@ class CommentCreateSerializer(serializers.Serializer):
 
         user = self.context['request'].user
         if not Enrollment.objects.filter(user=user, course=course).exists():
-            raise serializers.ValidationError('Only enroll accounts can submit comments on lessons or topics.')
+            raise serializers.ValidationError('Only enroll users can submit comments on lessons or topics.')
         return data
 
     def create(self, validated_data):
