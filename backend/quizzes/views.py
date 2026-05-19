@@ -26,7 +26,6 @@ class QuizSubmitView(APIView):
         quiz = Quiz.objects.get(slug=slug)
         self.check_object_permissions(request, quiz)
         serializer = QuizSubmitSerializer(data=request.data, context={'request':request, 'quiz': quiz})
-        if serializer.is_valid():
-            result = serializer.save()
-            return Response(result, status=status.HTTP_200_OK)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        serializer.is_valid(raise_exception=True)
+        result = serializer.save()
+        return Response(result, status=status.HTTP_200_OK)

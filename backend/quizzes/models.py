@@ -1,6 +1,6 @@
 import uuid
 from django.db import models
-from django.utils.text import slugify
+from utils.utils import Utils
 from accounts.models import User
 from courses.models import Course, Lesson
 
@@ -25,12 +25,7 @@ class Quiz(models.Model):
 
     def save(self, *args, **kwargs):
         if not self.slug:
-            counter = 1
-            slug = slugify(self.title, allow_unicode=True)
-            while Quiz.objects.filter(slug=slug).exists():
-                slug = f'{slug}-{counter}'
-                counter += 1
-            self.slug = slug
+            self.slug = Utils.generate_unique_slug(self, Quiz)
         return super(Quiz, self).save(*args, **kwargs)
 
 # ============================================================ #
@@ -53,12 +48,7 @@ class Question(models.Model):
 
     def save(self, *args, **kwargs):
         if not self.slug:
-            counter = 1
-            slug = slugify(self.title, allow_unicode=True)
-            while Question.objects.filter(slug=slug).exists():
-                slug = f'{slug}-{counter}'
-                counter += 1
-            self.slug = slug
+            self.slug = Utils.generate_unique_slug(self, Question)
         return super(Question, self).save(*args, **kwargs)
 
 # ============================================================ #
@@ -94,7 +84,7 @@ class QuizAttempt(models.Model):
         verbose_name_plural = '04- quiz attempts'
 
     def __str__(self):
-        return f'{self.user} - {self.quiz} - {self.correct_answers} / {self.total_questions} correct answers'
+        return f'[ {self.user} - {self.quiz} - {self.correct_answers} / {self.total_questions} correct answers ]'
 
     def save(self, *args, **kwargs):
         if not self.total_questions:
