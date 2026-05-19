@@ -1,7 +1,7 @@
 import uuid
 from django.db import models
-from django.utils.text import slugify
 from django.contrib.contenttypes.fields import GenericRelation
+from utils.utils import Utils
 from accounts.models import User
 from comments.models import Comment
 
@@ -28,22 +28,15 @@ class Course(models.Model):
 
     def calculate_course_progress(self, user):
         lessons_count = self.lessons.count()
-
         if lessons_count == 0:
             return '0% complete'
-
         complete_lessons_count = self.lesson_activities.filter(user=user, is_complete=True).count()
         percentage = round((complete_lessons_count / lessons_count) * 100)
         return f'{percentage}% complete'
 
     def save(self, *args, **kwargs):
         if not self.slug:
-            counter = 1
-            slug = slugify(self.title, allow_unicode=True)
-            while Course.objects.filter(slug=slug).exists():
-                slug = f'{slug}-{counter}'
-                counter += 1
-            self.slug = slug
+            self.slug = Utils.generate_unique_slug(self, Course)
         return super(Course, self).save(*args, **kwargs)
 
 # ============================================================ #
@@ -70,13 +63,26 @@ class Lesson(models.Model):
 
     def save(self, *args, **kwargs):
         if not self.slug:
-            counter = 1
-            slug = slugify(self.title, allow_unicode=True)
-            while Lesson.objects.filter(slug=slug).exists():
-                slug = f'{slug}-{counter}'
-                counter += 1
-            self.slug = slug
+            self.slug = Utils.generate_unique_slug(self, Lesson)
         return super(Lesson, self).save(*args, **kwargs)
+
+# ============================================================ #
+
+class LessonActivity(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, related_name='lesson_activities')
+    course = models.ForeignKey(Course, on_delete=models.SET_NULL, null=True, related_name='lesson_activities')
+    lesson = models.ForeignKey(Lesson, on_delete=models.SET_NULL, null=True, related_name='lesson_activities')
+    is_complete = models.BooleanField(default=False)
+    created = models.DateTimeField(auto_now_add=True)
+    updated = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        verbose_name = 'lesson activity'
+        verbose_name_plural = '03- lesson activities'
+
+    def __str__(self):
+        return f'[ {self.user} - {self.course} - {self.lesson} - is-complete: {self.is_complete} ]'
 
 # ============================================================ #
 
@@ -93,19 +99,14 @@ class Topic(models.Model):
 
     class Meta:
         verbose_name = 'topic'
-        verbose_name_plural = '03- topics'
+        verbose_name_plural = '04- topics'
 
     def __str__(self):
         return f'{self.title}'
 
     def save(self, *args, **kwargs):
         if not self.slug:
-            counter = 1
-            slug = slugify(self.title, allow_unicode=True)
-            while Topic.objects.filter(slug=slug).exists():
-                slug = f'{slug}-{counter}'
-                counter += 1
-            self.slug = slug
+            self.slug = Utils.generate_unique_slug(self, Topic)
         return super(Topic, self).save(*args, **kwargs)
 
 # ============================================================ #
@@ -122,25 +123,7 @@ class Enrollment(models.Model):
             models.UniqueConstraint(fields=['user', 'course'], name='unique_enrollment')
         ]
         verbose_name = 'enrollment'
-        verbose_name_plural = '04- enrollments'
+        verbose_name_plural = '05- enrollments'
 
     def __str__(self):
         return f'{self.user.username} - {self.course.title}'
-
-# ============================================================ #
-
-class LessonActivity(models.Model):
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, related_name='lesson_activities')
-    course = models.ForeignKey(Course, on_delete=models.SET_NULL, null=True, related_name='lesson_activities')
-    lesson = models.ForeignKey(Lesson, on_delete=models.SET_NULL, null=True, related_name='lesson_activities')
-    is_complete = models.BooleanField(default=False)
-    created = models.DateTimeField(auto_now_add=True)
-    updated = models.DateTimeField(auto_now=True)
-
-    class Meta:
-        verbose_name = 'lesson activity'
-        verbose_name_plural = '05- lesson activities'
-
-    def __str__(self):
-        return f'[{self.user} - {self.course} - {self.lesson} - is-complete: {self.is_complete}]'

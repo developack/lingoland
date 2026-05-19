@@ -9,7 +9,7 @@ from courses.serializers import CourseSerializer
 from courses.serializers import LessonSerializer
 from courses.serializers import CourseDetailSerializer
 from courses.serializers import LessonDetailSerializer
-from courses.models import Course, Lesson, Topic, Enrollment, LessonActivity
+from courses.models import Course, Lesson, LessonActivity, Topic, Enrollment
 
 
 class CoursesListView(APIView):
@@ -33,7 +33,7 @@ class CourseDetailView(APIView):
 class LessonsListView(APIView):
     def get(self, request, slug):
         course = get_object_or_404(Course, slug=slug)
-        lessons = Lesson.objects.filter(course=course)
+        lessons = course.lessons.all()
         serializer = LessonSerializer(lessons, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
