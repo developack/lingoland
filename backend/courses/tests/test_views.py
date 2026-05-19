@@ -12,8 +12,8 @@ class TestCourseViews(APITestCase):
         self.other_user = User.objects.create_user(email='other@gmail.com', username='other', password='1234')
         self.course1 = Course.objects.create(user=self.user, title='django')
         self.course2 = Course.objects.create(user=self.user, title='python')
-        self.lesson = Lesson.objects.create(user=self.user, course=self.course1, title='lesson1')
-        self.topic = Topic.objects.create(user=self.user, lesson=self.lesson, title='topic1')
+        self.lesson = Lesson.objects.create(course=self.course1, title='lesson1')
+        self.topic = Topic.objects.create(lesson=self.lesson, title='topic1')
         Enrollment.objects.create(user=self.user, course=self.course1)
 
     def test_user_can_get_courses_list(self):

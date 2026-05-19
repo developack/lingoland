@@ -11,7 +11,7 @@ class CourseAdmin(admin.ModelAdmin):
 
 @admin.register(Lesson)
 class LessonAdmin(admin.ModelAdmin):
-    list_display = ('title', 'user', 'course', 'slug', 'created', 'updated')
+    list_display = ('title', 'course', 'slug', 'created', 'updated')
     exclude = ('slug',)
 
 # ============================================================ #
@@ -24,7 +24,7 @@ class LessonActivityAdmin(admin.ModelAdmin):
 
 @admin.register(Topic)
 class TopicAdmin(admin.ModelAdmin):
-    list_display = ('title', 'user', 'lesson', 'slug', 'created', 'updated')
+    list_display = ('title', 'lesson', 'slug', 'created', 'updated')
     exclude = ('slug',)
 
 # ============================================================ #

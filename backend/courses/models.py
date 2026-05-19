@@ -43,7 +43,6 @@ class Course(models.Model):
 
 class Lesson(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, related_name='lessons')
     course = models.ForeignKey(Course, on_delete=models.SET_NULL, null=True, related_name='lessons')
     comments = GenericRelation(Comment)
     title = models.CharField(max_length=128)
@@ -88,7 +87,6 @@ class LessonActivity(models.Model):
 
 class Topic(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, related_name='topics')
     lesson = models.ForeignKey(Lesson, on_delete=models.SET_NULL, null=True, related_name='topics')
     comments = GenericRelation(Comment)
     title = models.CharField(max_length=128)

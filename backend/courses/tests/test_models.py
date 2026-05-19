@@ -9,7 +9,7 @@ class TestCourseModels(APITestCase):
     def setUpTestData(cls):
         cls.user = User.objects.create_user(email='test@gamil.com', username='test', password='1234')
         cls.course = Course.objects.create(user=cls.user, title='django')
-        cls.lessons = [Lesson.objects.create(user=cls.user, course=cls.course, title=f'l{n}') for n in range(1, 11)]
+        cls.lessons = [Lesson.objects.create(course=cls.course, title=f'l{n}') for n in range(1, 11)]
         cls.lessons = cls.course.lessons.order_by('created')
 
     def test_calculate_course_progress_returns_zero_percent_when_no_completed_lessons(self):

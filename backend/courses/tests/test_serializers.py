@@ -10,7 +10,7 @@ class TestCourseSerializers(APITestCase):
     def setUp(self):
         self.user = User.objects.create_user(email='test@gmail.com', username='test', password='1234')
         self.course = Course.objects.create(user=self.user, title='django')
-        self.lesson = Lesson.objects.create(user=self.user, course=self.course, title='lesson1')
+        self.lesson = Lesson.objects.create(course=self.course, title='lesson1')
 
     def test_get_is_enrolled_returns_true_for_enrolled_user(self):
         self.client.force_authenticate(user=self.user)
