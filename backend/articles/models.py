@@ -1,7 +1,7 @@
 import uuid
 from django.db import models
-from django.utils.text import slugify
 from django.contrib.contenttypes.fields import GenericRelation
+from utils.utils import Utils
 from accounts.models import User
 from comments.models import Comment
 
@@ -27,10 +27,5 @@ class Article(models.Model):
 
     def save(self, *args, **kwargs):
         if not self.slug:
-            counter = 1
-            slug = slugify(self.title, allow_unicode=True)
-            while Article.objects.filter(slug=slug).exists():
-                slug = f'{slug}-{counter}'
-                counter += 1
-            self.slug = slug
+            self.slug = Utils.generate_unique_slug(self, Article)
         return super(Article, self).save(*args, **kwargs)

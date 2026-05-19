@@ -11,12 +11,8 @@ class ArticleSerializer(serializers.ModelSerializer):
 # ============================================================ #
 
 class ArticleDetailSerializer(serializers.ModelSerializer):
-    comments = serializers.SerializerMethodField()
+    comments = CommentSerializer(many=True, read_only=True)
 
     class Meta:
         model = Article
         fields = '__all__'
-
-    def get_comments(self, obj):
-        objects = obj.comments.all()
-        return CommentSerializer(instance=objects, many=True).data
