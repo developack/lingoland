@@ -14,7 +14,7 @@ class TestCommentViews(APITestCase):
         self.other_user = User.objects.create_user(email='new@gmail.com', username='new', password='1234')
         self.article = Article.objects.create(user=self.user, title='article1')
         self.course = Course.objects.create(user=self.user, title='django')
-        self.lesson = Lesson.objects.create(user=self.user, course=self.course, title='lesson1')
+        self.lesson = Lesson.objects.create(course=self.course, title='lesson1')
         Enrollment.objects.create(user=self.user, course=self.course)
         self.data = {
             "type": "Article",

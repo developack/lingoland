@@ -15,7 +15,7 @@ class TestCommentSerializers(APITestCase):
         self.other_user = User.objects.create_user(email='new@gmail.com', username='new', password='1234')
         self.course = Course.objects.create(user=self.user, title='django')
         self.lesson = Lesson.objects.create(course=self.course, title='lesson1')
-        self.topic = Topic.objects.create(user=self.user, lesson=self.lesson, title='topic1')
+        self.topic = Topic.objects.create(lesson=self.lesson, title='topic1')
         self.article = Article.objects.create(user=self.user, title='article1')
         Enrollment.objects.create(user=self.user, course=self.course)
         self.lesson_data = {'type': 'Lesson', 'slug': 'lesson1', 'text': 'test comment'}
