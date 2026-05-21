@@ -31,7 +31,7 @@ class TestUserManager(APITestCase):
         self.assertTrue(User.objects.filter(email=self.email).exists())
 
     def test_user_password_is_hashed(self):
-        user = User.objects.create_user(username=self.users_count, email=self.email, password=self.password)
+        user = User.objects.create_user(username=self.username, email=self.email, password=self.password)
         self.assertEqual(User.objects.count(), self.users_count + 1)
         self.assertNotEqual(user.password, self.password)
         self.assertTrue(user.check_password(self.password))

@@ -35,7 +35,7 @@ class TestCommentCreateSerializer(APITestCase):
             data=self.lesson_comment_data, context={'request': SimpleNamespace(user=self.other_user)})
         with self.assertRaises(ValidationError) as context:
             serializer.is_valid(raise_exception=True)
-        self.assertIn('Only enroll accounts can submit comments on lessons or topics.', str(context.exception))
+        self.assertIn('Only enroll users can submit comments on lessons or topics.', str(context.exception))
 
     def test_enrolled_user_can_comment_on_lesson(self):
         serializer = CommentCreateSerializer(data=self.lesson_comment_data, context={'request': SimpleNamespace(user=self.user)})
@@ -47,7 +47,7 @@ class TestCommentCreateSerializer(APITestCase):
             data=self.topic_comment_data, context={'request': SimpleNamespace(user=self.other_user)})
         with self.assertRaises(ValidationError) as context:
             serializer.is_valid(raise_exception=True)
-        self.assertIn('Only enroll accounts can submit comments on lessons or topics.', str(context.exception))
+        self.assertIn('Only enroll users can submit comments on lessons or topics.', str(context.exception))
 
     def test_enrolled_user_can_comment_on_topic(self):
         serializer = CommentCreateSerializer(data=self.topic_comment_data, context={'request': SimpleNamespace(user=self.user)})
