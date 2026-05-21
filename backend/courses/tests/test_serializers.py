@@ -12,14 +12,17 @@ class TestCourseSerializers(APITestCase):
         self.course = Course.objects.create(user=self.user, title='django')
         self.lesson = Lesson.objects.create(course=self.course, title='lesson1')
 
+    def authenticate(self, user=None):
+        self.client.force_authenticate(user or self.user)
+
     def test_get_is_enrolled_returns_true_for_enrolled_user(self):
-        self.client.force_authenticate(user=self.user)
+        self.authenticate()
         Enrollment.objects.create(user=self.user, course=self.course)
         serializer = CourseDetailSerializer(instance=self.course, context={'request': SimpleNamespace(user=self.user)})
         self.assertTrue(serializer.get_is_enrolled(self.course))
 
     def test_get_is_enrolled_returns_false_for_not_enrolled_user(self):
-        self.client.force_authenticate(user=self.user)
+        self.authenticate()
         serializer = CourseDetailSerializer(instance=self.course, context={'request': SimpleNamespace(user=self.user)})
         self.assertFalse(serializer.get_is_enrolled(self.course))
 
