@@ -7,9 +7,11 @@ from orders.services.payment import PaymentService
 
 
 class TestPayment(APITestCase):
-    def setUp(self):
-        self.user = User.objects.create_user(username='test', email='test@gmail.com', password='1234')
-        self.course = Course.objects.create(user=self.user, title='django master')
+
+    @classmethod
+    def setUpTestData(cls):
+        cls.user = User.objects.create_user(username='test', email='test@gmail.com', password='1234')
+        cls.course = Course.objects.create(user=cls.user, title='django master')
 
     def test_payment_fails_when_order_not_found(self):
         Order.objects.filter(user=self.user).delete()
