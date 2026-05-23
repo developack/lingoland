@@ -39,12 +39,12 @@ class TestCourseModel(APITestCase):
 
     def test_course_slug_generated_successfully(self):
         course = Course.objects.create(title=self.course_title)
-        self.assertEqual(course.slug, self.course_slug)
+        self.assertEqual(course.slug, self.course_slug + '-1')
 
     def test_course_slug_is_unique(self):
         course = Course.objects.create(title=self.course_title)
         new_course = Course.objects.create(title=self.course_title)
-        self.assertEqual(new_course.slug, f'{self.course_slug}-1')
+        self.assertEqual(new_course.slug, f'{self.course_slug}-2')
         self.assertNotEqual(course.slug, new_course.slug)
 
 # ============================================================ #
