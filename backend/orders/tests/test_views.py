@@ -110,22 +110,21 @@ class TestPaymentView(APITestCase):
         cls.user = User.objects.create_user(username='test', email='test@gmail.com', password='1234')
         cls.course = Course.objects.create(user=cls.user, title='django')
 
-    def setUp(self):
-        self.order = self.client.post(self.orders_url, data={'courses': [self.course.slug]}, format='json')
-
     def authenticate(self, user=None):
         self.client.force_authenticate(user or self.user)
 
     def test_authenticated_user_can_pay_order(self):
         self.authenticate()
+        order = self.client.post(self.orders_url, data={'courses': [self.course.slug]}, format='json')
         response = self.client.get(self.payment_url)
-        self.assertEqual(self.order.status_code, status.HTTP_201_CREATED)
+        self.assertEqual(order.status_code, status.HTTP_201_CREATED)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(Enrollment.objects.count(), 1)
 
     def test_unauthenticated_user_cannot_pay_order(self):
         response = self.client.get(self.payment_url)
-        self.assertEqual(self.order.status_code, status.HTTP_401_UNAUTHORIZED)
+        order = self.client.post(self.orders_url, data={'courses': [self.course.slug]}, format='json')
+        self.assertEqual(order.status_code, status.HTTP_401_UNAUTHORIZED)
         self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
         self.assertEqual(Enrollment.objects.count(), 0)
 

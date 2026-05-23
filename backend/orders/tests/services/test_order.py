@@ -24,7 +24,7 @@ class TestOrder(APITestCase):
         self.assertIn('These courses do not exist', str(context.exception))
 
     def test_create_order_fails_when_user_already_enrolled(self):
-        Enrollment.objects.create(user=cls.user, course=cls.course)
+        Enrollment.objects.create(user=self.user, course=self.course)
         with self.assertRaises(ValueError) as context:
             OrderService.create_order(self.user, [self.course.slug])
         self.assertIn('You are already enrolled in', str(context.exception))
