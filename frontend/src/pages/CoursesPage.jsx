@@ -1,5 +1,15 @@
+import {Header} from "../components/Header.jsx";
+import {Footer} from "../components/Footer.jsx";
+
 export function CoursesPage() {
     return (
-        <div>This is courses page</div>
+        <>
+            <Header />
+
+            <title>Courses Page</title>
+            <div>This is courses page</div>
+
+            <Footer/>
+        </>
     )
 }

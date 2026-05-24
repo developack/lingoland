@@ -17,9 +17,9 @@ export function Header() {
                     <nav>
                         <ul className="flex items-center gap-12 text-sm font-medium">
                             <li className="hover:text-primary"><Link to="/">صفحه اصلی</Link></li>
-                            <li className="hover:text-primary"><Link to="courses">دوره‌ها</Link></li>
-                            <li className="hover:text-primary"><Link to="dictionary">دیکشنری</Link></li>
-                            <li className="hover:text-primary"><Link to="articles">مقالات</Link></li>
+                            <li className="hover:text-primary"><Link to="/courses">دوره‌ها</Link></li>
+                            <li className="hover:text-primary"><Link to="/dictionary">دیکشنری</Link></li>
+                            <li className="hover:text-primary"><Link to="/articles">مقالات</Link></li>
                         </ul>
                     </nav>
                     <div className="flex items-center gap-8">
@@ -29,9 +29,9 @@ export function Header() {
                             </svg>
                         </Link>
                         <div className="flex gap-2 items-center text-sm">
-                            <Link className=" py-3 px-5 bg-button rounded-xl" to="login">ورود</Link>
+                            <Link className=" py-3 px-5 bg-button rounded-xl" to="/login">ورود</Link>
                             <Link className="bg-primary py-3 px-5 text-white rounded-xl transition-colors hover:bg-primary/85"
-                                  to="register">
+                                  to="/register">
                                 ثبت نام
                             </Link>
                         </div>

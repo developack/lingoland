@@ -1,5 +1,15 @@
+import {Header} from "../components/Header.jsx";
+import {Footer} from "../components/Footer.jsx";
+
 export function CheckoutPage() {
     return (
-        <div>This is checkout page</div>
+        <>
+            <Header />
+
+            <title>Checkout Page</title>
+            <div>This is checkout page</div>
+
+            <Footer/>
+        </>
     )
 }

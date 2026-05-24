@@ -14,15 +14,15 @@ import './App.css'
 function App() {
     return (
         <Routes>
-            <Route index element={<HomePage/>}/>
-            <Route path="login" element={<LoginPage/>}/>
-            <Route path="register" element={<RegisterPage/>}/>
-            <Route path="forgot-password" element={<ForgotPasswordPage/>}/>
-            <Route path="cart" element={<CartPage/>}/>
-            <Route path="checkout" element={<CheckoutPage/>}/>
-            <Route path="articles" element={<ArticlesPage/>}/>
-            <Route path="courses" element={<CoursesPage/>}/>
-            <Route path="dictionary" element={<DictionaryPage/>}/>
+            <Route index element={<HomePage />} />
+            <Route path="login" element={<LoginPage />} />
+            <Route path="register" element={<RegisterPage />} />
+            <Route path="forgot-password" element={<ForgotPasswordPage />} />
+            <Route path="cart" element={<CartPage />} />
+            <Route path="checkout" element={<CheckoutPage />} />
+            <Route path="articles" element={<ArticlesPage />} />
+            <Route path="courses" element={<CoursesPage />} />
+            <Route path="dictionary" element={<DictionaryPage />} />
         </Routes>
     )
 }
