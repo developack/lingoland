@@ -7,7 +7,9 @@ export function CoursesPage() {
             <Header />
 
             <title>Courses Page</title>
-            <div>This is courses page</div>
+            <div className="flex-1">
+                <div>This is courses page</div>
+            </div>
 
             <Footer/>
         </>
