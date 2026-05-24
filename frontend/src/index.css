@@ -68,7 +68,6 @@
 @media (min-width: 640px) {
     .container {
         max-width: 36rem;
-        padding: 0;
     }
 }
 
