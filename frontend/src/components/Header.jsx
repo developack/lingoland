@@ -1,14 +1,13 @@
 import { Link } from 'react-router'
-import icon from '../assets/react.svg'
 
 
 export function Header() {
     return (
         <>
-            <header className="p-5 bg-body-bg/80 backdrop-filter backdrop-blur-md shadow-xs">
+            <header className="p-5 bg-body-bg/80 backdrop-filter backdrop-blur-md shadow-xs sticky top-0">
                 <div className="container flex items-center justify-between">
                     <Link to="/" className="flex items-center gap-3">
-                        <img src={icon} alt="logo"/>
+                        <img className="w-10" src="../../public/logo.png" alt="logo"/>
                         <div>
                             <p className="font-bold text-xl">لینگــولند</p>
                             <span className="text-sm">آموزشگاه آنلاین زبان انگلیسی</span>
