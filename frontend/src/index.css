@@ -98,7 +98,7 @@
     }
     body {
         font-family: var(--font-rubik);
-        background-color: #ffffff;
+        background-color: var(--color-body-bg);
     }
     ::selection {
         background-color: var(--color-primary);
