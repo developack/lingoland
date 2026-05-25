@@ -4,7 +4,7 @@ import { Link } from 'react-router'
 export function Header() {
     return (
         <>
-            <header className="p-5 bg-body-bg/80 backdrop-filter backdrop-blur-md shadow-xs sticky top-0">
+            <header className="p-5 bg-body-bg/80 backdrop-filter backdrop-blur-md shadow-xs sticky top-0 z-10">
                 <div className="container flex items-center justify-between">
                     <Link to="/" className="flex items-center gap-3">
                         <img className="w-10" src="../../public/logo.png" alt="logo"/>
