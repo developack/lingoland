@@ -9,11 +9,16 @@ export function CoursesPage() {
     const [courses, setCourses] = useState([])
 
     useEffect(() => {
-        fetch('/api/courses/')
-            .then((response) => response.json())
-            .then((data) => {
+        const fetchCoursesData = async () => {
+            try {
+                const response = await fetch('/api/courses/')
+                const data = await response.json()
                 setCourses(data)
-            })
+            } catch (error) {
+                console.log('Error fetching courses:', error)
+            }
+        }
+        void fetchCoursesData()
     }, [])
 
     return (

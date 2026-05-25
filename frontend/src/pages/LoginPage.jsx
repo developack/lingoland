@@ -25,6 +25,7 @@ export function LoginPage() {
             const data = await response.json()
             if (response.ok) {
                 console.log(data.token)
+                localStorage.setItem(import.meta.env.VITE_AUTH_TOKEN_KEY, data.token)
             }
         } catch (error) {
             console.log(error)
