@@ -10,11 +10,24 @@ export function CourseDetailPage() {
     const { slug } = useParams()
 
     useEffect(() => {
-        fetch(`/api/course/${slug}`)
-            .then((response) => response.json())
-            .then((data) => {
+        const token = localStorage.getItem(import.meta.env.VITE_AUTH_TOKEN_KEY)
+        const fetchCourseDetailData = async () => {
+            try {
+                const response = await fetch(`/api/course/${slug}/`, {
+                    method: 'GET',
+                    headers: {
+                        "Authorization": `Token ${token}`,
+                        "Content-Type": "application/json"
+                    }
+                })
+                const data = await response.json()
                 setCourse(data)
-            })
+            } catch (error) {
+                console.log('Error fetching courses:', error)
+            }
+        }
+
+        void fetchCourseDetailData()
     }, [])
 
     return(
@@ -26,7 +39,7 @@ export function CourseDetailPage() {
                 <div className="max-w-6xl mx-auto bg-white rounded-2xl shadow-lg overflow-hidden">
 
                     <div className="relative h-96">
-                        <img src={`${BASE_URL}${course.thumbnail}`} alt="تصویر دوره" className="w-full h-full object-cover"/>
+                        <img src={`${course.thumbnail}`} alt="تصویر دوره" className="w-full h-full object-cover"/>
                         <div className="absolute top-4 right-4 bg-yellow-500 text-white px-3 py-1 rounded-lg text-sm font-bold">
                             🔥 ویژه
                         </div>
@@ -34,7 +47,7 @@ export function CourseDetailPage() {
 
                     <div className="p-8">
 
-                        <h1 className="text-3xl font-bold text-gray-800 mb-3">دوره جامع آموزش React.js</h1>
+                        <h1 className="text-3xl font-bold text-gray-800 mb-3">{course.title}</h1>
 
                         <div className="flex items-center gap-4 mb-4">
                             <div className="flex items-center gap-1">
@@ -49,7 +62,7 @@ export function CourseDetailPage() {
 
                         <div className="bg-blue-50 border-r-4 border-blue-500 p-4 rounded-lg mb-6">
                             <p className="text-gray-700 leading-relaxed">
-                                ✨ آموزش حرفه‌ای React.js از صفر تا صد به همراه پروژه‌های عملی
+                                {course.excerpt}
                             </p>
                         </div>
 
@@ -81,22 +94,7 @@ export function CourseDetailPage() {
                                 📖 توضیحات کامل دوره
                             </h2>
                             <div className="mt-4 space-y-3 text-gray-700 leading-relaxed">
-                                <p>
-                                    در این دوره جامع و عملی، شما از صفر تا صد فریمورک React.js را به صورت پروژه‌محور یاد
-                                    خواهید گرفت.
-                                    این دوره مناسب تمام برنامه‌نویسانی است که آشنایی مقدماتی با HTML، CSS و جاوااسکریپت
-                                    دارند.
-                                </p>
-                                <p>
-                                    در طول این دوره، بیش از ۱۰ پروژه عملی کوچک و بزرگ خواهیم ساخت و با مفاهیم پیشرفته‌ای
-                                    مانند
-                                    Hooks، Context API، Redux، React Router و موارد دیگر آشنا خواهید شد.
-                                </p>
-                                <p>
-                                    پس از پایان این دوره، شما توانایی ساخت اپلیکیشن‌های پیشرفته وب با React را خواهید
-                                    داشت
-                                    و می‌توانید به عنوان یک توسعه‌دهنده حرفه‌ای React مشغول به کار شوید.
-                                </p>
+                                {course.content}
                             </div>
                         </div>
 
