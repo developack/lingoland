@@ -1,14 +1,33 @@
-import { useRef } from 'react'
+import {useRef, useState} from 'react'
+import { useNavigate } from "react-router"
 import { Link } from "react-router"
 
 
 export function LoginPage() {
+    const navigate = useNavigate()
+    const [loading, setLoading] = useState(false)
+    const [message, setMessage] = useState('')
+    const [error, setError] = useState({
+        general: "",
+        email: "",
+        password: ""
+    })
     const emailRef = useRef(null)
     const passwordRef = useRef(null)
 
     const login = async () => {
-        const email = emailRef.current.value
-        const password = passwordRef.current.value
+        let errors = {}
+        const email = emailRef.current
+        const password = passwordRef.current
+        setLoading(true)
+
+        if (email.value === '') {
+            errors.email = 'email field is required'
+        }
+
+        if (password.value === '') {
+            errors.password = 'password field is required'
+        }
 
         try {
             const response = await fetch('/api/login/', {
@@ -17,18 +36,27 @@ export function LoginPage() {
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({
-                    email: email,
-                    password: password
+                    email: email.value,
+                    password: password.value
                 })
             })
 
             const data = await response.json()
-            if (response.ok) {
-                console.log(data.token)
-                localStorage.setItem(import.meta.env.VITE_AUTH_TOKEN_KEY, data.token)
+            if (!response.ok) {
+                errors.general = data.message || 'Invalid credential!'
+                return
             }
+
+            localStorage.setItem(import.meta.env.VITE_AUTH_TOKEN_KEY, data.token)
+            setMessage('You are logged in successfully')
+            navigate('/')
+
         } catch (error) {
             console.log(error)
+            errors.general = 'network error'
+        } finally {
+            setLoading(false)
+            setError(errors)
         }
     }
 
@@ -46,6 +74,10 @@ export function LoginPage() {
                         <div id="errorMessage" className="hidden bg-red-50 border-r-4 border-red-500 p-3 mb-4 rounded">
                             <p className="text-red-700 text-sm">❌ نام کاربری یا رمز عبور اشتباه است</p>
                         </div>
+                        <p className="my-5">
+                            {message && <span className="text-green-500">{message}</span>}
+                            {error.general && <span className="text-red-500">{error.general}</span>}
+                        </p>
                         <form id="loginForm" className="space-y-6">
                             <div>
                                 <label className="block text-gray-700 font-semibold mb-2">
@@ -64,6 +96,7 @@ export function LoginPage() {
                                         className="w-full pr-10 pl-3 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition"
                                         placeholder="example@email.com" required
                                     />
+                                    {error.email && <span className="text-red-500">{error.email}</span>}
                                 </div>
                             </div>
                             <div>
@@ -83,6 +116,7 @@ export function LoginPage() {
                                         className="w-full pr-10 pl-3 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition"
                                         placeholder="••••••••" required
                                     />
+                                    {error.password && <span className="text-red-500">{error.password}</span>}
                                 </div>
                             </div>
                             <div className="flex items-center justify-between">
@@ -96,7 +130,8 @@ export function LoginPage() {
                                 </Link>
                             </div>
                             <button onClick={login} type="button"
-                                className="w-full bg-primary text-white py-3 rounded-lg font-bold hover:bg-primary-dark transition transform hover:scale-[1.02] duration-200">
+                                className={`w-full bg-primary text-white py-3 rounded-lg font-bold hover:bg-primary-dark
+                                 transition transform hover:scale-[1.02] duration-200 ${loading ? 'opacity-50' : ''}`} disabled={loading}>
                                 ورود به سامانه
                             </button>
                             <div className="text-center mt-6">

@@ -45,9 +45,11 @@ class UserLoginSerializer(serializers.Serializer):
 # ============================================================ #
 
 class UserProfileSerializer(serializers.ModelSerializer):
+    username = serializers.CharField(source='user.username', read_only=True)
+
     class Meta:
         model = UserProfile
-        fields = ('full_name', 'avatar')
+        fields = ('username', 'full_name', 'avatar')
 
 # ============================================================ #
 
