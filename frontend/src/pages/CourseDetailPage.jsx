@@ -5,18 +5,17 @@ import { Footer } from "../components/Footer.jsx";
 
 
 export function CourseDetailPage() {
-    const BASE_URL = import.meta.env.VITE_API_BASE_URL
     const [course, setCourse] = useState({})
     const { slug } = useParams()
 
     useEffect(() => {
-        const token = localStorage.getItem(import.meta.env.VITE_AUTH_TOKEN_KEY)
+        const authToken = localStorage.getItem(import.meta.env.VITE_AUTH_TOKEN_KEY)
         const fetchCourseDetailData = async () => {
             try {
                 const response = await fetch(`/api/course/${slug}/`, {
                     method: 'GET',
                     headers: {
-                        "Authorization": `Token ${token}`,
+                        "Authorization": `Token ${authToken}`,
                         "Content-Type": "application/json"
                     }
                 })

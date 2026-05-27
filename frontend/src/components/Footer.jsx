@@ -37,11 +37,16 @@ export function Footer() {
                 <div className="flex items-start justify-between container">
                     <p className="text-sm text-white container">ساخته شده با ❤️ در لینگولند</p>
                     <div className="flex items-center gap-5">
-                        <span className="bg-button h-5 w-5 rounded-sm"></span>
-                        <span className="bg-button h-5 w-5 rounded-sm"></span>
-                        <span className="bg-button h-5 w-5 rounded-sm"></span>
-                        <span className="bg-button h-5 w-5 rounded-sm"></span>
-                        <span className="bg-button h-5 w-5 rounded-sm"></span>
+                        <span className="bg-button h-5 w-5 rounded-sm
+                        "></span>
+                        <span className="bg-button h-5 w-5 rounded-sm
+                        "></span>
+                        <span className="bg-button h-5 w-5 rounded-sm
+                        "></span>
+                        <span className="bg-button h-5 w-5 rounded-sm
+                        "></span>
+                        <span className="bg-button h-5 w-5 rounded-sm
+                        "></span>
                     </div>
                 </div>
             </div>

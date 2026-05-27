@@ -26,6 +26,13 @@ class UserLoginView(APIView):
 
 # ============================================================ #
 
+class UserLogoutView(APIView):
+    def post(self, request):
+        request.user.auth_token.delete()
+        return Response({'detail': 'User logout successfully'}, status=status.HTTP_200_OK)
+
+# ============================================================ #
+
 class UserProfileView(APIView):
     permission_classes = (IsAuthenticated,)
 
