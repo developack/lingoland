@@ -39,8 +39,8 @@ export function RegisterPage() {
             errors.password = "Password and confirm password must match"
         }
 
-        setError(errors)
-        return errors.length === 0;
+        setError(prev => ({...prev, ...errors}))
+        return Object.keys(errors).length === 0
     }
 
     const register = async () => {
@@ -59,7 +59,7 @@ export function RegisterPage() {
                 confirm_password: inputs.confirm_password
             })
         })
-            await response.json()
+            const data = await response.json()
             if (!response.ok) {
                 setError(prev => ({...prev, general: "Something went wrong, please try later"}))
                 return
@@ -80,7 +80,7 @@ export function RegisterPage() {
         const isValid = handleFormValidation(inputs)
         if (!isValid) return
 
-        register()
+        void register()
     }
 
     return (
