@@ -33,7 +33,6 @@ class CourseDetailSerializer(serializers.ModelSerializer):
     is_enrolled = serializers.SerializerMethodField()
     # progress_percentage = serializers.SerializerMethodField()
     lessons = LessonSerializer(many=True, read_only=True)
-    comments = CommentSerializer(many=True, read_only=True)
 
     class Meta:
         model = Course

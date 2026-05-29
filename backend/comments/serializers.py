@@ -15,6 +15,15 @@ class CommentSerializer(serializers.ModelSerializer):
 
 # ============================================================ #
 
+class CommentsListSerializer(serializers.ModelSerializer):
+    user = UserProfileSerializer(source='user.user_profile', read_only=True)
+
+    class Meta:
+        model = Comment
+        fields = ('user', 'text', 'status', 'created')
+
+# ============================================================ #
+
 TYPE_CHOICES = (
     ('Article', 'Article'),
     ('Course', 'Course'),

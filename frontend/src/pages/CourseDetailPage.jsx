@@ -1,4 +1,3 @@
-import { Link } from 'react-router'
 import { useState, useEffect } from "react"
 import { useParams } from "react-router"
 import { Header } from "../components/Header";
@@ -10,7 +9,7 @@ import { Comments } from '../components/Comments/Comments'
 export function CourseDetailPage() {
     const authToken = localStorage.getItem(import.meta.env.VITE_AUTH_TOKEN_KEY)
     const [ course, setCourse ] = useState({})
-    const [ commentText, setCommentText ] = useState([])
+    // const [ comments, setComments ] = useState([])
     const { slug } = useParams()
 
     useEffect(() => {
