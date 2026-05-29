@@ -2,13 +2,16 @@ from django.core.exceptions import ObjectDoesNotExist
 from rest_framework import serializers
 from articles.models import Article
 from comments.models import Comment
+from accounts.serializers import UserProfileSerializer
 from courses.models import Lesson, Topic, Enrollment, Course
 
 
 class CommentSerializer(serializers.ModelSerializer):
+    user = UserProfileSerializer(source='user.user_profile', read_only=True)
+
     class Meta:
         model = Comment
-        fields = ('text', 'parent', 'status', 'created')
+        fields = ('user', 'text', 'status', 'created')
 
 # ============================================================ #
 

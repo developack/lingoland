@@ -1,23 +1,31 @@
+import { Link } from 'react-router'
 import { useState, useEffect } from "react"
 import { useParams } from "react-router"
-import { Header } from "../components/Header.jsx";
-import { Footer } from "../components/Footer.jsx";
+import { Header } from "../components/Header";
+import { Footer } from "../components/Footer";
+import { LessonsList } from '../components/CourseDetail/LessonsList'
+import { Comments } from '../components/Comments/Comments'
 
 
 export function CourseDetailPage() {
-    const [course, setCourse] = useState({})
+    const authToken = localStorage.getItem(import.meta.env.VITE_AUTH_TOKEN_KEY)
+    const [ course, setCourse ] = useState({})
+    const [ commentText, setCommentText ] = useState([])
     const { slug } = useParams()
 
     useEffect(() => {
-        const authToken = localStorage.getItem(import.meta.env.VITE_AUTH_TOKEN_KEY)
         const fetchCourseDetailData = async () => {
             try {
+                let headers = {
+                    "Content-Type": "application/json"
+                }
+                if (authToken) {
+                    headers.Authorization = `Token ${authToken}`
+                }
+
                 const response = await fetch(`/api/course/${slug}/`, {
                     method: 'GET',
-                    headers: {
-                        "Authorization": `Token ${authToken}`,
-                        "Content-Type": "application/json"
-                    }
+                    headers: headers
                 })
                 const data = await response.json()
                 setCourse(data)
@@ -35,7 +43,7 @@ export function CourseDetailPage() {
 
             <Header/>
             <div className="container grid grid-cols-[3fr_1fr] gap-10 flex-1 mt-20 items-start">
-                <div className="max-w-6xl mx-auto bg-white rounded-2xl shadow-lg overflow-hidden">
+                <div className="max-w-6xl mx-auto bg-white rounded-2xl overflow-hidden">
 
                     <div className="relative h-96">
                         <img src={`${course.thumbnail}`} alt="تصویر دوره" className="w-full h-full object-cover"/>
@@ -63,29 +71,6 @@ export function CourseDetailPage() {
                             <p className="text-gray-700 leading-relaxed">
                                 {course.excerpt}
                             </p>
-                        </div>
-
-                        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
-                            <div className="text-center p-3 bg-gray-50 rounded-lg">
-                                <div className="text-2xl mb-1">⏱️</div>
-                                <div className="text-sm text-gray-600">مدت دوره</div>
-                                <div className="font-bold text-gray-800">۲۴ ساعت</div>
-                            </div>
-                            <div className="text-center p-3 bg-gray-50 rounded-lg">
-                                <div className="text-2xl mb-1">📹</div>
-                                <div className="text-sm text-gray-600">تعداد جلسات</div>
-                                <div className="font-bold text-gray-800">۴۲ جلسه</div>
-                            </div>
-                            <div className="text-center p-3 bg-gray-50 rounded-lg">
-                                <div className="text-2xl mb-1">👨‍🏫</div>
-                                <div className="text-sm text-gray-600">مدرس</div>
-                                <div className="font-bold text-gray-800">علی رضوی</div>
-                            </div>
-                            <div className="text-center p-3 bg-gray-50 rounded-lg">
-                                <div className="text-2xl mb-1">📁</div>
-                                <div className="text-sm text-gray-600">آخرین بروزرسانی</div>
-                                <div className="font-bold text-gray-800">۱۴۰۳</div>
-                            </div>
                         </div>
 
                         <div className="mb-8">
@@ -129,20 +114,44 @@ export function CourseDetailPage() {
                             </div>
                         </div>
 
-                        <div className="flex gap-4 pt-4 border-t">
-                            <button
-                                className="flex-1 bg-blue-600 text-white py-3 rounded-xl font-bold hover:bg-blue-700 transition">
-                                🛒 ثبت‌نام در دوره
-                            </button>
-                            <button
-                                className="px-6 bg-gray-200 text-gray-700 py-3 rounded-xl font-bold hover:bg-gray-300 transition">
-                                💬 سوال دارم
-                            </button>
-                        </div>
-
+                        <LessonsList lessons={course.lessons} is_enrolled={course.is_enrolled} />
+                        <Comments comments={course.comments} authToken={authToken} />
                     </div>
                 </div>
-                <aside className="bg-white rounded-xl h-full"></aside>
+                <aside className="bg-white rounded-xl p-5 sticky top-[110px]">
+                    <div className="grid grid-cols-2 md:grid-cols-1 gap-4 mb-8">
+                        <div className="text-center flex p-2 bg-gray-50 rounded-lg items-center gap-2">
+                            <div className="text-2xl">⏱️</div>
+                            <div className="text-sm text-gray-600">مدت دوره</div>
+                            <div className="font-bold text-gray-800">۲۴ ساعت</div>
+                        </div>
+                        <div className="text-center flex p-2 bg-gray-50 rounded-lg items-center gap-2">
+                            <div className="text-2xl">📹</div>
+                            <div className="text-sm text-gray-600">تعداد جلسات</div>
+                            <div className="font-bold text-gray-800">۴۲ جلسه</div>
+                        </div>
+                        <div className="text-center flex p-2 bg-gray-50 rounded-lg items-center gap-2">
+                            <div className="text-2xl">👨‍🏫</div>
+                            <div className="text-sm text-gray-600">مدرس</div>
+                            <div className="font-bold text-gray-800">علی رضوی</div>
+                        </div>
+                        <div className="text-center flex p-2 bg-gray-50 rounded-lg items-center gap-2">
+                            <div className="text-2xl">📁</div>
+                            <div className="text-sm text-gray-600">آخرین بروزرسانی</div>
+                            <div className="font-bold text-gray-800">۱۴۰۳</div>
+                        </div>
+                    </div>
+                    <div className="flex flex-col gap-4 pt-4 border-t">
+                        <button
+                            className="flex-1 bg-secondary text-white py-3 rounded-xl font-bold">
+                            ثبت‌نام در دوره
+                        </button>
+                        <button
+                            className="px-6 bg-gray-200 text-gray-700 py-3 rounded-xl font-bold hover:bg-gray-300 transition">💬
+                            سوال دارم
+                        </button>
+                    </div>
+                </aside>
             </div>
             <Footer/>
         </>

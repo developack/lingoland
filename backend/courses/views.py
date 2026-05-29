@@ -13,6 +13,7 @@ from courses.models import Course, Lesson, LessonActivity, Topic, Enrollment
 
 
 class CoursesListView(APIView):
+
     def get(self, request):
         courses = Course.objects.all()
         serializer = CourseSerializer(courses, many=True)
@@ -21,7 +22,6 @@ class CoursesListView(APIView):
 # ============================================================ #
 
 class CourseDetailView(APIView):
-    permission_classes = (IsAuthenticated,)
 
     def get(self, request, slug):
         course = get_object_or_404(Course, slug=slug)
@@ -31,6 +31,7 @@ class CourseDetailView(APIView):
 # ============================================================ #
 
 class LessonsListView(APIView):
+
     def get(self, request, slug):
         course = get_object_or_404(Course, slug=slug)
         lessons = course.lessons.all()

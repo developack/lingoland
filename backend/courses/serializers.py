@@ -11,25 +11,27 @@ class CourseSerializer(serializers.ModelSerializer):
 
 # ============================================================ #
 
-class LessonSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Lesson
-        fields = ('title', 'excerpt')
-
-# ============================================================ #
-
 class TopicSerializer(serializers.ModelSerializer):
-    comments = CommentSerializer(many=True, read_only=True)
+    # comments = CommentSerializer(many=True, read_only=True)
 
     class Meta:
         model = Topic
-        fields = '__all__'
+        fields = ('title', 'slug')
+
+# ============================================================ #
+
+class LessonSerializer(serializers.ModelSerializer):
+    topics = TopicSerializer(many=True, read_only=True)
+
+    class Meta:
+        model = Lesson
+        fields = ('title', 'slug', 'excerpt', 'topics')
 
 # ============================================================ #
 
 class CourseDetailSerializer(serializers.ModelSerializer):
     is_enrolled = serializers.SerializerMethodField()
-    progress_percentage = serializers.SerializerMethodField()
+    # progress_percentage = serializers.SerializerMethodField()
     lessons = LessonSerializer(many=True, read_only=True)
     comments = CommentSerializer(many=True, read_only=True)
 
@@ -39,11 +41,13 @@ class CourseDetailSerializer(serializers.ModelSerializer):
 
     def get_is_enrolled(self, obj):
         user = self.context['request'].user
-        return obj.enrollments.filter(user=user).exists()
-
-    def get_progress_percentage(self, obj):
-        user = self.context['request'].user
-        return obj.calculate_course_progress(user)
+        if user.is_authenticated:
+            return obj.enrollments.filter(user=user).exists()
+        return False
+    #
+    # def get_progress_percentage(self, obj):
+    #     user = self.context['request'].user
+    #     return obj.calculate_course_progress(user)
 
 # ============================================================ #
 
