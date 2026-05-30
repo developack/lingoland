@@ -6,13 +6,18 @@ export function TopicItem({ topic, is_enrolled }) {
         <span className="font-medium text-sm">{topic.title}</span>
     )
 
-    return is_enrolled ? (
-        <Link to={`/topic/${topic.slug}`} className="flex flex-col gap-2">
-            {topicItem}
-        </Link>
-    ) : (
+    return (
         <div className="flex flex-col gap-2">
-            {topicItem}
+             {topicItem}
         </div>
     )
+    // return is_enrolled ? (
+    //     <Link to={`/topic/${topic.slug}`} className="flex flex-col gap-2">
+    //         {topicItem}
+    //     </Link>
+    // ) : (
+    //     <div className="flex flex-col gap-2">
+    //         {topicItem}
+    //     </div>
+    // )
 }

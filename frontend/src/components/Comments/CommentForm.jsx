@@ -1,8 +1,8 @@
 import { useState } from "react"
 
 
-export function CommentForm({ authToken, setComments }) {
-    const [ commentText, setCommentText ] = useState(null)
+export function CommentForm({ authToken, setComments, slug, type }) {
+    const [ commentText, setCommentText ] = useState('')
 
     const handleTextChange = (event) => {
         setCommentText(event.target.value)
@@ -16,14 +16,15 @@ export function CommentForm({ authToken, setComments }) {
                 "Content-Type": "application/json",
                 "Authorization": `Token ${authToken}`
             },
-            body: {
-                type: 'course',
-                slug: 'دوره-جامع-و-پیشرفته-تیلویند-نسخه-4',
+            body: JSON.stringify({
+                type: type,
+                slug: slug,
                 text: commentText,
-            }
+            })
         })
         const data = await response.json()
-        setComments(data)
+        setComments(prevComments => [...prevComments, data])
+        setCommentText('')
     }
 
     return(
@@ -31,7 +32,8 @@ export function CommentForm({ authToken, setComments }) {
             <form onSubmit={addComment} className="mt-4 flex flex-col gap-5 items-start w-full">
                                         <textarea className="w-full border border-border rounded-xl p-5 resize-none"
                                                   onChange={handleTextChange}
-                                                  placeholder="دیدگاه خود را بنویسید..."></textarea>
+                                                  value={commentText}
+                                                  placeholder="دیدگاه خود را بنویسید..." />
                 <button type="submit"
                         className="bg-primary text-white rounded-xl p-3 text-sm cursor-pointer">ارسال
                     دیدگاه

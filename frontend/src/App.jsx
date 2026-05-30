@@ -1,14 +1,16 @@
 import { Routes, Route } from 'react-router'
-import { HomePage } from "./pages/HomePage.jsx"
-import { LoginPage } from "./pages/LoginPage.jsx"
-import { RegisterPage } from "./pages/RegisterPage.jsx"
-import { CartPage } from "./pages/CartPage.jsx"
-import { CheckoutPage } from "./pages/CheckoutPage.jsx"
-import { ForgotPasswordPage } from "./pages/ForgotPasswordPage.jsx"
-import { ArticlesPage } from "./pages/ArticlesPage.jsx"
-import { CoursesPage } from "./pages/CoursesPage.jsx"
-import { CourseDetailPage } from "./pages/CourseDetailPage.jsx"
-import { DictionaryPage } from "./pages/DictionaryPage.jsx"
+import { HomePage } from "./pages/HomePage"
+import { LoginPage } from "./pages/LoginPage"
+import { RegisterPage } from "./pages/RegisterPage"
+import { CartPage } from "./pages/CartPage"
+import { CheckoutPage } from "./pages/CheckoutPage"
+import { ForgotPasswordPage } from "./pages/ForgotPasswordPage"
+import { ArticlesPage } from "./pages/ArticlesPage"
+import { CoursesPage } from "./pages/CoursesPage"
+import { CourseDetailPage } from "./pages/CourseDetailPage"
+import { LessonDetailPage } from "./pages/LessonDetailPage"
+import { TopicDetailPage } from "./pages/TopicDetailPage"
+import { DictionaryPage } from "./pages/DictionaryPage"
 import './App.css'
 
 
@@ -24,6 +26,8 @@ function App() {
             <Route path="articles" element={<ArticlesPage />} />
             <Route path="courses" element={<CoursesPage />} />
             <Route path="/course/:slug" element={<CourseDetailPage />} />
+            <Route path="/lesson/:slug" element={<LessonDetailPage />} />
+            <Route path="/topic/:slug" element={<TopicDetailPage />} />
             <Route path="dictionary" element={<DictionaryPage />} />
         </Routes>
     )

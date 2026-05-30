@@ -130,7 +130,7 @@ export function CourseDetailPage() {
                         </div>
 
                         <LessonsList lessons={course.lessons} is_enrolled={course.is_enrolled} />
-                        <Comments comments={comments} setComments={setComments} authToken={authToken} />
+                        <Comments comments={comments} setComments={setComments} authToken={authToken} slug={course.slug} type='Course' />
                     </div>
                 </div>
                 <aside className="bg-white rounded-xl p-5 sticky top-[110px]">
