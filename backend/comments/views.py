@@ -16,7 +16,8 @@ class CommentCreateView(APIView):
         serializer = CommentCreateSerializer(data=request.data, context={'request': request})
         serializer.is_valid(raise_exception=True)
         serializer.save()
-        return Response({'detail': 'Comment created successfully'}, status=status.HTTP_201_CREATED)
+        print(serializer.data)
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
 
 # ============================================================ #
 

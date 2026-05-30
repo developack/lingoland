@@ -9,7 +9,7 @@ import { Comments } from '../components/Comments/Comments'
 export function CourseDetailPage() {
     const authToken = localStorage.getItem(import.meta.env.VITE_AUTH_TOKEN_KEY)
     const [ course, setCourse ] = useState({})
-    // const [ comments, setComments ] = useState([])
+    const [ comments, setComments ] = useState([])
     const { slug } = useParams()
 
     useEffect(() => {
@@ -35,6 +35,22 @@ export function CourseDetailPage() {
 
         void fetchCourseDetailData()
     }, [])
+
+    useEffect(() => {
+        if (!course.id) return
+
+        const fetchCourseCommentsData = async () => {
+            try {
+                const response = await fetch(`/api/comments/course/${course?.id}/`)
+                const data = await response.json()
+                setComments(data)
+            } catch (error) {
+                console.log(error)
+            }
+        }
+
+        void fetchCourseCommentsData()
+    }, [course.id])
 
     return(
         <>
@@ -114,7 +130,7 @@ export function CourseDetailPage() {
                         </div>
 
                         <LessonsList lessons={course.lessons} is_enrolled={course.is_enrolled} />
-                        <Comments comments={course.comments} authToken={authToken} />
+                        <Comments comments={comments} setComments={setComments} authToken={authToken} />
                     </div>
                 </div>
                 <aside className="bg-white rounded-xl p-5 sticky top-[110px]">

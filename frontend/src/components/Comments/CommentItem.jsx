@@ -9,7 +9,7 @@ export function CommentItem({ comment }) {
                      className="w-10 h-10 rounded-full border border-border"
                      alt="user avatar"/>
                 <span className="text-sm font-bold">
-                    {comment.user.full_name ? comment.user.full_name : comment.user.username}
+                    {comment.user.full_name !== 'None' ? comment.user.full_name : comment.user.username}
                 </span>
             </div>
             <p className="text-sm">{comment.text}</p>

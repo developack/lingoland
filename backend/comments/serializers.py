@@ -32,6 +32,8 @@ TYPE_CHOICES = (
 )
 
 class CommentCreateSerializer(serializers.Serializer):
+    user = UserProfileSerializer(source='user.user_profile', read_only=True)
+
     model_map = {
         'Article': Article,
         'Course': Course,
