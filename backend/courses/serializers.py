@@ -53,7 +53,6 @@ class CourseDetailSerializer(serializers.ModelSerializer):
 class LessonDetailSerializer(serializers.ModelSerializer):
     is_complete = serializers.SerializerMethodField()
     topics = TopicSerializer(many=True, read_only=True)
-    comments = CommentSerializer(many=True, read_only=True)
 
     class Meta:
         model = Lesson

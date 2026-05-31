@@ -1,48 +1,75 @@
-import { Link } from "react-router"
-import {useState} from "react"
-
+import { useState, useEffect } from "react"
+import { Link, useParams } from "react-router"
+import { Comments } from "../components/Comments/Comments.jsx";
 
 
 export function LessonDetailPage() {
-    const [activeLessonId, setActiveLessonId] = useState(1);
-    const [completedLessons, setCompletedLessons] = useState([]);
+    const authToken = localStorage.getItem(import.meta.env.VITE_AUTH_TOKEN_KEY)
+    const [ lesson, setLesson ] = useState({})
+    const [ comments, setComments ] = useState([])
+    const { slug } = useParams()
+
+    useEffect(() => {
+        const fetchLessonDetailData = async () => {
+            try {
+                const response = await fetch(`/api/lesson/${slug}/`, {
+                    method: 'GET',
+                    headers: {
+                        "Content-Type": "application/json",
+                        'Authorization': `Token ${authToken}`
+                    }
+                })
+
+                const data = await response.json()
+                console.log(data)
+                setLesson(data)
+            } catch (error) {
+                console.log(error)
+            }
+        }
+
+        void fetchLessonDetailData()
+    }, [slug]);
+
+    useEffect(() => {
+        if (!lesson.id) return
+
+        const fetchLessonCommentsData = async () => {
+            try {
+                const response = await fetch(`/api/comments/lesson/${lesson.id}/`)
+                const data = await response.json()
+                setComments(data)
+            } catch (error) {
+                console.log(error)
+            }
+        }
+
+        void fetchLessonCommentsData()
+    }, [lesson.id])
+
+    const handleMarkComplete = async () => {
+        try {
+            const response = await fetch(`/api/lesson/${lesson.slug}/mark-complete/`, {
+                method: 'POST',
+                headers: {
+                    "Content-Type": "application/json",
+                    'Authorization': `Token ${authToken}`
+                }
+            })
+
+            const data = await response.json()
+            console.log(data)
+            setLesson(prev => ({...prev, is_complete: true}))
+
+        } catch (error) {
+            console.log(error)
+        }
+    }
 
     const user = {
         name: "Ali",
         progress: 35,
     };
-
-    const lessons = [
-        {
-            id: 1,
-            title: "مقدمه",
-            content: "محتوای درس مقدمه...",
-            topics: ["معرفی دوره", "نصب ابزارها"],
-        },
-        {
-            id: 2,
-            title: "React Basics",
-            content: "محتوای React...",
-            topics: ["JSX", "Props", "State"],
-        },
-        {
-            id: 3,
-            title: "Advanced",
-            content: "محتوای پیشرفته...",
-            topics: ["Hooks", "Performance"],
-        },
-    ];
-
-    const activeLesson = lessons.find(l => l.id === activeLessonId);
-
-    const toggleComplete = (id) => {
-        setCompletedLessons(prev =>
-            prev.includes(id)
-                ? prev.filter(x => x !== id)
-                : [...prev, id]
-        );
-    };
-
     return (
         <div className="min-h-screen bg-slate-50 flex flex-col">
 
@@ -78,49 +105,49 @@ export function LessonDetailPage() {
 
                     <div className="border-b p-4">
                         <h3 className="font-bold">Course Lessons</h3>
-                        <p className="text-xs text-slate-500">
-                            {completedLessons.length} / {lessons.length} completed
-                        </p>
+                        {/*<p className="text-xs text-slate-500">*/}
+                        {/*    {completedLessons.length} / {lessons.length} completed*/}
+                        {/*</p>*/}
                     </div>
 
-                    <div>
-                        {lessons.map((lesson) => {
-                            const isActive = lesson.id === activeLessonId;
-                            const isDone = completedLessons.includes(lesson.id);
+                    {/*<div>*/}
+                    {/*    {lessons.map((lesson) => {*/}
+                    {/*        const isActive = lesson.id === activeLessonId;*/}
+                    {/*        const isDone = completedLessons.includes(lesson.id);*/}
 
-                            return (
-                                <button
-                                    key={lesson.id}
-                                    onClick={() => setActiveLessonId(lesson.id)}
-                                    className={`w-full border-b px-4 py-3 text-right transition ${
-                                        isActive
-                                            ? "bg-indigo-50"
-                                            : "hover:bg-slate-50"
-                                    }`}
-                                >
-                                    <div className="flex items-center justify-between">
-                                        <span className="text-sm font-medium">
-                                            {lesson.title}
-                                        </span>
+                    {/*        return (*/}
+                    {/*            <button*/}
+                    {/*                key={lesson.id}*/}
+                    {/*                onClick={() => setActiveLessonId(lesson.id)}*/}
+                    {/*                className={`w-full border-b px-4 py-3 text-right transition ${*/}
+                    {/*                    isActive*/}
+                    {/*                        ? "bg-indigo-50"*/}
+                    {/*                        : "hover:bg-slate-50"*/}
+                    {/*                }`}*/}
+                    {/*            >*/}
+                    {/*                <div className="flex items-center justify-between">*/}
+                    {/*                    <span className="text-sm font-medium">*/}
+                    {/*                        {lesson.title}*/}
+                    {/*                    </span>*/}
 
-                                        <span
-                                            className={`text-xs ${
-                                                isDone
-                                                    ? "text-green-500"
-                                                    : "text-slate-400"
-                                            }`}
-                                        >
-                                            {isDone ? "✔" : "○"}
-                                        </span>
-                                    </div>
+                    {/*                    <span*/}
+                    {/*                        className={`text-xs ${*/}
+                    {/*                            isDone*/}
+                    {/*                                ? "text-green-500"*/}
+                    {/*                                : "text-slate-400"*/}
+                    {/*                        }`}*/}
+                    {/*                    >*/}
+                    {/*                        {isDone ? "✔" : "○"}*/}
+                    {/*                    </span>*/}
+                    {/*                </div>*/}
 
-                                    <p className="text-xs text-slate-400 mt-1">
-                                        {lesson.topics.length} topics
-                                    </p>
-                                </button>
-                            );
-                        })}
-                    </div>
+                    {/*                <p className="text-xs text-slate-400 mt-1">*/}
+                    {/*                    {lesson.topics.length} topics*/}
+                    {/*                </p>*/}
+                    {/*            </button>*/}
+                    {/*        );*/}
+                    {/*    })}*/}
+                    {/*</div>*/}
                 </aside>
 
                 {/* CONTENT */}
@@ -128,39 +155,35 @@ export function LessonDetailPage() {
                     <div className="mx-auto max-w-4xl">
 
                         <h2 className="mb-4 text-2xl font-bold">
-                            {activeLesson.title}
+                            {lesson.title}
                         </h2>
 
+                        <div className="my-6">
+                            <h3 className="mb-2 font-semibold">
+                                Topics:
+                            </h3>
+
+                            <ul className="space-y-2 text-sm text-slate-600">
+                                {lesson.topics && lesson.topics.map((topic, index) => (
+                                    <li key={index}><Link to={`/topic/${topic.slug}/`}>• {topic.title}</Link></li>
+                                ))}
+                            </ul>
+                        </div>
+
                         <div className="rounded-xl border bg-white p-6 shadow-sm">
+                            <p className="mb-5 bg-gray-100 rounded-xl p-5">{lesson.excerpt}</p>
                             <p className="text-slate-700 leading-7">
-                                {activeLesson.content}
+                                {lesson.content}
                             </p>
 
-                            <div className="mt-6">
-                                <h3 className="mb-2 font-semibold">
-                                    Topics:
-                                </h3>
-
-                                <ul className="space-y-2 text-sm text-slate-600">
-                                    {activeLesson.topics.map((t) => (
-                                        <li key={t}>• {t}</li>
-                                    ))}
-                                </ul>
-                            </div>
-
-                            {/* COMPLETE BUTTON */}
-                            <button
-                                onClick={() => toggleComplete(activeLesson.id)}
-                                className={`mt-6 rounded-lg px-4 py-2 text-sm font-medium transition ${
-                                    completedLessons.includes(activeLesson.id)
-                                        ? "bg-green-500 text-white"
-                                        : "bg-indigo-600 text-white hover:bg-indigo-700"
-                                }`}
-                            >
-                                {completedLessons.includes(activeLesson.id)
-                                    ? "درس تکمیل شد ✓"
-                                    : "تکمیل درس"}
+                             {/*COMPLETE BUTTON*/}
+                            <button type="button" onClick={ handleMarkComplete } className={`mt-6 rounded-lg px-4 py-2 text-sm font-medium transition
+                             ${lesson.is_complete ? 'bg-green-500 text-white' : 'bg-indigo-600 text-white hover:bg-indigo-700'}`}>
+                                {lesson.is_complete ? 'درس تکمیل شد ✓' : 'تکمیل درس' }
                             </button>
+                        </div>
+                        <div className="mt-8">
+                            <Comments authToken={authToken} comments={comments} setComments={setComments} slug={slug} type='Lesson'/>
                         </div>
                     </div>
                 </main>
