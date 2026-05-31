@@ -22,16 +22,23 @@ class TopicSerializer(serializers.ModelSerializer):
 
 class LessonSerializer(serializers.ModelSerializer):
     topics = TopicSerializer(many=True, read_only=True)
+    is_complete = serializers.SerializerMethodField()
 
     class Meta:
         model = Lesson
-        fields = ('title', 'slug', 'excerpt', 'topics')
+        fields = ('title', 'slug', 'excerpt', 'topics', 'is_complete')
+
+    def get_is_complete(self, obj):
+        user = self.context['request'].user
+        try:
+            return obj.lesson_activities.get(user=user, course=obj.course).is_complete
+        except ObjectDoesNotExist:
+            return False
 
 # ============================================================ #
 
 class CourseDetailSerializer(serializers.ModelSerializer):
     is_enrolled = serializers.SerializerMethodField()
-    # progress_percentage = serializers.SerializerMethodField()
     lessons = LessonSerializer(many=True, read_only=True)
 
     class Meta:
@@ -43,16 +50,14 @@ class CourseDetailSerializer(serializers.ModelSerializer):
         if user.is_authenticated:
             return obj.enrollments.filter(user=user).exists()
         return False
-    #
-    # def get_progress_percentage(self, obj):
-    #     user = self.context['request'].user
-    #     return obj.calculate_course_progress(user)
 
 # ============================================================ #
 
 class LessonDetailSerializer(serializers.ModelSerializer):
     is_complete = serializers.SerializerMethodField()
     topics = TopicSerializer(many=True, read_only=True)
+    course = serializers.CharField(source='course.slug', read_only=True)
+    progress_percentage = serializers.SerializerMethodField()
 
     class Meta:
         model = Lesson
@@ -64,3 +69,7 @@ class LessonDetailSerializer(serializers.ModelSerializer):
             return obj.lesson_activities.get(user=user, course=obj.course).is_complete
         except ObjectDoesNotExist:
             return False
+
+    def get_progress_percentage(self, obj):
+        user = self.context['request'].user
+        return obj.course.calculate_course_progress(user)

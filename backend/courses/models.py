@@ -29,10 +29,10 @@ class Course(models.Model):
     def calculate_course_progress(self, user):
         lessons_count = self.lessons.count()
         if lessons_count == 0:
-            return '0% complete'
+            return 0
         complete_lessons_count = self.lesson_activities.filter(user=user, is_complete=True).count()
         percentage = round((complete_lessons_count / lessons_count) * 100)
-        return f'{percentage}% complete'
+        return percentage
 
     def save(self, *args, **kwargs):
         if not self.slug:

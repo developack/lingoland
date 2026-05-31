@@ -7,6 +7,7 @@ export function LessonDetailPage() {
     const authToken = localStorage.getItem(import.meta.env.VITE_AUTH_TOKEN_KEY)
     const [ lesson, setLesson ] = useState({})
     const [ comments, setComments ] = useState([])
+    const [ courseSteps, setCourseSteps ] = useState([])
     const { slug } = useParams()
 
     useEffect(() => {
@@ -21,7 +22,6 @@ export function LessonDetailPage() {
                 })
 
                 const data = await response.json()
-                console.log(data)
                 setLesson(data)
             } catch (error) {
                 console.log(error)
@@ -47,6 +47,28 @@ export function LessonDetailPage() {
         void fetchLessonCommentsData()
     }, [lesson.id])
 
+    useEffect(() => {
+        if (!lesson.course) return
+
+        const fetchCourseStepsData = async () => {
+            try {
+                const response = await fetch(`/api/course/${lesson?.course}/lessons/`, {
+                    method: 'GET',
+                    headers: {
+                        "Content-Type": "application/json",
+                        'Authorization': `Token ${authToken}`
+                    }
+                })
+                const data = await response.json()
+                setCourseSteps(data)
+            } catch (error) {
+                console.log(error)
+            }
+        }
+
+        void fetchCourseStepsData()
+    }, [lesson.course]);
+
     const handleMarkComplete = async () => {
         try {
             const response = await fetch(`/api/lesson/${lesson.slug}/mark-complete/`, {
@@ -58,8 +80,7 @@ export function LessonDetailPage() {
             })
 
             const data = await response.json()
-            console.log(data)
-            setLesson(prev => ({...prev, is_complete: true}))
+            setLesson(prev => ({...prev, is_complete: true, progress_percentage: data.progress_percentage}))
 
         } catch (error) {
             console.log(error)
@@ -85,13 +106,13 @@ export function LessonDetailPage() {
                 <div className="w-72">
                     <div className="mb-1 flex justify-between text-sm">
                         <span>Progress</span>
-                        <span>{user.progress}%</span>
+                        <span>{lesson.progress_percentage}%</span>
                     </div>
 
                     <div className="h-2 w-full rounded-full bg-slate-200">
                         <div
                             className="h-2 rounded-full bg-indigo-500"
-                            style={{ width: `${user.progress}%` }}
+                            style={{ width: `${lesson.progress_percentage}%` }}
                         />
                     </div>
                 </div>
@@ -110,44 +131,32 @@ export function LessonDetailPage() {
                         {/*</p>*/}
                     </div>
 
-                    {/*<div>*/}
-                    {/*    {lessons.map((lesson) => {*/}
-                    {/*        const isActive = lesson.id === activeLessonId;*/}
-                    {/*        const isDone = completedLessons.includes(lesson.id);*/}
+                    <div>
+                        {courseSteps.map((step) => {
 
-                    {/*        return (*/}
-                    {/*            <button*/}
-                    {/*                key={lesson.id}*/}
-                    {/*                onClick={() => setActiveLessonId(lesson.id)}*/}
-                    {/*                className={`w-full border-b px-4 py-3 text-right transition ${*/}
-                    {/*                    isActive*/}
-                    {/*                        ? "bg-indigo-50"*/}
-                    {/*                        : "hover:bg-slate-50"*/}
-                    {/*                }`}*/}
-                    {/*            >*/}
-                    {/*                <div className="flex items-center justify-between">*/}
-                    {/*                    <span className="text-sm font-medium">*/}
-                    {/*                        {lesson.title}*/}
-                    {/*                    </span>*/}
+                            return (
+                                <button
+                                    key={step.id}
+                                    className={`w-full border-b px-4 py-3 text-right transition 
+                                    ${step.slug === lesson.slug ? "bg-indigo-50" : "hover:bg-slate-50"}`}>
+                                    <div className="flex items-center justify-between">
+                                        <Link to={`/lesson/${step.slug}/`} className="text-sm font-medium">
+                                            {step.title}
+                                        </Link>
 
-                    {/*                    <span*/}
-                    {/*                        className={`text-xs ${*/}
-                    {/*                            isDone*/}
-                    {/*                                ? "text-green-500"*/}
-                    {/*                                : "text-slate-400"*/}
-                    {/*                        }`}*/}
-                    {/*                    >*/}
-                    {/*                        {isDone ? "✔" : "○"}*/}
-                    {/*                    </span>*/}
-                    {/*                </div>*/}
+                                        <span
+                                            className={`text-xs ${step.is_complete ? "text-green-500" : "text-slate-400"}`}>
+                                            {step.is_complete ? "✔" : "○"}
+                                        </span>
+                                    </div>
 
-                    {/*                <p className="text-xs text-slate-400 mt-1">*/}
-                    {/*                    {lesson.topics.length} topics*/}
-                    {/*                </p>*/}
-                    {/*            </button>*/}
-                    {/*        );*/}
-                    {/*    })}*/}
-                    {/*</div>*/}
+                                    <p className="text-xs text-slate-400 mt-1">
+                                        {step.topics.length} topics
+                                    </p>
+                                </button>
+                            );
+                        })}
+                    </div>
                 </aside>
 
                 {/* CONTENT */}

@@ -35,7 +35,7 @@ class LessonsListView(APIView):
     def get(self, request, slug):
         course = get_object_or_404(Course, slug=slug)
         lessons = course.lessons.all()
-        serializer = LessonSerializer(lessons, many=True)
+        serializer = LessonSerializer(lessons, many=True, context={'request': request})
         return Response(serializer.data, status=status.HTTP_200_OK)
 
 # ============================================================ #
@@ -92,6 +92,7 @@ class LessonMarkCompleteView(APIView):
         self.check_object_permissions(request, lesson)
         obj, created = LessonActivity.objects.get_or_create(
             user=request.user, course=lesson.course, lesson=lesson, is_complete=True)
+        progress_percentage = lesson.course.calculate_course_progress(request.user)
         if created:
-            return Response({'detail':'The lesson was successfully completed.'}, status=status.HTTP_200_OK)
-        return Response({'detail':'You have already completed this lesson.'}, status=status.HTTP_409_CONFLICT)
+            return Response({'progress_percentage': progress_percentage}, status=status.HTTP_200_OK)
+        return Response({'progress_percentage': progress_percentage}, status=status.HTTP_409_CONFLICT)
