@@ -57,7 +57,7 @@ class TopicDetailView(APIView):
     def get(self, request, slug):
         topic = get_object_or_404(Topic, slug=slug)
         self.check_object_permissions(request, topic)
-        serializer = TopicSerializer(topic)
+        serializer = TopicSerializer(topic, context={'request': request})
         return Response(serializer.data, status=status.HTTP_200_OK)
 
 # ============================================================ #

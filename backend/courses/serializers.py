@@ -1,7 +1,6 @@
 from django.core.exceptions import ObjectDoesNotExist
 from rest_framework import serializers
 from courses.models import Course, Lesson, Topic
-from comments.serializers import CommentSerializer
 
 
 class CourseSerializer(serializers.ModelSerializer):
@@ -12,11 +11,17 @@ class CourseSerializer(serializers.ModelSerializer):
 # ============================================================ #
 
 class TopicSerializer(serializers.ModelSerializer):
-    # comments = CommentSerializer(many=True, read_only=True)
+    lesson = serializers.CharField(source='lesson.title', read_only=True)
+    course = serializers.CharField(source='lesson.course.slug', read_only=True)
+    progress_percentage = serializers.SerializerMethodField()
 
     class Meta:
         model = Topic
-        fields = ('title', 'slug')
+        fields = ('id', 'title', 'slug', 'content', 'lesson', 'course', 'progress_percentage')
+
+    def get_progress_percentage(self, obj):
+        user = self.context['request'].user
+        return obj.lesson.course.calculate_course_progress(user)
 
 # ============================================================ #
 
