@@ -21,7 +21,9 @@ class TopicSerializer(serializers.ModelSerializer):
 
     def get_progress_percentage(self, obj):
         user = self.context['request'].user
-        return obj.lesson.course.calculate_course_progress(user)
+        if user.is_authenticated:
+            return obj.lesson.course.calculate_course_progress(user)
+        return 0
 
 # ============================================================ #
 
@@ -35,10 +37,12 @@ class LessonSerializer(serializers.ModelSerializer):
 
     def get_is_complete(self, obj):
         user = self.context['request'].user
-        try:
-            return obj.lesson_activities.get(user=user, course=obj.course).is_complete
-        except ObjectDoesNotExist:
-            return False
+        if user.is_authenticated:
+            try:
+                return obj.lesson_activities.get(user=user, course=obj.course).is_complete
+            except ObjectDoesNotExist:
+                return False
+        return False
 
 # ============================================================ #
 
