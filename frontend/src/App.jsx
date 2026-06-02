@@ -6,6 +6,7 @@ import { ForgotPasswordPage } from "./pages/ForgotPasswordPage"
 import { CartPage } from "./pages/CartPage"
 import { CheckoutPage } from "./pages/CheckoutPage"
 import { ArticlesPage } from "./pages/ArticlesPage"
+import { ArticleDetailPage } from "./pages/ArticleDetailPage"
 import { CoursesPage } from "./pages/CoursesPage"
 import { CourseDetailPage } from "./pages/CourseDetailPage"
 import { LessonDetailPage } from "./pages/LessonDetailPage"
@@ -25,6 +26,7 @@ function App() {
             <Route path="cart" element={<CartPage />} />
             <Route path="checkout" element={<CheckoutPage />} />
             <Route path="articles" element={<ArticlesPage />} />
+            <Route path="/article/:slug" element={<ArticleDetailPage />} />
             <Route path="courses" element={<CoursesPage />} />
             <Route path="/course/:slug" element={<CourseDetailPage />} />
             <Route path="/lesson/:slug" element={<LessonDetailPage />} />

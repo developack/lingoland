@@ -3,13 +3,13 @@ export function DashboardPage() {
         <div className="flex min-h-screen">
 
             <aside className="w-64 bg-gray-900 text-white p-5 hidden md:block">
-                <h1 className="text-xl font-bold mb-8">پنل کاربر</h1>
+                <h1 className="text-xl font-bold mb-8 text-primary">پنل کاربر</h1>
 
                 <nav className="space-y-4">
-                    <a href="#" className="block hover:bg-gray-700 p-2 rounded">داشبورد</a>
-                    <a href="#" className="block hover:bg-gray-700 p-2 rounded">دوره‌های من</a>
-                    <a href="#" className="block hover:bg-gray-700 p-2 rounded">پروفایل</a>
-                    <a href="#" className="block hover:bg-gray-700 p-2 rounded">تنظیمات</a>
+                    <a href="#" className="block hover:bg-gray-700 p-2 rounded text-white">داشبورد</a>
+                    <a href="#" className="block hover:bg-gray-700 p-2 rounded text-white">دوره‌های من</a>
+                    <a href="#" className="block hover:bg-gray-700 p-2 rounded text-white">پروفایل</a>
+                    <a href="#" className="block hover:bg-gray-700 p-2 rounded text-white">تنظیمات</a>
                 </nav>
             </aside>
 
@@ -20,7 +20,9 @@ export function DashboardPage() {
 
                     <div className="flex items-center gap-3">
                         <span className="text-sm text-gray-600">سلام، کاربر 👋</span>
-                        <div className="w-10 h-10 bg-gray-300 rounded-full"></div>
+                        <div className="w-10 h-10 bg-gray-300 rounded-full">
+                            <img className="rounded-full" src="/avatar.png" alt=""/>
+                        </div>
                     </div>
                 </header>
 

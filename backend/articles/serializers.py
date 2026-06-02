@@ -6,7 +6,7 @@ from comments.serializers import CommentSerializer
 class ArticleSerializer(serializers.ModelSerializer):
     class Meta:
         model = Article
-        fields = ('title', 'slug', 'excerpt')
+        exclude = ('user', 'created', 'updated')
 
 # ============================================================ #
 
