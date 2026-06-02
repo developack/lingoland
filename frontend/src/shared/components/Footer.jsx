@@ -7,7 +7,7 @@ export function Footer() {
             <div className="container grid grid-cols-[1fr_1fr_1fr] items-center justify-items-center py-5 gap-5">
                 <div>
                     <Link to="/" className="flex items-center gap-3 mb-5">
-                        <img className="w-10" src="../../public/logo.png" alt="logo"/>
+                        <img className="w-10" src="../../../public/logo.png" alt="logo"/>
                         <div>
                             <p className="font-bold text-xl text-white">لینگــولند</p>
                             <span className="text-sm text-white">آموزشگاه آنلاین زبان انگلیسی</span>

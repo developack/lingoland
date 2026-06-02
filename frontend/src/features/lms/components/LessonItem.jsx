@@ -1,5 +1,5 @@
 import { Link } from "react-router"
-import { TopicsList } from "./TopicsList.jsx"
+import { TopicsList } from "./TopicsList"
 
 
 export function LessonItem({lesson, is_enrolled }) {

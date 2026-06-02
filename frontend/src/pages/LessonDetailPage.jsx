@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react"
 import { Link, useParams } from "react-router"
-import { Comments } from "../components/Comments/Comments";
-import { LearningHeader } from "../components/LearningHeader"
-import { LessonsSidebarNavigation } from "../components/LessonsSidebarNavigation"
+import { Comments } from "../features/comment/components/Comments";
+import { LearningHeader } from "../features/lms/components/LearningHeader"
+import { LessonsSidebarNavigation } from "../features/lms/components/LessonsSidebarNavigation"
 
 
 export function LessonDetailPage() {

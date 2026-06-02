@@ -1,9 +1,9 @@
 import { useState, useEffect } from "react"
 import { useParams } from "react-router"
-import { Header } from "../components/Header";
-import { Footer } from "../components/Footer";
-import { LessonsList } from '../components/CourseDetail/LessonsList'
-import { Comments } from '../components/Comments/Comments'
+import { Header } from "../shared/components/Header"
+import { Footer } from "../shared/components/Footer"
+import { LessonsList } from '../features/lms/components/LessonsList'
+import { Comments } from '../features/comment/components/Comments'
 
 
 export function CourseDetailPage() {

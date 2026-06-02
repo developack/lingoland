@@ -1,5 +1,5 @@
-import {Header} from "../components/Header.jsx";
-import {Footer} from "../components/Footer.jsx";
+import { Header } from "../shared/components/Header"
+import { Footer } from "../shared/components/Footer"
 
 export function ArticlesPage() {
     return (

@@ -1,6 +1,6 @@
-import {Header} from '../components/Header'
-import {Footer} from '../components/Footer'
-import {Link} from "react-router";
+import { Link } from "react-router";
+import { Header } from "../shared/components/Header"
+import { Footer } from "../shared/components/Footer"
 
 
 export function HomePage() {
