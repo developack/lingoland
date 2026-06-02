@@ -2,15 +2,16 @@ import { Routes, Route } from 'react-router'
 import { HomePage } from "./pages/HomePage"
 import { LoginPage } from "./pages/LoginPage"
 import { RegisterPage } from "./pages/RegisterPage"
+import { ForgotPasswordPage } from "./pages/ForgotPasswordPage"
 import { CartPage } from "./pages/CartPage"
 import { CheckoutPage } from "./pages/CheckoutPage"
-import { ForgotPasswordPage } from "./pages/ForgotPasswordPage"
 import { ArticlesPage } from "./pages/ArticlesPage"
 import { CoursesPage } from "./pages/CoursesPage"
 import { CourseDetailPage } from "./pages/CourseDetailPage"
 import { LessonDetailPage } from "./pages/LessonDetailPage"
 import { TopicDetailPage } from "./pages/TopicDetailPage"
 import { DictionaryPage } from "./pages/DictionaryPage"
+import { DashboardPage } from  "./pages/DashboardPage"
 import './App.css'
 
 
@@ -29,6 +30,7 @@ function App() {
             <Route path="/lesson/:slug" element={<LessonDetailPage />} />
             <Route path="/topic/:slug" element={<TopicDetailPage />} />
             <Route path="dictionary" element={<DictionaryPage />} />
+            <Route path="dashboard" element={<DashboardPage />} />
         </Routes>
     )
 }
