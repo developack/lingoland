@@ -1,13 +1,14 @@
 import { useState, useEffect } from "react"
-import { Link, useParams } from "react-router"
-import { Comments } from "../components/Comments/Comments.jsx";
+import { useParams } from "react-router"
+import { Comments } from "../components/Comments/Comments";
+import { LearningHeader } from "../components/LearningHeader";
+import { LessonsSidebarNavigation } from "../components/LessonsSidebarNavigation"
 
 
 export function TopicDetailPage() {
     const authToken = localStorage.getItem(import.meta.env.VITE_AUTH_TOKEN_KEY)
     const [ topic, setTopic ] = useState({})
     const [ comments, setComments ] = useState([])
-    const [ courseSteps, setCourseSteps ] = useState([])
     const { slug } = useParams()
 
     useEffect(() => {
@@ -47,28 +48,6 @@ export function TopicDetailPage() {
         void fetchTopicCommentsData()
     }, [topic.id])
 
-    useEffect(() => {
-        if (!topic.course) return
-
-        const fetchCourseStepsData = async () => {
-            try {
-                const response = await fetch(`/api/course/${topic?.course}/lessons/`, {
-                    method: 'GET',
-                    headers: {
-                        "Content-Type": "application/json",
-                        'Authorization': `Token ${authToken}`
-                    }
-                })
-                const data = await response.json()
-                setCourseSteps(data)
-            } catch (error) {
-                console.log(error)
-            }
-        }
-
-        void fetchCourseStepsData()
-    }, [topic.course]);
-
     const user = {
         name: "Ali",
         progress: 35,
@@ -77,66 +56,13 @@ export function TopicDetailPage() {
         <div className="min-h-screen bg-slate-50 flex flex-col">
 
             {/* HEADER */}
-            <header className="flex items-center justify-between border-b bg-white px-6 py-4">
-                <div>
-                    <h1 className="text-lg font-bold">Course Player</h1>
-                    <p className="text-sm text-slate-500">
-                        Welcome {user.name}
-                    </p>
-                </div>
-
-                <div className="w-72">
-                    <div className="mb-1 flex justify-between text-sm">
-                        <span>Progress</span>
-                        <span>{topic.progress_percentage}%</span>
-                    </div>
-
-                    <div className="h-2 w-full rounded-full bg-slate-200">
-                        <div
-                            className="h-2 rounded-full bg-indigo-500"
-                            style={{ width: `${topic.progress_percentage}%` }}
-                        />
-                    </div>
-                </div>
-            </header>
+            <LearningHeader user={user} step={topic} />
 
             {/* BODY */}
             <div className="flex flex-1 overflow-hidden">
 
                 {/* SIDEBAR (RIGHT) */}
-                <aside className="w-96 border-l bg-white overflow-y-auto">
-
-                    <div className="border-b p-4">
-                        <h3 className="font-bold">Course Lessons</h3>
-                    </div>
-
-                    <div>
-                        {courseSteps.map((step) => {
-
-                            return (
-                                <button
-                                    key={step.id}
-                                    className={`w-full border-b px-4 py-3 text-right transition 
-                                    ${step.slug === topic.slug ? "bg-indigo-50" : "hover:bg-slate-50"}`}>
-                                    <div className="flex items-center justify-between">
-                                        <Link to={`/lesson/${step.slug}/`} className="text-sm font-medium">
-                                            {step.title}
-                                        </Link>
-
-                                        <span
-                                            className={`text-xs ${step.is_complete ? "text-green-500" : "text-slate-400"}`}>
-                                            {step.is_complete ? "✔" : "○"}
-                                        </span>
-                                    </div>
-
-                                    <p className="text-xs text-slate-400 mt-1">
-                                        {step.topics.length} topics
-                                    </p>
-                                </button>
-                            );
-                        })}
-                    </div>
-                </aside>
+                <LessonsSidebarNavigation step={topic} />
 
                 {/* CONTENT */}
                 <main className="flex-1 overflow-y-auto p-8 container">
@@ -153,7 +79,7 @@ export function TopicDetailPage() {
 
                         </div>
                         <div className="mt-8">
-                            <Comments authToken={authToken} comments={comments} setComments={setComments} slug={slug} type='Topic'/>
+                            <Comments comments={comments} setComments={setComments} slug={slug} type='Topic'/>
                         </div>
                     </div>
                 </main>

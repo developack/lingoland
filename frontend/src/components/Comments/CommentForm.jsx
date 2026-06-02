@@ -1,7 +1,8 @@
 import { useState } from "react"
 
 
-export function CommentForm({ authToken, setComments, slug, type }) {
+export function CommentForm({ setComments, slug, type }) {
+    const authToken = localStorage.getItem(import.meta.env.VITE_AUTH_TOKEN_KEY)
     const [ commentText, setCommentText ] = useState('')
 
     const handleTextChange = (event) => {
