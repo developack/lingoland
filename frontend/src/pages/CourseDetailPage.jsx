@@ -4,10 +4,12 @@ import { Header } from "../shared/components/Header"
 import { Footer } from "../shared/components/Footer"
 import { LessonsList } from '../features/lms/components/LessonsList'
 import { Comments } from '../features/comment/components/Comments'
+import { useNavigate } from "react-router"
 
 
 export function CourseDetailPage() {
     const authToken = localStorage.getItem(import.meta.env.VITE_AUTH_TOKEN_KEY)
+    const navigate = useNavigate()
     const [ course, setCourse ] = useState({})
     const [ comments, setComments ] = useState([])
     const { slug } = useParams()
@@ -51,6 +53,31 @@ export function CourseDetailPage() {
 
         void fetchCourseCommentsData()
     }, [course.id])
+
+    const handleEnrollment = async () => {
+        if (!authToken) return
+
+        try {
+            const response = await fetch('/api/orders/', {
+                method: 'POST',
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Token ${authToken}`
+                },
+                body: JSON.stringify({
+                    courses: [slug]
+                })
+            })
+            const data = await response.json()
+            console.log(data)
+            if (response.ok) {
+                navigate('/cart')
+            }
+
+        } catch (error) {
+            console.log(error)
+        }
+    }
 
     return(
         <>
@@ -157,10 +184,11 @@ export function CourseDetailPage() {
                         </div>
                     </div>
                     <div className="flex flex-col gap-4 pt-4 border-t">
-                        <button
-                            className="flex-1 bg-secondary text-white py-3 rounded-xl font-bold">
-                            ثبت‌نام در دوره
-                        </button>
+                        {authToken
+                            ? <button onClick={handleEnrollment} className="flex-1 bg-secondary text-white py-3 rounded-xl font-bold">ثبت‌نام در دوره</button>
+                            : <span className="bg-cta/10 text-cta text-sm p-5 rounded-xl">جهت ثبت‌نام در دوره وارد حساب کاربری خود شوید</span>
+                        }
+
                         <button
                             className="px-6 bg-gray-200 text-gray-700 py-3 rounded-xl font-bold hover:bg-gray-300 transition">💬
                             سوال دارم

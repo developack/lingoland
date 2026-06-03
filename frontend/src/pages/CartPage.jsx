@@ -141,24 +141,6 @@ export function CartPage() {
                                     ادامه فرایند خرید
                                 </Link>
 
-                                <div className="mt-6">
-                                    <label className="block mb-2 text-sm font-medium">
-                                        کد تخفیف
-                                    </label>
-
-                                    <div className="flex gap-2">
-                                        <input
-                                            type="text"
-                                            placeholder="کد تخفیف"
-                                            className="flex-1 border rounded-xl px-4 py-3 outline-none focus:ring-2 focus:ring-primary"
-                                        />
-
-                                        <button className="px-5 rounded-xl bg-gray-900 text-white">
-                                            اعمال
-                                        </button>
-                                    </div>
-                                </div>
-
                             </div>
                         </div>
 
