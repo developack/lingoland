@@ -70,7 +70,7 @@ class TestOrderCreateView(APITestCase):
 
     @classmethod
     def setUpTestData(cls):
-        cls.orders_url = reverse('orders:orders')
+        cls.orders_url = reverse('orders:order')
         cls.user = User.objects.create_user(username='test', email='test@gmail.com', password='1234')
         cls.course = Course.objects.create(user=cls.user, title='django')
 
@@ -105,7 +105,7 @@ class TestPaymentView(APITestCase):
 
     @classmethod
     def setUpTestData(cls):
-        cls.orders_url = reverse('orders:orders')
+        cls.orders_url = reverse('orders:order')
         cls.payment_url = reverse('orders:payment')
         cls.user = User.objects.create_user(username='test', email='test@gmail.com', password='1234')
         cls.course = Course.objects.create(user=cls.user, title='django')

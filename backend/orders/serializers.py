@@ -9,6 +9,7 @@ class OrderCreateSerializer(serializers.Serializer):
 
 class OrderItemSerializer(serializers.ModelSerializer):
     course_title = serializers.CharField(source='course.title')
+    course_thumbnail = serializers.ImageField(source='course.thumbnail')
 
     class Meta:
         model = OrderItem

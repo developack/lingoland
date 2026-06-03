@@ -58,7 +58,7 @@ export function CourseDetailPage() {
         if (!authToken) return
 
         try {
-            const response = await fetch('/api/orders/', {
+            const response = await fetch('/api/order/', {
                 method: 'POST',
                 headers: {
                     "Content-Type": "application/json",

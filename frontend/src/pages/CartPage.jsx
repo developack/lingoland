@@ -1,9 +1,42 @@
 import { Link } from "react-router"
+import { useState, useEffect } from "react"
 import { Header } from "../shared/components/Header"
 import { Footer } from "../shared/components/Footer"
 
 
 export function CartPage() {
+    const BASE_URL = import.meta.env.VITE_API_BASE_URL
+    const authToken = localStorage.getItem(import.meta.env.VITE_AUTH_TOKEN_KEY)
+    const [ order, setOrder ] = useState({})
+
+    useEffect(() => {
+        if (!order) return
+
+        const fetchOrderData = async () => {
+            try {
+                const response = await fetch('/api/order/', {
+                    method: 'GET',
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Authorization": `Token ${authToken}`
+                    }
+                })
+
+                const data = await response.json()
+                console.log(data)
+
+                if (response.ok) {
+                    setOrder(data)
+                }
+
+            } catch (error) {
+                console.log(error)
+            }
+        }
+
+        void fetchOrderData()
+    }, []);
+
     return (
         <>
             <title> Cart </title>
@@ -19,67 +52,31 @@ export function CartPage() {
 
                         {/* Cart Items */}
                         <div className="lg:col-span-2 space-y-4">
+                            {order?.order_items?.map((order_item) => (
+                                <div key={order_item.id} className="bg-white rounded-2xl p-5 shadow-sm hover:shadow-lg transition">
+                                    <div className="flex gap-4">
+                                        <img
+                                            src={`${BASE_URL}${order_item.course_thumbnail}`}
+                                            alt=""
+                                            className="w-32 h-24 rounded-xl object-cover"
+                                        />
 
-                            <div className="bg-white rounded-2xl p-5 shadow-sm hover:shadow-lg transition">
-                                <div className="flex gap-4">
-                                    <img
-                                        src="https://placehold.co/150x100"
-                                        alt=""
-                                        className="w-32 h-24 rounded-xl object-cover"
-                                    />
+                                        <div className="flex-1">
+                                            <h2 className="font-bold text-lg">{order_item.course_title}</h2>
 
-                                    <div className="flex-1">
-                                        <h2 className="font-bold text-lg">
-                                            دوره جامع React
-                                        </h2>
-
-                                        <p className="text-gray-500 text-sm mt-2">
-                                            مدرس: علی محمدی
-                                        </p>
-
-                                        <div className="flex justify-between items-center mt-4">
+                                            <div className="flex justify-between items-center mt-4">
                                 <span className="font-bold text-primary text-lg">
-                                    ۱,۹۹۰,۰۰۰ تومان
+                                    {order_item.price} تومان
                                 </span>
 
-                                            <button className="text-red-500 hover:text-red-600">
-                                                حذف
-                                            </button>
+                                                <button className="text-red-500 hover:text-red-600">
+                                                    حذف
+                                                </button>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-
-                            <div className="bg-white rounded-2xl p-5 shadow-sm hover:shadow-lg transition">
-                                <div className="flex gap-4">
-                                    <img
-                                        src="https://placehold.co/150x100"
-                                        alt=""
-                                        className="w-32 h-24 rounded-xl object-cover"
-                                    />
-
-                                    <div className="flex-1">
-                                        <h2 className="font-bold text-lg">
-                                            دوره Django REST Framework
-                                        </h2>
-
-                                        <p className="text-gray-500 text-sm mt-2">
-                                            مدرس: رضا احمدی
-                                        </p>
-
-                                        <div className="flex justify-between items-center mt-4">
-                                <span className="font-bold text-primary text-lg">
-                                    ۲,۴۹۰,۰۰۰ تومان
-                                </span>
-
-                                            <button className="text-red-500 hover:text-red-600">
-                                                حذف
-                                            </button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
+                            ))}
                         </div>
 
                         {/* Order Summary */}
@@ -96,10 +93,7 @@ export function CartPage() {
                             <span className="text-gray-500">
                                 تعداد دوره‌ها
                             </span>
-
-                                        <span>
-                                2
-                            </span>
+                                        <span>{order?.order_items?.length}</span>
                                     </div>
 
                                     <div className="flex justify-between">
@@ -108,17 +102,7 @@ export function CartPage() {
                             </span>
 
                                         <span>
-                                4,480,000 تومان
-                            </span>
-                                    </div>
-
-                                    <div className="flex justify-between">
-                            <span className="text-gray-500">
-                                تخفیف
-                            </span>
-
-                                        <span className="text-green-600">
-                                500,000 تومان
+                                {order.total_price}  تومان
                             </span>
                                     </div>
 
@@ -130,7 +114,7 @@ export function CartPage() {
                             </span>
 
                                         <span className="text-primary">
-                                3,980,000 تومان
+                                {order.total_price} تومان
                             </span>
                                     </div>
 

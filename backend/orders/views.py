@@ -1,3 +1,4 @@
+from django.core.serializers import serialize
 from django.shortcuts import get_object_or_404
 from rest_framework import status
 from rest_framework.views import APIView
@@ -30,8 +31,13 @@ class OrderDetailView(APIView):
 
 # ============================================================ #
 
-class OrderCreateView(APIView):
+class OrderView(APIView):
     permission_classes = (IsAuthenticated,)
+
+    def get(self, request):
+        order = get_object_or_404(Order, user=request.user, status='Pending')
+        serializer = OrderSerializer(order)
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
     def post(self, request):
         serializer = OrderCreateSerializer(data=request.data)
