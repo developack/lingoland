@@ -14,6 +14,7 @@ import { TopicDetailPage } from "./pages/TopicDetailPage"
 import { DictionaryPage } from "./pages/DictionaryPage"
 import { DashboardPage } from  "./pages/DashboardPage"
 import { MyCoursesPage } from  "./pages/MyCoursesPage"
+import { QuizDetailPage } from "./pages/QuizDetailPage"
 import './App.css'
 
 
@@ -32,6 +33,7 @@ function App() {
             <Route path="/course/:slug" element={<CourseDetailPage />} />
             <Route path="/lesson/:slug" element={<LessonDetailPage />} />
             <Route path="/topic/:slug" element={<TopicDetailPage />} />
+            <Route path="/quiz/:slug" element={<QuizDetailPage />} />
             <Route path="/dictionary" element={<DictionaryPage />} />
             <Route path="/dashboard" element={<DashboardPage />} />
             <Route path="/my-courses" element={<MyCoursesPage />} />

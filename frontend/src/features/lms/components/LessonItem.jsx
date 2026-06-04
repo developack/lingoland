@@ -1,5 +1,6 @@
 import { Link } from "react-router"
 import { TopicsList } from "./TopicsList"
+import { QuizzesList } from "./QuizzesList"
 
 
 export function LessonItem({lesson, is_enrolled }) {
@@ -10,6 +11,7 @@ export function LessonItem({lesson, is_enrolled }) {
             <p className="text-sm">{lesson.excerpt}</p>
         </div>
         <TopicsList topics={lesson.topics} is_enrolled={is_enrolled} />
+        <QuizzesList quizzes={lesson.quizzes} />
     </>
 
     return is_enrolled ? (

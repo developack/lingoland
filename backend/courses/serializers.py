@@ -1,6 +1,7 @@
 from django.core.exceptions import ObjectDoesNotExist
 from rest_framework import serializers
 from courses.models import Course, Lesson, Topic
+from quizzes.serializers import QuizSerializer
 
 
 class CourseSerializer(serializers.ModelSerializer):
@@ -29,11 +30,12 @@ class TopicSerializer(serializers.ModelSerializer):
 
 class LessonSerializer(serializers.ModelSerializer):
     topics = TopicSerializer(many=True, read_only=True)
+    quizzes = QuizSerializer(many=True, read_only=True)
     is_complete = serializers.SerializerMethodField()
 
     class Meta:
         model = Lesson
-        fields = ('title', 'slug', 'excerpt', 'topics', 'is_complete')
+        fields = ('title', 'slug', 'excerpt', 'topics', 'quizzes', 'is_complete')
 
     def get_is_complete(self, obj):
         user = self.context['request'].user
@@ -65,6 +67,7 @@ class CourseDetailSerializer(serializers.ModelSerializer):
 class LessonDetailSerializer(serializers.ModelSerializer):
     is_complete = serializers.SerializerMethodField()
     topics = TopicSerializer(many=True, read_only=True)
+    quizzes = QuizSerializer(many=True, read_only=True)
     course = serializers.CharField(source='course.slug', read_only=True)
     progress_percentage = serializers.SerializerMethodField()
 

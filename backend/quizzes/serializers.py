@@ -34,10 +34,19 @@ class QuestionDetailSerializer(serializers.ModelSerializer):
 
 class QuizDetailSerializer(serializers.ModelSerializer):
     questions = QuestionDetailSerializer(many=True, read_only=True)
+    lesson = serializers.CharField(source='lesson.title', read_only=True)
+    course = serializers.CharField(source='lesson.course.slug', read_only=True)
+    progress_percentage = serializers.SerializerMethodField()
 
     class Meta:
         model = Quiz
         fields = '__all__'
+
+    def get_progress_percentage(self, obj):
+        user = self.context['request'].user
+        if user.is_authenticated:
+            return obj.lesson.course.calculate_course_progress(user)
+        return 0
 
 # ============================================================ #
 

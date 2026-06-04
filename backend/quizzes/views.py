@@ -14,7 +14,7 @@ class QuizDetailView(APIView):
     def get(self, request, slug):
         quiz = get_object_or_404(Quiz, slug=slug)
         self.check_object_permissions(request, quiz)
-        serializer = QuizDetailSerializer(quiz)
+        serializer = QuizDetailSerializer(quiz, context={'request': request})
         return Response(serializer.data, status=status.HTTP_200_OK)
 
 # ============================================================ #

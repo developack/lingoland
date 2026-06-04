@@ -92,12 +92,16 @@ export function LessonDetailPage() {
 
                         <div className="my-6">
                             <h3 className="mb-2 font-semibold">
-                                Topics:
+                                Steps:
                             </h3>
 
                             <ul className="space-y-2 text-sm text-slate-600">
                                 {lesson.topics && lesson.topics.map((topic, index) => (
                                     <li key={index}><Link to={`/topic/${topic.slug}/`}>• {topic.title}</Link></li>
+                                ))}
+
+                                {lesson.quizzes && lesson.quizzes.map((quiz) => (
+                                    <li key={quiz.id}><Link to={`/quiz/${quiz.slug}/`}>• {quiz.title}</Link></li>
                                 ))}
                             </ul>
                         </div>
