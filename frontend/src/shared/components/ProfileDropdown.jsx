@@ -28,19 +28,11 @@ export function ProfileDropdown({ userProfile, onLogout }) {
                 </Link>
                 <Link to="/dictionary"
                       className="block rounded-xl px-4 py-3 text-sm text-gray-700 transition hover:bg-gray-100">
-                    دیکشنری
-                </Link>
-                <Link to="/dictionary"
-                      className="block rounded-xl px-4 py-3 text-sm text-gray-700 transition hover:bg-gray-100">
                     نظرات
                 </Link>
                 <Link to="/dictionary"
                       className="block rounded-xl px-4 py-3 text-sm text-gray-700 transition hover:bg-gray-100">
                     سفارش‌ها
-                </Link>
-                <Link to="/support"
-                      className="block rounded-xl px-4 py-3 text-sm text-gray-700 transition hover:bg-gray-100">
-                    پشتیبانی
                 </Link>
                 <Link to="/dictionary"
                       className="block rounded-xl px-4 py-3 text-sm text-gray-700 transition hover:bg-gray-100">

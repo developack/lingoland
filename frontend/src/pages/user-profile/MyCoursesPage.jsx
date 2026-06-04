@@ -1,28 +1,16 @@
+import { PanelHeader } from "../../features/user-panel/components/PanelHeader"
+import { PanelSidebar } from "../../features/user-panel/components/PanelSidebar"
+
+
 export function MyCoursesPage() {
     return (
         <div className="flex min-h-screen">
 
-            <aside className="w-64 bg-gray-900 text-white p-5 hidden md:block">
-                <h1 className="text-xl font-bold mb-8 text-primary">پنل کاربر</h1>
-
-                <nav className="space-y-4">
-                    <a href="#" className="block hover:bg-gray-700 p-2 rounded text-white">داشبورد</a>
-                    <a href="#" className="block hover:bg-gray-700 p-2 rounded text-white">دوره‌های من</a>
-                    <a href="#" className="block hover:bg-gray-700 p-2 rounded text-white">پروفایل</a>
-                    <a href="#" className="block hover:bg-gray-700 p-2 rounded text-white">تنظیمات</a>
-                </nav>
-            </aside>
+            <PanelSidebar />
 
             <div className="flex-1 flex flex-col">
 
-                <header className="bg-white shadow p-4 flex justify-between items-center"><h2
-                    className="text-lg font-semibold">داشبورد</h2>
-                    <div className="flex items-center gap-3"><span
-                        className="text-sm text-gray-600">سلام، کاربر 👋</span>
-                        <div className="w-10 h-10 bg-gray-300 rounded-full">
-                            <img className="rounded-full" alt="" src="/avatar.png"/></div>
-                    </div>
-                </header>
+                <PanelHeader />
 
                 <div className="p-6 container">
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-5 mb-8">

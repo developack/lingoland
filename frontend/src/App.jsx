@@ -12,9 +12,12 @@ import { CourseDetailPage } from "./pages/CourseDetailPage"
 import { LessonDetailPage } from "./pages/LessonDetailPage"
 import { TopicDetailPage } from "./pages/TopicDetailPage"
 import { DictionaryPage } from "./pages/DictionaryPage"
-import { DashboardPage } from  "./pages/DashboardPage"
-import { MyCoursesPage } from  "./pages/MyCoursesPage"
 import { QuizDetailPage } from "./pages/QuizDetailPage"
+import { DashboardPage } from "./pages/user-profile/DashboardPage"
+import { MyCoursesPage } from "./pages/user-profile/MyCoursesPage"
+import { CommentsPage } from "./pages/user-profile/CommentsPage"
+import { OrdersPage } from "./pages/user-profile/OrdersPage"
+import { ProfilePage } from "./pages/user-profile/ProfilePage"
 import './App.css'
 
 
@@ -37,6 +40,9 @@ function App() {
             <Route path="/dictionary" element={<DictionaryPage />} />
             <Route path="/dashboard" element={<DashboardPage />} />
             <Route path="/my-courses" element={<MyCoursesPage />} />
+            <Route path="/comments" element={<CommentsPage />} />
+            <Route path="/orders" element={<OrdersPage />} />
+            <Route path="/profile" element={<ProfilePage />} />
         </Routes>
     )
 }
