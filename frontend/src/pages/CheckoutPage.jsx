@@ -1,7 +1,62 @@
+import { useNavigate } from "react-router"
+import { useEffect, useState } from "react";
 import { Header } from "../shared/components/Header"
 import { Footer } from "../shared/components/Footer"
 
 export function CheckoutPage() {
+    const navigate = useNavigate()
+    const authToken = localStorage.getItem(import.meta.env.VITE_AUTH_TOKEN_KEY)
+    const [ order, setOrder ] = useState({})
+
+    useEffect(() => {
+        if (!order) return
+
+        const fetchOrderData = async () => {
+            try {
+                const response = await fetch('/api/order/', {
+                    method: 'GET',
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Authorization": `Token ${authToken}`
+                    }
+                })
+
+                const data = await response.json()
+                console.log(data)
+
+                if (response.ok) {
+                    setOrder(data)
+                }
+
+            } catch (error) {
+                console.log(error)
+            }
+        }
+
+        void fetchOrderData()
+    }, []);
+
+    const handlePayment = async () => {
+        try {
+            const response = await fetch('/api/order/payment/', {
+                method: 'GET',
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Token ${authToken}`
+                }
+            })
+
+            await response.json()
+
+            if (response.ok) {
+                navigate('/my-courses')
+            }
+
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
     return (
         <>
             <title>Checkout</title>
@@ -118,34 +173,18 @@ export function CheckoutPage() {
                         {/* Order Summary */}
 
                         <div>
-
                             <div className="bg-white rounded-2xl shadow-sm p-6 sticky top-28">
-
                                 <h2 className="font-bold text-xl mb-6">
                                     خلاصه سفارش
                                 </h2>
 
                                 <div className="space-y-4">
-
-                                    <div className="flex justify-between">
-                            <span>
-                                دوره جامع React
-                            </span>
-
-                                        <span>
-                                1,990,000
-                            </span>
-                                    </div>
-
-                                    <div className="flex justify-between">
-                            <span>
-                                دوره Django REST
-                            </span>
-
-                                        <span>
-                                2,490,000
-                            </span>
-                                    </div>
+                                    {order?.order_items?.map((order_item) => (
+                                        <div className="flex justify-between">
+                                            <span>{order_item.course_title}</span>
+                                            <span>{order_item.price} تومان</span>
+                                        </div>
+                                    ))}
 
                                 </div>
 
@@ -154,40 +193,18 @@ export function CheckoutPage() {
                                 <div className="space-y-4">
 
                                     <div className="flex justify-between">
-                            <span className="text-gray-500">
-                                مبلغ کل
-                            </span>
-
-                                        <span>
-                                4,480,000 تومان
-                            </span>
-                                    </div>
-
-                                    <div className="flex justify-between">
-                            <span className="text-gray-500">
-                                تخفیف
-                            </span>
-
-                                        <span className="text-green-600">
-                                500,000 تومان
-                            </span>
+                                        <span className="text-gray-500">مبلغ کل</span>
+                                        <span>{order.total_price} تومان</span>
                                     </div>
 
                                     <div className="flex justify-between font-bold text-lg">
-                            <span>
-                                مبلغ قابل پرداخت
-                            </span>
-
-                                        <span className="text-primary">
-                                3,980,000 تومان
-                            </span>
+                                        <span>مبلغ قابل پرداخت</span>
+                                        <span className="text-primary">{order.total_price} تومان</span>
                                     </div>
 
                                 </div>
 
-                                <button
-                                    className="w-full mt-6 bg-primary text-white py-4 rounded-xl font-medium hover:opacity-90 transition"
-                                >
+                                <button onClick={handlePayment} className="w-full mt-6 bg-primary text-white py-4 rounded-xl font-medium hover:opacity-90 transition">
                                     پرداخت و ثبت سفارش
                                 </button>
 
