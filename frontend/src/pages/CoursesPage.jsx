@@ -1,6 +1,6 @@
 import { Link } from 'react-router'
 import { useState, useEffect } from "react"
-import { Header } from "../shared/components/Header"
+import { Header } from "../shared/components/Header/Header.jsx"
 import { Footer } from "../shared/components/Footer"
 
 
