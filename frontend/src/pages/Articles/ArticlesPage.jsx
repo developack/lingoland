@@ -1,11 +1,10 @@
 import { useState, useEffect } from "react"
-import { Link } from "react-router"
-import { Header } from "../shared/components/Header/Header.jsx"
-import { Footer } from "../shared/components/Footer"
+import { Header } from "../../shared/components/Header/Header"
+import { Footer } from "../../shared/components/Footer"
+import { ArticlesGrid } from "./components/ArticlesGrid"
 
 
 export function ArticlesPage() {
-    const BASE_URL = import.meta.env.VITE_API_BASE_URL
     const [ articles, setArticles ] = useState([])
 
     useEffect(() => {
@@ -138,38 +137,7 @@ export function ArticlesPage() {
 
                         <main className="lg:col-span-3">
 
-                            <div className="grid md:grid-cols-2 xl:grid-cols-3 gap-6">
-
-                                {articles.map((article) => (
-                                    <article key={article.id} className="bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-lg transition">
-                                        <img
-                                            src={`${BASE_URL}${article.thumbnail}`} alt=""
-                                            className="w-full h-52 object-cover"/>
-                                        <div className="p-5">
-                                          <span className="text-sm text-blue-600">
-                                            برنامه نویسی
-                                          </span>
-
-                                            <h3 className="font-bold text-lg mt-2 mb-3">
-                                                {article.title}
-                                            </h3>
-
-                                            <p className="text-gray-600 text-sm leading-7 line-clamp-2">
-                                                {article.excerpt}
-                                            </p>
-
-                                            <Link
-                                                to={`/article/${article.slug}`}
-                                                className="inline-block mt-4 text-blue-600 font-medium"
-                                            >
-                                                ادامه مطلب →
-                                            </Link>
-                                        </div>
-                                    </article>
-                                ))}
-
-
-                            </div>
+                            <ArticlesGrid articles={articles} />
 
                         </main>
 
