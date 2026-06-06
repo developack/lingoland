@@ -48,23 +48,15 @@ export function TopicDetailPage() {
         void fetchTopicCommentsData()
     }, [topic.id])
 
-    const user = {
-        name: "Ali",
-        progress: 35,
-    };
     return (
         <div className="min-h-screen bg-slate-50 flex flex-col">
 
-            {/* HEADER */}
-            <LearningHeader user={user} step={topic} />
+            <LearningHeader step={topic} />
 
-            {/* BODY */}
             <div className="flex flex-1 overflow-hidden">
 
-                {/* SIDEBAR (RIGHT) */}
                 <LessonsSidebarNavigation step={topic} />
 
-                {/* CONTENT */}
                 <main className="flex-1 overflow-y-auto p-8 container">
                     <div className="mx-auto max-w-4xl">
 

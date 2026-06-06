@@ -11,7 +11,7 @@ export function ProfileDropdown({ userProfile, onLogout }) {
                     alt="avatar" className="h-8 w-8 rounded-full object-cover"/>
                 <div className="flex flex-col">
                     <span className="text-sm font-semibold text-gray-800">
-                        {userProfile.username}
+                        {userProfile?.username}
                     </span>
                 </div>
             </div>

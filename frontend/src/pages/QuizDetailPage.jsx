@@ -69,24 +69,15 @@ export function QuizDetailPage() {
         }
     }
 
-    const user = {
-        name: "Ali",
-        progress: 35,
-    };
-
     return (
         <div className="min-h-screen bg-slate-50 flex flex-col">
 
-            {/* HEADER */}
-            <LearningHeader user={user} step={quiz} />
+            <LearningHeader step={quiz} />
 
-            {/* BODY */}
             <div className="flex flex-1 overflow-hidden">
 
-                {/* SIDEBAR (RIGHT) */}
                 <LessonsSidebarNavigation step={quiz} />
 
-                {/* CONTENT */}
                 <main className="flex-1 overflow-y-auto p-8 container">
                     <div className="mx-auto max-w-4xl">
 

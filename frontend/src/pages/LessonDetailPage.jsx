@@ -66,30 +66,27 @@ export function LessonDetailPage() {
         }
     }
 
-    const user = {
-        name: "Ali",
-        progress: 35,
-    };
     return (
         <div className="min-h-screen bg-slate-50 flex flex-col">
 
-            {/* HEADER */}
-            <LearningHeader user={user} step={lesson} />
+            <LearningHeader step={lesson} />
 
-            {/* BODY */}
             <div className="flex flex-1 overflow-hidden">
 
-                {/* SIDEBAR (RIGHT) */}
                 <LessonsSidebarNavigation step={lesson} />
 
-                {/* CONTENT */}
                 <main className="flex-1 overflow-y-auto p-8 container">
-                    <div className="mx-auto max-w-4xl">
+                    <div className="mx-auto max-w-4xl bg-white p-8 rounded-xl shadow-sm">
 
-                        <h2 className="mb-4 text-2xl font-bold">
-                            {lesson.title}
-                        </h2>
-
+                        <div className="flex items-center justify-between mb-8 pb-5 border-b border-border">
+                            <h2 className="text-2xl font-bold">
+                                {lesson.title}
+                            </h2>
+                            <button type="button" onClick={handleMarkComplete} className={`rounded-lg px-4 py-2 text-sm font-medium transition
+                             ${lesson.is_complete ? 'bg-green-500 text-white' : 'bg-indigo-600 text-white hover:bg-indigo-700'}`}>
+                                {lesson.is_complete ? 'درس تکمیل شد ✓' : 'تکمیل درس'}
+                            </button>
+                        </div>
                         <div className="my-6">
                             <h3 className="mb-2 font-semibold">
                                 Steps:
@@ -106,17 +103,11 @@ export function LessonDetailPage() {
                             </ul>
                         </div>
 
-                        <div className="rounded-xl border bg-white p-6 shadow-sm">
+                        <div className="rounded-xl bg-white">
                             <p className="mb-5 bg-gray-100 rounded-xl p-5">{lesson.excerpt}</p>
                             <p className="text-slate-700 leading-7">
                                 {lesson.content}
                             </p>
-
-                             {/*COMPLETE BUTTON*/}
-                            <button type="button" onClick={ handleMarkComplete } className={`mt-6 rounded-lg px-4 py-2 text-sm font-medium transition
-                             ${lesson.is_complete ? 'bg-green-500 text-white' : 'bg-indigo-600 text-white hover:bg-indigo-700'}`}>
-                                {lesson.is_complete ? 'درس تکمیل شد ✓' : 'تکمیل درس' }
-                            </button>
                         </div>
                         <div className="mt-8">
                             <Comments comments={comments} setComments={setComments} slug={slug} type='Lesson'/>

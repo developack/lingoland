@@ -29,9 +29,9 @@ export function LessonsSidebarNavigation({ step }) {
     }, [step.course]);
 
     return (
-        <aside className="w-96 border-l bg-white overflow-y-auto">
+        <aside className="w-96 border-l border-border bg-white overflow-y-auto">
 
-            <div className="border-b p-4">
+            <div className="border-b border-border p-4">
                 <h3 className="font-bold">Course Lessons</h3>
             </div>
 
@@ -41,7 +41,7 @@ export function LessonsSidebarNavigation({ step }) {
                     return (
                         <button
                             key={index}
-                            className={`w-full border-b px-4 py-3 text-right transition 
+                            className={`w-full border-b border-border px-4 py-3 text-right transition 
                                     ${item.slug === step.slug ? "bg-indigo-50" : "hover:bg-slate-50"}`}>
                             <div className="flex items-center justify-between">
                                 <Link to={`/lesson/${item.slug}/`} className="text-sm font-medium">
