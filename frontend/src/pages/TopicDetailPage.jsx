@@ -71,6 +71,7 @@ export function TopicDetailPage() {
 
                         </div>
                         <div className="mt-8">
+                            <h2 className="text-xl font-bold text-gray-800 mb-4 border-b-2 border-blue-500 pb-2 inline-block">دیدگاه‌ها</h2>
                             <Comments comments={comments} setComments={setComments} slug={slug} type='Topic'/>
                         </div>
                     </div>

@@ -6,9 +6,9 @@ from rest_framework.permissions import IsAuthenticated
 from permissions import IsEnrolledInCourse
 from courses.serializers import TopicSerializer
 from courses.serializers import CourseSerializer
-from courses.serializers import LessonSerializer
 from courses.serializers import CourseDetailSerializer
 from courses.serializers import LessonDetailSerializer
+from courses.serializers import LearningContextSerializer
 from courses.models import Course, Lesson, LessonActivity, Topic, Enrollment
 
 
@@ -26,16 +26,6 @@ class CourseDetailView(APIView):
     def get(self, request, slug):
         course = get_object_or_404(Course, slug=slug)
         serializer = CourseDetailSerializer(course, context={'request': request})
-        return Response(serializer.data, status=status.HTTP_200_OK)
-
-# ============================================================ #
-
-class LessonsListView(APIView):
-
-    def get(self, request, slug):
-        course = get_object_or_404(Course, slug=slug)
-        lessons = course.lessons.all()
-        serializer = LessonSerializer(lessons, many=True, context={'request': request})
         return Response(serializer.data, status=status.HTTP_200_OK)
 
 # ============================================================ #
@@ -96,3 +86,13 @@ class LessonMarkCompleteView(APIView):
         if created:
             return Response({'progress_percentage': progress_percentage}, status=status.HTTP_200_OK)
         return Response({'progress_percentage': progress_percentage}, status=status.HTTP_409_CONFLICT)
+
+# ============================================================ #
+
+class LearningContextView(APIView):
+    permission_classes = (IsEnrolledInCourse,)
+
+    def get(self, request, pk):
+        course = get_object_or_404(Course, pk=pk)
+        serializer = LearningContextSerializer(course, context={'request': request})
+        return Response(serializer.data, status=status.HTTP_200_OK)

@@ -13,44 +13,36 @@ class CourseSerializer(serializers.ModelSerializer):
 
 class TopicSerializer(serializers.ModelSerializer):
     lesson = serializers.CharField(source='lesson.title', read_only=True)
-    course = serializers.CharField(source='lesson.course.slug', read_only=True)
-    progress_percentage = serializers.SerializerMethodField()
+    course = serializers.CharField(source='lesson.course.id', read_only=True)
 
     class Meta:
         model = Topic
-        fields = ('id', 'title', 'slug', 'content', 'lesson', 'course', 'progress_percentage')
-
-    def get_progress_percentage(self, obj):
-        user = self.context['request'].user
-        if user.is_authenticated:
-            return obj.lesson.course.calculate_course_progress(user)
-        return 0
+        fields = ('id', 'title', 'slug', 'content', 'lesson', 'course')
 
 # ============================================================ #
 
-class LessonSerializer(serializers.ModelSerializer):
+class LessonDetailSerializer(serializers.ModelSerializer):
+    is_complete = serializers.SerializerMethodField()
     topics = TopicSerializer(many=True, read_only=True)
     quizzes = QuizSerializer(many=True, read_only=True)
-    is_complete = serializers.SerializerMethodField()
+    course = serializers.CharField(source='course.id', read_only=True)
 
     class Meta:
         model = Lesson
-        fields = ('title', 'slug', 'excerpt', 'topics', 'quizzes', 'is_complete')
+        exclude = ('comments', 'created', 'updated')
 
     def get_is_complete(self, obj):
         user = self.context['request'].user
-        if user.is_authenticated:
-            try:
-                return obj.lesson_activities.get(user=user, course=obj.course).is_complete
-            except ObjectDoesNotExist:
-                return False
-        return False
+        try:
+            return obj.lesson_activities.get(user=user, course=obj.course).is_complete
+        except ObjectDoesNotExist:
+            return False
 
 # ============================================================ #
 
 class CourseDetailSerializer(serializers.ModelSerializer):
     is_enrolled = serializers.SerializerMethodField()
-    lessons = LessonSerializer(many=True, read_only=True)
+    lessons = LessonDetailSerializer(many=True, read_only=True)
 
     class Meta:
         model = Course
@@ -64,24 +56,14 @@ class CourseDetailSerializer(serializers.ModelSerializer):
 
 # ============================================================ #
 
-class LessonDetailSerializer(serializers.ModelSerializer):
-    is_complete = serializers.SerializerMethodField()
-    topics = TopicSerializer(many=True, read_only=True)
-    quizzes = QuizSerializer(many=True, read_only=True)
-    course = serializers.CharField(source='course.slug', read_only=True)
+class LearningContextSerializer(serializers.ModelSerializer):
+    lessons = LessonDetailSerializer(many=True, read_only=True)
     progress_percentage = serializers.SerializerMethodField()
 
     class Meta:
-        model = Lesson
-        fields = '__all__'
-
-    def get_is_complete(self, obj):
-        user = self.context['request'].user
-        try:
-            return obj.lesson_activities.get(user=user, course=obj.course).is_complete
-        except ObjectDoesNotExist:
-            return False
+        model = Course
+        exclude = ('comments', 'created', 'updated')
 
     def get_progress_percentage(self, obj):
         user = self.context['request'].user
-        return obj.course.calculate_course_progress(user)
+        return obj.lesson.course.calculate_course_progress(user)

@@ -82,7 +82,7 @@ export function Header() {
                     <div className="flex items-center gap-8">
                         <CartButton />
                         {
-                            loading ? <div className="skeleton h-12 w-30"></div> :
+                            loading ? <div className="skeleton h-12 min-w-[180px]"></div> :
                             userProfile ? <ProfileDropdown userProfile={userProfile} onLogout={handleLogout} /> : <AuthButtons />
                         }
                     </div>
