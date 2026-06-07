@@ -5,9 +5,9 @@ from rest_framework.generics import get_object_or_404
 from rest_framework.permissions import IsAuthenticated
 from permissions import IsEnrolledInCourse
 from courses.serializers import TopicSerializer
+from courses.serializers import LessonSerializer
 from courses.serializers import CourseSerializer
 from courses.serializers import CourseDetailSerializer
-from courses.serializers import LessonDetailSerializer
 from courses.serializers import LearningContextSerializer
 from courses.models import Course, Lesson, LessonActivity, Topic, Enrollment
 
@@ -36,7 +36,7 @@ class LessonDetailView(APIView):
     def get(self, request, slug):
         lesson = get_object_or_404(Lesson, slug=slug)
         self.check_object_permissions(request, lesson)
-        serializer = LessonDetailSerializer(lesson, context={'request': request})
+        serializer = LessonSerializer(lesson, context={'request': request})
         return Response(serializer.data, status=status.HTTP_200_OK)
 
 # ============================================================ #

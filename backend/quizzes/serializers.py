@@ -4,6 +4,7 @@ from quizzes.models import Quiz, Question, Choice, QuizAttempt
 
 
 class QuizSerializer(serializers.ModelSerializer):
+
     class Meta:
         model = Quiz
         fields = '__all__'
@@ -34,7 +35,7 @@ class QuestionDetailSerializer(serializers.ModelSerializer):
 
 class QuizDetailSerializer(serializers.ModelSerializer):
     questions = QuestionDetailSerializer(many=True, read_only=True)
-    lesson = serializers.CharField(source='lesson.title', read_only=True)
+    lesson = serializers.CharField(source='lesson.id', read_only=True)
     course_id = serializers.CharField(source='lesson.course.id', read_only=True)
 
     class Meta:

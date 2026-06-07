@@ -1,5 +1,6 @@
 import uuid
 from django.db import models
+from django.core.exceptions import ObjectDoesNotExist
 from django.contrib.contenttypes.fields import GenericRelation
 from utils.utils import Utils
 from accounts.models import User
@@ -59,6 +60,12 @@ class Lesson(models.Model):
 
     def __str__(self):
         return f'{self.title}'
+
+    def is_complete(self, user):
+        try:
+            return self.lesson_activities.get(user=user, course=self.course).is_complete
+        except ObjectDoesNotExist:
+            return False
 
     def save(self, *args, **kwargs):
         if not self.slug:

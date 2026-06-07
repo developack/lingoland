@@ -7,6 +7,7 @@ import { LessonsSidebarNavigation } from "../features/lms/components/LessonsSide
 export function QuizDetailPage() {
     const authToken = localStorage.getItem(import.meta.env.VITE_AUTH_TOKEN_KEY)
     const [ quiz, setQuiz ] = useState({})
+    const [ learningContext, setLearningContext ] = useState({})
     const [ choices, setChoices ] = useState([])
     const { slug } = useParams()
 
@@ -31,6 +32,30 @@ export function QuizDetailPage() {
 
         void fetchQuizDetailData()
     }, [slug]);
+
+    useEffect(() => {
+        if (!quiz.course) return
+
+        const fetchLearningContextData = async () => {
+            try{
+                const response = await fetch(`/api/course/${quiz.course}/learning-context/`, {
+                    method: 'GET',
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Authorization": `Token ${authToken}`
+                    }
+                })
+
+                const data = await response.json()
+                setLearningContext(data)
+
+            } catch (error) {
+                console.log(error)
+            }
+        }
+
+        void fetchLearningContextData()
+    }, [quiz.course])
 
     const handleChoices = (event) => {
         const question = event.target.dataset.question
@@ -69,6 +94,8 @@ export function QuizDetailPage() {
         }
     }
 
+    console.log(quiz)
+
     return (
         <div className="min-h-screen bg-slate-50 flex flex-col">
 
@@ -76,7 +103,7 @@ export function QuizDetailPage() {
 
             <div className="flex flex-1 overflow-hidden">
 
-                <LessonsSidebarNavigation step={quiz} />
+                <LessonsSidebarNavigation learningContext={learningContext} lessonId={quiz.lesson} stepId={quiz.id} />
 
                 <main className="flex-1 overflow-y-auto p-8 container">
                     <div className="mx-auto max-w-4xl">

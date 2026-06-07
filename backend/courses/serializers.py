@@ -12,7 +12,7 @@ class CourseSerializer(serializers.ModelSerializer):
 # ============================================================ #
 
 class TopicSerializer(serializers.ModelSerializer):
-    lesson = serializers.CharField(source='lesson.title', read_only=True)
+    lesson = serializers.CharField(source='lesson.id', read_only=True)
     course = serializers.CharField(source='lesson.course.id', read_only=True)
 
     class Meta:
@@ -21,22 +21,30 @@ class TopicSerializer(serializers.ModelSerializer):
 
 # ============================================================ #
 
+class LessonSerializer(serializers.ModelSerializer):
+    is_complete = serializers.SerializerMethodField()
+
+    class Meta:
+        model = Lesson
+        exclude = ('created', 'updated')
+
+    def get_is_complete(self, obj):
+        user = self.context['request'].user
+        return obj.is_complete(user)
+
+
 class LessonDetailSerializer(serializers.ModelSerializer):
     is_complete = serializers.SerializerMethodField()
     topics = TopicSerializer(many=True, read_only=True)
     quizzes = QuizSerializer(many=True, read_only=True)
-    course = serializers.CharField(source='course.id', read_only=True)
 
     class Meta:
         model = Lesson
-        exclude = ('comments', 'created', 'updated')
+        exclude = ('created', 'updated')
 
     def get_is_complete(self, obj):
         user = self.context['request'].user
-        try:
-            return obj.lesson_activities.get(user=user, course=obj.course).is_complete
-        except ObjectDoesNotExist:
-            return False
+        return obj.is_complete(user)
 
 # ============================================================ #
 
@@ -62,8 +70,8 @@ class LearningContextSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Course
-        exclude = ('comments', 'created', 'updated')
+        exclude = ('created', 'updated')
 
     def get_progress_percentage(self, obj):
         user = self.context['request'].user
-        return obj.lesson.course.calculate_course_progress(user)
+        return obj.calculate_course_progress(user)

@@ -11,5 +11,5 @@ urlpatterns = [
     path('course/<str:slug>/enroll/', views.CourseEnrollView.as_view(), name='course-enroll'),
     path('my-courses/', views.MyCoursesListView.as_view(), name='my-courses'),
     path('lesson/<str:slug>/mark-complete/', views.LessonMarkCompleteView.as_view(), name='lesson-mark-complete'),
-    path('courses/<uuid:pk>/learning-context/', views.LearningContextView.as_view(), name='learning-context'),
+    path('course/<uuid:pk>/learning-context/', views.LearningContextView.as_view(), name='learning-context'),
 ]

@@ -1,33 +1,9 @@
-import { Link } from "react-router";
-import { useEffect, useState } from "react";
+import { Link } from "react-router"
+import { SidebarLessonTopics } from "./SidebarLessonTopics"
+import { SidebarLessonQuizzes } from "./SidebarLessonQuizzes"
 
 
-export function LessonsSidebarNavigation({ step }) {
-    const authToken = localStorage.getItem(import.meta.env.VITE_AUTH_TOKEN_KEY)
-    const [ courseSteps, setCourseSteps ] = useState([])
-
-    useEffect(() => {
-        if (!step.course) return
-
-        const fetchCourseStepsData = async () => {
-            try {
-                const response = await fetch(`/api/course/${step?.course}/lessons/`, {
-                    method: 'GET',
-                    headers: {
-                        "Content-Type": "application/json",
-                        'Authorization': `Token ${authToken}`
-                    }
-                })
-                const data = await response.json()
-                setCourseSteps(data)
-            } catch (error) {
-                console.log(error)
-            }
-        }
-
-        void fetchCourseStepsData()
-    }, [step.course]);
-
+export function LessonsSidebarNavigation({ learningContext, lessonId, stepId='' }) {
     return (
         <aside className="w-96 border-l border-border bg-white overflow-y-auto">
 
@@ -36,27 +12,23 @@ export function LessonsSidebarNavigation({ step }) {
             </div>
 
             <div>
-                {courseSteps.map((item, index) => {
-
+                {learningContext?.lessons?.map((lesson) => {
                     return (
-                        <button
-                            key={index}
-                            className={`w-full border-b border-border px-4 py-3 text-right transition 
-                                    ${item.slug === step.slug ? "bg-indigo-50" : "hover:bg-slate-50"}`}>
+                        <button key={lesson.id} className={`w-full border-b border-border px-4 py-3 text-right transition 
+                                    ${lesson.id === lessonId ? "bg-indigo-50" : "hover:bg-slate-50"}`}>
+
                             <div className="flex items-center justify-between">
-                                <Link to={`/lesson/${item.slug}/`} className="text-sm font-medium">
-                                    {item.title}
+                                <Link to={`/lesson/${lesson.slug}/`} className="text-sm font-medium">
+                                    {lesson.title}
                                 </Link>
-
-                                <span
-                                    className={`text-xs ${item.is_complete ? "text-green-500" : "text-slate-400"}`}>
-                                            {item.is_complete ? "✔" : "○"}
-                                        </span>
+                                <span className={`text-xs ${lesson.is_complete ? "text-green-500" : "text-slate-400"}`}>
+                                    {lesson.is_complete ? "✔" : "○"}
+                                </span>
                             </div>
-
-                            <p className="text-xs text-slate-400 mt-1">
-                                {item.topics.length} topics
-                            </p>
+                            <div className="rounded-xl p-3 bg-white flex flex-col gap-3 mt-5 border border-border">
+                                <SidebarLessonTopics topics={lesson.topics} stepId={stepId} />
+                                <SidebarLessonQuizzes quizzes={lesson.quizzes} stepId={stepId} />
+                            </div>
                         </button>
                     );
                 })}

@@ -8,6 +8,7 @@ import { LessonsSidebarNavigation } from "../features/lms/components/LessonsSide
 export function TopicDetailPage() {
     const authToken = localStorage.getItem(import.meta.env.VITE_AUTH_TOKEN_KEY)
     const [ topic, setTopic ] = useState({})
+    const [ learningContext, setLearningContext ] = useState({})
     const [ comments, setComments ] = useState([])
     const { slug } = useParams()
 
@@ -33,6 +34,30 @@ export function TopicDetailPage() {
     }, [slug]);
 
     useEffect(() => {
+        if (!topic.course) return
+
+        const fetchLearningContextData = async () => {
+            try{
+                const response = await fetch(`/api/course/${topic.course}/learning-context/`, {
+                    method: 'GET',
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Authorization": `Token ${authToken}`
+                    }
+                })
+
+                const data = await response.json()
+                setLearningContext(data)
+
+            } catch (error) {
+                console.log(error)
+            }
+        }
+
+        void fetchLearningContextData()
+    }, [topic.course])
+
+    useEffect(() => {
         if (!topic.id) return
 
         const fetchTopicCommentsData = async () => {
@@ -55,7 +80,7 @@ export function TopicDetailPage() {
 
             <div className="flex flex-1 overflow-hidden">
 
-                <LessonsSidebarNavigation step={topic} />
+                <LessonsSidebarNavigation learningContext={learningContext} lessonId={topic.lesson} stepId={topic.id} />
 
                 <main className="flex-1 overflow-y-auto p-8 container">
                     <div className="mx-auto max-w-4xl">
