@@ -1,7 +1,8 @@
 import { useState, useEffect } from "react"
 import { useParams } from "react-router"
-import { LearningHeader } from "../features/lms/components/LearningHeader";
-import { LessonsSidebarNavigation } from "../features/lms/components/LessonsSidebarNavigation"
+import { QuizQuestions } from "./components/QuizQuestions"
+import { LearningHeader } from "../../features/lms/components/LearningHeader.jsx";
+import { LessonsSidebarNavigation } from "../../features/lms/components/LessonsSidebarNavigation.jsx"
 
 
 export function QuizDetailPage() {
@@ -94,12 +95,10 @@ export function QuizDetailPage() {
         }
     }
 
-    console.log(quiz)
-
     return (
         <div className="min-h-screen bg-slate-50 flex flex-col">
 
-            <LearningHeader step={quiz} />
+            <LearningHeader learningContext={learningContext} />
 
             <div className="flex flex-1 overflow-hidden">
 
@@ -116,21 +115,7 @@ export function QuizDetailPage() {
                             <p className="text-slate-700 leading-7">
                                 {quiz.content}
                             </p>
-                            <div className="mt-5">
-                                {quiz?.questions?.map((question) => (
-                                    <div key={question.id}>
-                                        <div>{question.title}</div>
-                                        <div className="flex justify-between my-5 bg-amber-50 p-3 rounded-xl">
-                                            {question.choices.map((choice, index) => (
-                                                <div key={index} className="flex items-center gap-2">
-                                                    <input onChange={handleChoices} data-question={question.slug} type="radio" name={question.id} value={choice.text}/>
-                                                    <div>{choice.text}</div>
-                                                </div>
-                                            ))}
-                                        </div>
-                                    </div>
-                                ))}
-                            </div>
+                            <QuizQuestions questions={quiz.questions} handleChoices={handleChoices} />
                         </div>
                         <button onClick={handleQuizSubmit} className="bg-primary text-white rounded-xl p-3 text-sm cursor-pointer mt-5">تایید و ثبت نهایی</button>
                     </div>

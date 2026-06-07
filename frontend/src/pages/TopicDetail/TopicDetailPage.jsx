@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react"
 import { useParams } from "react-router"
-import { Comments } from "../features/comment/components/Comments";
-import { LearningHeader } from "../features/lms/components/LearningHeader";
-import { LessonsSidebarNavigation } from "../features/lms/components/LessonsSidebarNavigation"
+import { Comments } from "../../features/comment/components/Comments.jsx";
+import { LearningHeader } from "../../features/lms/components/LearningHeader.jsx";
+import { LessonsSidebarNavigation } from "../../features/lms/components/LessonsSidebarNavigation.jsx"
 
 
 export function TopicDetailPage() {
@@ -76,7 +76,7 @@ export function TopicDetailPage() {
     return (
         <div className="min-h-screen bg-slate-50 flex flex-col">
 
-            <LearningHeader step={topic} />
+            <LearningHeader learningContext={learningContext} />
 
             <div className="flex flex-1 overflow-hidden">
 

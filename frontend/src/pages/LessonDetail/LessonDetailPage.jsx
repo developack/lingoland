@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react"
 import { useParams } from "react-router"
-import { Comments } from "../features/comment/components/Comments";
-import { LearningHeader } from "../features/lms/components/LearningHeader"
-import { LessonsSidebarNavigation } from "../features/lms/components/LessonsSidebarNavigation"
+import { Comments } from "../../features/comment/components/Comments.jsx";
+import { LearningHeader } from "../../features/lms/components/LearningHeader.jsx"
+import { LessonsSidebarNavigation } from "../../features/lms/components/LessonsSidebarNavigation.jsx"
 
 
 export function LessonDetailPage() {
@@ -96,7 +96,7 @@ export function LessonDetailPage() {
     return (
         <div className="min-h-screen bg-slate-50 flex flex-col">
 
-            <LearningHeader step={learningContext} />
+            <LearningHeader learningContext={learningContext} />
 
             <div className="flex flex-1 overflow-hidden">
 
@@ -114,6 +114,7 @@ export function LessonDetailPage() {
                                 {lesson.is_complete ? 'درس تکمیل شد ✓' : 'تکمیل درس'}
                             </button>
                         </div>
+
                         <div className="rounded-xl bg-white">
                             <p className="mb-5 bg-gray-100 rounded-xl p-5">{lesson.excerpt}</p>
                             <p className="text-slate-700 leading-7">

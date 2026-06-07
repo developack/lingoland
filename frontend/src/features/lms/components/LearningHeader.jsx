@@ -3,7 +3,7 @@ import { useEffect, useState } from "react"
 import { ProfileDropdown } from "../../../shared/components/Header/ProfileDropdown"
 
 
-export function LearningHeader({ step }) {
+export function LearningHeader({ learningContext }) {
     const navigate = useNavigate()
     const authToken = localStorage.getItem(import.meta.env.VITE_AUTH_TOKEN_KEY)
     const [ userProfile, setUserProfile ] = useState(null)
@@ -61,9 +61,9 @@ export function LearningHeader({ step }) {
                 <div className="mb-1 flex justify-between gap-5 items-center text-sm">
                     <span className="text-xs whitespace-nowrap">درصد پیشرفت دوره</span>
                     <div className="h-2 w-full rounded-full bg-slate-200">
-                        <div className="h-2 rounded-full bg-secondary" style={{width: `${step.progress_percentage}%`}}/>
+                        <div className="h-2 rounded-full bg-secondary" style={{width: `${learningContext.progress_percentage}%`}}/>
                     </div>
-                    <span className="text-xs">{step.progress_percentage}%</span>
+                    <span className="text-xs">{learningContext.progress_percentage}%</span>
                 </div>
             </div>
             <ProfileDropdown userProfile={userProfile} onLogout={handleLogout}/>
