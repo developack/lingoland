@@ -15,8 +15,8 @@ import { DictionaryPage } from "./pages/DictionaryPage"
 import { QuizDetailPage } from "./pages/QuizDetail/QuizDetailPage.jsx"
 import { DashboardPage } from "./pages/UserPanel/DashboardPage"
 import { MyCoursesPage } from "./pages/UserPanel/MyCoursesPage"
-import { CommentsPage } from "./pages/UserPanel/CommentsPage"
-import { OrdersPage } from "./pages/UserPanel/OrdersPage"
+import { CommentsPage } from "./pages/UserPanel/Comments/CommentsPage.jsx"
+import { OrdersPage } from "./pages/UserPanel/Orders/OrdersPage.jsx"
 import { ProfilePage } from "./pages/UserPanel/ProfilePage"
 import './App.css'
 

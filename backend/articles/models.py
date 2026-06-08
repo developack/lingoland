@@ -1,5 +1,6 @@
 import uuid
 from django.db import models
+from django.shortcuts import reverse
 from django.contrib.contenttypes.fields import GenericRelation
 from utils.utils import Utils
 from accounts.models import User
@@ -24,6 +25,9 @@ class Article(models.Model):
 
     def __str__(self):
         return f'{self.title}'
+
+    def get_absolute_url(self):
+        return reverse("articles:article-detail",kwargs={"slug": self.slug})
 
     def save(self, *args, **kwargs):
         if not self.slug:

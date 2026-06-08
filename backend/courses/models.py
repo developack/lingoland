@@ -1,5 +1,6 @@
 import uuid
 from django.db import models
+from django.shortcuts import reverse
 from django.core.exceptions import ObjectDoesNotExist
 from django.contrib.contenttypes.fields import GenericRelation
 from utils.utils import Utils
@@ -35,6 +36,9 @@ class Course(models.Model):
         percentage = round((complete_lessons_count / lessons_count) * 100)
         return percentage
 
+    def get_absolute_url(self):
+        return reverse("courses:course-detail",kwargs={"slug": self.slug})
+
     def save(self, *args, **kwargs):
         if not self.slug:
             self.slug = Utils.generate_unique_slug(self, Course)
@@ -66,6 +70,9 @@ class Lesson(models.Model):
             return self.lesson_activities.get(user=user, course=self.course).is_complete
         except ObjectDoesNotExist:
             return False
+
+    def get_absolute_url(self):
+        return reverse("courses:lesson-detail",kwargs={"slug": self.slug})
 
     def save(self, *args, **kwargs):
         if not self.slug:
@@ -108,6 +115,9 @@ class Topic(models.Model):
 
     def __str__(self):
         return f'{self.title}'
+
+    def get_absolute_url(self):
+        return reverse("courses:topic-detail",kwargs={"slug": self.slug})
 
     def save(self, *args, **kwargs):
         if not self.slug:

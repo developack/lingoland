@@ -1,4 +1,5 @@
 from django.core.exceptions import ObjectDoesNotExist
+from django.contrib.auth.models import ContentType
 from rest_framework import serializers
 from articles.models import Article
 from comments.models import Comment
@@ -8,10 +9,17 @@ from courses.models import Lesson, Topic, Enrollment, Course
 
 class CommentSerializer(serializers.ModelSerializer):
     user = UserProfileSerializer(source='user.user_profile', read_only=True)
+    item_object = serializers.SerializerMethodField()
 
     class Meta:
         model = Comment
-        fields = ('user', 'text', 'status', 'created')
+        fields = ('user', 'text', 'status', 'item_object', 'created')
+
+    def get_item_object(self, obj):
+        content_type = ContentType.objects.get(id=obj.content_type.id)
+        model = content_type.model_class()
+        item_object = model.objects.get(id=obj.object_id)
+        return {'object_title': item_object.title, 'object_slug': item_object.get_absolute_url()}
 
 # ============================================================ #
 

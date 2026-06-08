@@ -1,5 +1,5 @@
-import { PanelHeader } from "../../features/user-panel/components/PanelHeader"
-import { PanelSidebar } from "../../features/user-panel/components/PanelSidebar"
+import { PanelHeader } from "../../../features/user-panel/components/PanelHeader.jsx"
+import { PanelSidebar } from "../../../features/user-panel/components/PanelSidebar.jsx"
 
 
 export function OrdersPage() {
@@ -21,24 +21,24 @@ export function OrdersPage() {
 
                     <div className="grid grid-cols-3 gap-4 mb-6">
 
-                        <div className="bg-white border rounded-xl p-4">
+                        <div className="bg-white border border-border  rounded-xl p-4">
                             <p className="text-sm text-gray-500">Total Orders</p>
                             <p className="text-2xl font-bold">12</p>
                         </div>
 
-                        <div className="bg-white border rounded-xl p-4">
+                        <div className="bg-white border border-border rounded-xl p-4">
                             <p className="text-sm text-gray-500">Completed</p>
                             <p className="text-2xl font-bold text-green-600">9</p>
                         </div>
 
-                        <div className="bg-white border rounded-xl p-4">
+                        <div className="bg-white border border-border rounded-xl p-4">
                             <p className="text-sm text-gray-500">Pending</p>
                             <p className="text-2xl font-bold text-yellow-500">3</p>
                         </div>
 
                     </div>
 
-                    <div className="bg-white border rounded-xl overflow-hidden">
+                    <div className="bg-white border border-border rounded-xl overflow-hidden">
 
                         <div className="grid grid-cols-5 bg-gray-100 text-sm font-medium text-gray-600 p-3">
                             <div>Order ID</div>
@@ -48,7 +48,7 @@ export function OrdersPage() {
                             <div className="text-right">Price</div>
                         </div>
 
-                        <div className="grid grid-cols-5 p-3 border-t items-center">
+                        <div className="grid grid-cols-5 p-3 border-t border-border items-center">
                             <div className="text-sm">#ORD-1001</div>
                             <div className="text-sm font-medium">React Course</div>
                             <div className="text-sm text-gray-500">2026/05/21</div>
@@ -60,7 +60,7 @@ export function OrdersPage() {
                             <div className="text-right font-semibold">$49</div>
                         </div>
 
-                        <div className="grid grid-cols-5 p-3 border-t items-center">
+                        <div className="grid grid-cols-5 p-3 border-t border-border items-center">
                             <div className="text-sm">#ORD-1002</div>
                             <div className="text-sm font-medium">Next.js Course</div>
                             <div className="text-sm text-gray-500">2026/05/18</div>
@@ -72,7 +72,7 @@ export function OrdersPage() {
                             <div className="text-right font-semibold">$39</div>
                         </div>
 
-                        <div className="grid grid-cols-5 p-3 border-t items-center">
+                        <div className="grid grid-cols-5 p-3 border-t border-border items-center">
                             <div className="text-sm">#ORD-1003</div>
                             <div className="text-sm font-medium">Node.js Course</div>
                             <div className="text-sm text-gray-500">2026/05/10</div>
