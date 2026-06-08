@@ -9,17 +9,24 @@ from courses.models import Lesson, Topic, Enrollment, Course
 
 class CommentSerializer(serializers.ModelSerializer):
     user = UserProfileSerializer(source='user.user_profile', read_only=True)
-    item_object = serializers.SerializerMethodField()
+    resource = serializers.SerializerMethodField()
 
     class Meta:
         model = Comment
-        fields = ('user', 'text', 'status', 'item_object', 'created')
+        fields = ('user', 'text', 'status', 'resource', 'created')
 
-    def get_item_object(self, obj):
+    def get_resource(self, obj):
         content_type = ContentType.objects.get(id=obj.content_type.id)
         model = content_type.model_class()
-        item_object = model.objects.get(id=obj.object_id)
-        return {'object_title': item_object.title, 'object_slug': item_object.get_absolute_url()}
+        resource = model.objects.get(id=obj.object_id)
+        return {'object_title': resource.title, 'object_slug': resource.get_absolute_url()}
+
+# ============================================================ #
+
+class CommentStatsSerializer(serializers.Serializer):
+    comments_count = serializers.IntegerField()
+    approved_comments_count = serializers.IntegerField()
+    unapproved_comments_count = serializers.IntegerField()
 
 # ============================================================ #
 

@@ -1,3 +1,4 @@
+from django.db.models import Count, Q
 from django.contrib.auth.models import ContentType
 from rest_framework import status
 from rest_framework.views import APIView
@@ -7,6 +8,7 @@ from comments.models import Comment
 from comments.serializers import CommentSerializer
 from comments.serializers import CommentsListSerializer
 from comments.serializers import CommentCreateSerializer
+from comments.serializers import CommentStatsSerializer
 
 
 class CommentCreateView(APIView):
@@ -17,6 +19,20 @@ class CommentCreateView(APIView):
         serializer.is_valid(raise_exception=True)
         serializer.save()
         return Response(serializer.data, status=status.HTTP_201_CREATED)
+
+# ============================================================ #
+
+class CommentStatsView(APIView):
+    permission_classes = (IsAuthenticated,)
+
+    def get(self, request):
+        stats = Comment.objects.aggregate(
+            comments_count=Count('id', filters=Q(user=request.user)),
+            approved_comments_count=Count('id', filter=Q(user=request.user, status='Approved')),
+            unapproved_comments_count=Count('id', filter=Q(user=request.user, status='Unapproved')),
+        )
+        serializer = CommentStatsSerializer(stats)
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
 # ============================================================ #
 
