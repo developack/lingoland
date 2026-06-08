@@ -22,7 +22,6 @@ export function CommentsPage() {
                 })
 
                 const data = await response.json()
-                console.log(data)
                 setComments(data)
 
             } catch (error) {

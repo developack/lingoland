@@ -23,15 +23,15 @@ export function ProfileDropdown({ userProfile, onLogout }) {
                       className="block rounded-xl px-4 py-3 text-sm text-gray-700 transition hover:bg-gray-100">
                     دوره‌های من
                 </Link>
-                <Link to="/dictionary"
+                <Link to="/comments"
                       className="block rounded-xl px-4 py-3 text-sm text-gray-700 transition hover:bg-gray-100">
                     نظرات
                 </Link>
-                <Link to="/dictionary"
+                <Link to="/orders"
                       className="block rounded-xl px-4 py-3 text-sm text-gray-700 transition hover:bg-gray-100">
                     سفارش‌ها
                 </Link>
-                <Link to="/dictionary"
+                <Link to="/profile"
                       className="block rounded-xl px-4 py-3 text-sm text-gray-700 transition hover:bg-gray-100">
                     حساب کاربری
                 </Link>

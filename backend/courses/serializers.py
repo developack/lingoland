@@ -1,4 +1,3 @@
-from django.core.exceptions import ObjectDoesNotExist
 from rest_framework import serializers
 from courses.models import Course, Lesson, Topic
 from quizzes.serializers import QuizSerializer
@@ -8,6 +7,19 @@ class CourseSerializer(serializers.ModelSerializer):
     class Meta:
         model = Course
         fields = '__all__'
+
+# ============================================================ #
+
+class UserCourseSerializer(serializers.ModelSerializer):
+    progress_percentage = serializers.SerializerMethodField()
+
+    class Meta:
+        model = Course
+        fields = '__all__'
+
+    def get_progress_percentage(self, obj):
+        user = self.context['request'].user
+        return obj.calculate_course_progress(user)
 
 # ============================================================ #
 

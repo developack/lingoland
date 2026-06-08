@@ -38,7 +38,6 @@ export function OrdersPage() {
 
             const data = await response.json()
             console.log(data)
-            setStats(data)
         }
 
         void fetchOrderStatsData()

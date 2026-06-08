@@ -7,6 +7,7 @@ from permissions import IsEnrolledInCourse
 from courses.serializers import TopicSerializer
 from courses.serializers import LessonSerializer
 from courses.serializers import CourseSerializer
+from courses.serializers import UserCourseSerializer
 from courses.serializers import CourseDetailSerializer
 from courses.serializers import LearningContextSerializer
 from courses.models import Course, Lesson, LessonActivity, Topic, Enrollment
@@ -69,7 +70,7 @@ class MyCoursesListView(APIView):
 
     def get(self, request):
         courses = Course.objects.filter(enrollments__user=request.user)
-        serializer = CourseSerializer(courses, many=True)
+        serializer = UserCourseSerializer(courses, many=True, context={'request': request})
         return Response(serializer.data, status=status.HTTP_200_OK)
 
 # ============================================================ #
