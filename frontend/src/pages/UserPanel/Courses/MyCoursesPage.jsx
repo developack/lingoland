@@ -39,7 +39,12 @@ export function MyCoursesPage() {
                 <PanelHeader />
 
                 <div className="p-6 container">
-                    <CoursesList courses={courses} />
+                    <div className="mb-6">
+                        <h1 className="text-2xl font-bold">دوره‌های من</h1>
+                        <p className="text-gray-500">همه دوره‌هایی که ثبت‌نام کرده‌اید</p>
+                    </div>
+
+                    <CoursesList courses={courses}/>
                 </div>
 
             </div>

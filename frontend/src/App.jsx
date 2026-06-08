@@ -13,11 +13,11 @@ import { LessonDetailPage } from "./pages/LessonDetail/LessonDetailPage.jsx"
 import { TopicDetailPage } from "./pages/TopicDetail/TopicDetailPage.jsx"
 import { DictionaryPage } from "./pages/DictionaryPage"
 import { QuizDetailPage } from "./pages/QuizDetail/QuizDetailPage.jsx"
-import { DashboardPage } from "./pages/UserPanel/DashboardPage"
+import { DashboardPage } from "./pages/UserPanel/Dashboard/DashboardPage.jsx"
 import { MyCoursesPage } from "./pages/UserPanel/Courses/MyCoursesPage.jsx"
 import { CommentsPage } from "./pages/UserPanel/Comments/CommentsPage.jsx"
 import { OrdersPage } from "./pages/UserPanel/Orders/OrdersPage.jsx"
-import { ProfilePage } from "./pages/UserPanel/ProfilePage"
+import { ProfilePage } from "./pages/UserPanel/Profile/ProfilePage.jsx"
 import './App.css'
 
 

@@ -1,5 +1,5 @@
-import { PanelHeader } from "../../features/user-panel/components/PanelHeader"
-import { PanelSidebar } from "../../features/user-panel/components/PanelSidebar"
+import { PanelHeader } from "../../../features/user-panel/components/PanelHeader.jsx"
+import { PanelSidebar } from "../../../features/user-panel/components/PanelSidebar.jsx"
 
 
 export function DashboardPage() {
