@@ -1,6 +1,7 @@
+import { useState, useEffect } from "react"
 import { PanelHeader } from "../../../features/user-panel/components/PanelHeader.jsx"
 import { PanelSidebar } from "../../../features/user-panel/components/PanelSidebar.jsx"
-import { useState, useEffect } from "react"
+import { Comments } from "./components/Comments"
 
 
 export function CommentsPage() {
@@ -8,11 +9,6 @@ export function CommentsPage() {
     const authToken = localStorage.getItem(import.meta.env.VITE_AUTH_TOKEN_KEY)
     const [comments, setComments] = useState([])
     const [stats, setStats] = useState([])
-    const statusClasses = {
-      Approved: "bg-green-100 text-green-700",
-      Unapproved: "bg-yellow-100 text-yellow-700",
-      Spam: "bg-red-100 text-red-700",
-    };
 
     useEffect(() => {
         const fetchUserCommentsData = async () => {
@@ -61,17 +57,13 @@ export function CommentsPage() {
 
     return (
         <div className="min-h-screen bg-gray-50 flex">
-
             <PanelSidebar />
-
             <div className="flex-1 flex flex-col">
-
                 <PanelHeader />
-
                 <div className="p-6 container">
                     <div className="mb-6">
-                        <h1 className="text-2xl font-bold">My Comments</h1>
-                        <p className="text-gray-500">All comments you have posted on courses</p>
+                        <h1 className="text-2xl font-bold">دیدگاه‌های من</h1>
+                        <p className="text-gray-500">همه دیدگاه‌هایی که در سایت ارسال کردید</p>
                     </div>
 
                     <div className="grid grid-cols-3 gap-4 mb-6">
@@ -92,24 +84,7 @@ export function CommentsPage() {
                     </div>
 
                     <div className="space-y-4">
-
-                        {comments.map((comment, index) => (
-                            <div key={index} className="bg-white border border-border rounded-xl p-4">
-                                <div className="flex justify-between items-start mb-2">
-                                    <h3 className="font-semibold">{comment.resource.object_title}</h3>
-                                    <span className={`text-xs px-2 py-1 rounded ${statusClasses[comment.status] || 'bg-gray-100 text-gray-700'}`}>
-                                        {comment.status}
-                                    </span>
-                                </div>
-                                <p className="text-gray-700 mb-3">
-                                    {comment.text}
-                                </p>
-
-                                <div className="flex justify-between text-sm text-gray-500">
-                                    <span>{comment.created}</span>
-                                </div>
-                            </div>
-                        ))}
+                        <Comments comments={comments} />
                     </div>
                 </div>
             </div>

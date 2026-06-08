@@ -1,4 +1,4 @@
-from django.core.serializers import serialize
+from django.db.models import Count, Q
 from django.shortcuts import get_object_or_404
 from rest_framework import status
 from rest_framework.views import APIView
@@ -9,6 +9,7 @@ from orders.serializers import OrderSerializer
 from orders.services.order import OrderService
 from orders.services.payment import PaymentService
 from orders.serializers import OrderCreateSerializer
+from orders.serializers import OrderStatsSerializer
 
 
 class MyOrdersListView(APIView):
@@ -17,6 +18,20 @@ class MyOrdersListView(APIView):
     def get(self, request):
         orders = Order.objects.filter(user=request.user)
         serializer = OrderSerializer(orders, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+# ============================================================ #
+
+class OrderStatsView(APIView):
+    permission_classes = (IsAuthenticated,)
+
+    def get(self, request):
+        stats = Order.objects.aggregate(
+            orders_count=Count('id', filter=Q(user=request.user)),
+            complete_orders_count=Count('id', filter=Q(user=request.user, status='Completed')),
+            pending_orders_count=Count('id', filter=Q(user=request.user, status='Pending')),
+        )
+        serializer = OrderStatsSerializer(stats)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
 # ============================================================ #

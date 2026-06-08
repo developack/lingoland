@@ -23,3 +23,10 @@ class OrderSerializer(serializers.ModelSerializer):
     class Meta:
         model = Order
         fields = '__all__'
+
+# ============================================================ #
+
+class OrderStatsSerializer(serializers.Serializer):
+    orders_count = serializers.IntegerField()
+    complete_orders_count = serializers.IntegerField()
+    pending_orders_count = serializers.IntegerField()
