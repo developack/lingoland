@@ -6,14 +6,9 @@ import {replace} from "react-router";
 
 export function ProfilePage() {
     const authToken = localStorage.getItem(import.meta.env.VITE_AUTH_TOKEN_KEY)
-    const [ profileData, setProfileData ] = useState({})
     const [ inputs, setInputs ] = useState({})
     const [ message, setMessage ] = useState('')
-    const [ error, setError ] = useState({
-        username: "",
-        email: "",
-        phone: ""
-    })
+    const [ error, setError ] = useState({ username: "", email: ""})
 
     useEffect(() => {
         const fetchUserProfileData = async () => {
@@ -27,8 +22,7 @@ export function ProfilePage() {
                 })
 
                 const data = await response.json()
-                console.log(data)
-                setProfileData(data)
+                setInputs(data)
 
             } catch (error) {
                 console.log(error)
@@ -49,13 +43,27 @@ export function ProfilePage() {
         }
     }
 
-    const handleFormValidation = () => {
-        return true
+    const handleFormValidation = (inputs) => {
+        let errors = {}
+
+        if (!inputs.email.trim()) {
+            errors.email = "This field is required"
+        }
+
+        if (!inputs.username.trim()) {
+            errors.username = "This field is required"
+        }
+
+        setError({
+            email: errors.email ?? "",
+            username: errors.username ?? ""
+        })
+        return Object.keys(errors).length === 0
     }
 
     const handleFormSubmit = async (event) => {
         event.preventDefault()
-        const isValid = handleFormValidation(profileData)
+        const isValid = handleFormValidation(inputs)
         if (!isValid) return
 
         try {
@@ -69,7 +77,9 @@ export function ProfilePage() {
             })
 
             const data = await response.json()
-            console.log(data)
+            if (response.ok) {
+                setMessage('Profile updated successfully')
+            }
 
         } catch (error) {
             console.log(error)
@@ -88,8 +98,12 @@ export function ProfilePage() {
                     </div>
 
                     <div className="bg-white border border-border rounded-xl p-6 max-w-3xl">
+                        <p className="my-2">
+                            {message && <span className="text-white p-3 rounded-xl bg-secondary block text-xs">{message}</span>}
+                        </p>
                         <div className="flex items-center gap-4 mb-6">
-                            <img src="/avatar.png" className="w-20 h-20 rounded-full object-cover border border-border" alt="profile"/>
+                            <img src="/avatar.png" className="w-20 h-20 rounded-full object-cover border border-border"
+                                 alt="profile"/>
                             <div>
                                 <button
                                     className="px-4 py-2 text-sm bg-gray-900 text-white rounded-lg hover:bg-gray-800">
@@ -105,39 +119,41 @@ export function ProfilePage() {
                             <div>
                                 <label className="text-sm text-gray-600">نام</label>
                                 <input type="text" name="first_name" onChange={handleInputChanges}
-                                       defaultValue={profileData.first_name}
+                                       value={inputs.first_name ?? ""}
                                        className="w-full mt-1 px-3 py-2 border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"/>
                             </div>
                             <div>
                                 <label className="text-sm text-gray-600">نام خانوادگی</label>
                                 <input type="text" name="last_name" onChange={handleInputChanges}
-                                       defaultValue={profileData.last_name}
+                                       value={inputs.last_name ?? ""}
                                        className="w-full mt-1 px-3 py-2 border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"/>
                             </div>
                             <div>
                                 <label className="text-sm text-gray-600">نام کاربری</label>
                                 <input type="text" name="username" onChange={handleInputChanges}
-                                       defaultValue={profileData.username}
+                                       value={inputs.username ?? ""}
                                        className="w-full mt-1 px-3 py-2 border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"/>
+                                {error.username && <span className="text-red-500">{error.username}</span>}
                             </div>
 
                             <div>
                                 <label className="text-sm text-gray-600">نام نمایشی</label>
                                 <input type="text" name="user_profile.full_name" onChange={handleInputChanges}
-                                       defaultValue={profileData?.user_profile?.full_name}
+                                       value={inputs?.user_profile?.full_name ?? ""}
                                        className="w-full mt-1 px-3 py-2 border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"/>
                             </div>
                             <div>
                                 <label className="text-sm text-gray-600">شماره تلفن</label>
                                 <input type="text" name="phone" onChange={handleInputChanges}
-                                       defaultValue={profileData.phone}
+                                       value={inputs.phone ?? ""}
                                        className="w-full mt-1 px-3 py-2 border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"/>
                             </div>
-                            <div className="col-span-2">
+                            <div>
                                 <label className="text-sm text-gray-600">ایمیل</label>
                                 <input type="email" name="email" onChange={handleInputChanges}
-                                       defaultValue={profileData.email}
+                                       value={inputs.email ?? ""}
                                        className="w-full mt-1 px-3 py-2 border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"/>
+                                {error.email && <span className="text-red-500">{error.email}</span>}
                             </div>
                             <div className="flex justify-start gap-3 mt-6">
                                 <button type="submit"
