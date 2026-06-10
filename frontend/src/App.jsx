@@ -1,8 +1,8 @@
 import { Routes, Route } from 'react-router'
 import { HomePage } from "./pages/Home/HomePage"
-import { LoginPage } from "./pages/LoginPage"
-import { RegisterPage } from "./pages/RegisterPage"
-import { ForgotPasswordPage } from "./pages/ForgotPasswordPage"
+import { LoginPage } from "./pages/Auth/LoginPage.jsx"
+import { RegisterPage } from "./pages/Auth/RegisterPage.jsx"
+import { ForgotPasswordPage } from "./pages/Auth/ForgotPasswordPage.jsx"
 import { CartPage } from "./pages/Cart/CartPage"
 import { CheckoutPage } from "./pages/Checkout/CheckoutPage.jsx"
 import { ArticlesPage } from "./pages/Articles/ArticlesPage"

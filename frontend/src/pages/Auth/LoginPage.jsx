@@ -1,34 +1,50 @@
-import {useRef, useState} from 'react'
-import { useNavigate } from "react-router"
-import { Link } from "react-router"
+import { useState } from 'react'
+import { Link, useNavigate } from "react-router"
 
 
 export function LoginPage() {
     const navigate = useNavigate()
-    const [loading, setLoading] = useState(false)
-    const [message, setMessage] = useState('')
-    const [error, setError] = useState({
+    const [ loading, setLoading ] = useState(false)
+    const [ message, setMessage ] = useState('')
+    const [ inputs, setInputs ] = useState({
+        email: "",
+        password: ""
+    })
+    const [ error, setError ] = useState({
         general: "",
         email: "",
         password: ""
     })
-    const emailRef = useRef(null)
-    const passwordRef = useRef(null)
 
-    const login = async () => {
-        let errors = {}
-        const email = emailRef.current
-        const password = passwordRef.current
+    const handleChange = (event) => {
+        const { name, value } = event.target
+        setInputs((prev) => ({...prev, [name]: value}))
+        setError((prev) => ({...prev, [name]: '', general: ''}))
+    }
+
+    const handleFormValidation = (inputs) => {
+         const errors = {
+            email: '',
+            password: '',
+            general: ''
+        }
+        console.log(inputs)
+        if (!inputs.email.trim()) {
+            errors.email = 'وارد کردن آدرس ایمیل الزامی است'
+        }
+        if (!inputs.password.trim()) {
+            errors.password = 'وارد کردن رمزعبور الزامی است'
+        }
+        setError(errors)
+        return !errors.email && !errors.password
+    }
+
+    const login = async (event) => {
+        event.preventDefault()
+        const isValid = handleFormValidation(inputs)
+        if (!isValid) return
+
         setLoading(true)
-
-        if (email.value === '') {
-            errors.email = 'email field is required'
-        }
-
-        if (password.value === '') {
-            errors.password = 'password field is required'
-        }
-
         try {
             const response = await fetch('/api/login/', {
                 method: 'POST',
@@ -36,27 +52,26 @@ export function LoginPage() {
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({
-                    email: email.value,
-                    password: password.value
+                    email: inputs.email,
+                    password: inputs.password
                 })
             })
 
             const data = await response.json()
             if (!response.ok) {
-                errors.general = data.message || 'Invalid credential!'
+                setError((prev) => ({...prev, general: data.message || 'نام کاربری یا رمزعبور اشتباه است'}))
                 return
             }
 
             localStorage.setItem(import.meta.env.VITE_AUTH_TOKEN_KEY, data.token)
-            setMessage('You are logged in successfully')
+            setMessage('شما با موفقیت لاگین شدید')
             navigate('/')
 
         } catch (error) {
             console.log(error)
-            errors.general = 'network error'
+            setError((prev) => ({...prev, general: 'خطا در برقراری ارتباط با سرور'}))
         } finally {
             setLoading(false)
-            setError(errors)
         }
     }
 
@@ -76,27 +91,18 @@ export function LoginPage() {
                         </div>
                         <p className="my-5">
                             {message && <span className="text-green-500">{message}</span>}
-                            {error.general && <span className="text-red-500">{error.general}</span>}
+                            {error.general && <span className="text-red-500 block text-sm mt-1">{error.general}</span>}
                         </p>
-                        <form id="loginForm" className="space-y-6">
+                        <form onSubmit={login} id="loginForm" className="space-y-6">
                             <div>
                                 <label className="block text-gray-700 font-semibold mb-2">
-                                    <span className="text-red-500">*</span> ایمیل یا نام کاربری
+                                    <span className="text-red-500">*</span> ایمیل
                                 </label>
                                 <div className="relative">
-                                    <div
-                                        className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
-                                        <svg className="w-5 h-5 text-gray-400" fill="none" stroke="currentColor"
-                                             viewBox="0 0 24 24">
-                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2"
-                                                  d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
-                                        </svg>
-                                    </div>
-                                    <input ref={emailRef} type="text" id="username"
-                                        className="w-full pr-10 pl-3 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition"
-                                        placeholder="example@email.com" required
-                                    />
-                                    {error.email && <span className="text-red-500">{error.email}</span>}
+                                    <input onChange={handleChange} type="text" name="username"
+                                        className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition"
+                                        placeholder="example@email.com" required/>
+                                    {error.email && <span className="text-red-500 block text-sm mt-1">{error.email}</span>}
                                 </div>
                             </div>
                             <div>
@@ -104,19 +110,10 @@ export function LoginPage() {
                                     <span className="text-red-500">*</span> رمز عبور
                                 </label>
                                 <div className="relative">
-                                    <div
-                                        className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
-                                        <svg className="w-5 h-5 text-gray-400" fill="none" stroke="currentColor"
-                                             viewBox="0 0 24 24">
-                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2"
-                                                  d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path>
-                                        </svg>
-                                    </div>
-                                    <input ref={passwordRef} type="password" id="password"
-                                        className="w-full pr-10 pl-3 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition"
-                                        placeholder="••••••••" required
-                                    />
-                                    {error.password && <span className="text-red-500">{error.password}</span>}
+                                    <input onChange={handleChange} type="password" name="password"
+                                        className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition"
+                                        placeholder="••••••••" required/>
+                                    {error.password && <span className="text-red-500 block text-sm mt-1">{error.password}</span>}
                                 </div>
                             </div>
                             <div className="flex items-center justify-between">
@@ -129,7 +126,7 @@ export function LoginPage() {
                                     رمز عبور را فراموش کرده‌اید؟
                                 </Link>
                             </div>
-                            <button onClick={login} type="button"
+                            <button type="submit"
                                 className={`w-full bg-primary text-white py-3 rounded-lg font-bold hover:bg-primary-dark
                                  transition transform hover:scale-[1.02] duration-200 ${loading ? 'opacity-50' : ''}`} disabled={loading}>
                                 ورود به سامانه
