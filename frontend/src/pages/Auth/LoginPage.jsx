@@ -1,17 +1,17 @@
 import { useState } from 'react'
 import { Link, useNavigate } from "react-router"
+import { Button } from "@/components/ui/button"
+import { Input } from "@/components/ui/input"
+import { Field } from "@/components/ui/field"
+import { Label } from "@/components/ui/label"
+import { Checkbox } from "@/components/ui/checkbox"
 
 
 export function LoginPage() {
     const navigate = useNavigate()
+    const [ error, setError ] = useState({})
     const [ loading, setLoading ] = useState(false)
-    const [ message, setMessage ] = useState('')
     const [ inputs, setInputs ] = useState({
-        email: "",
-        password: ""
-    })
-    const [ error, setError ] = useState({
-        general: "",
         email: "",
         password: ""
     })
@@ -22,26 +22,24 @@ export function LoginPage() {
         setError((prev) => ({...prev, [name]: '', general: ''}))
     }
 
-    const handleFormValidation = (inputs) => {
-         const errors = {
-            email: '',
-            password: '',
-            general: ''
-        }
+    const FormValidation = () => {
+        const errors = {}
         if (!inputs.email.trim()) {
             errors.email = 'وارد کردن آدرس ایمیل الزامی است'
         }
         if (!inputs.password.trim()) {
             errors.password = 'وارد کردن رمزعبور الزامی است'
         }
-        setError(errors)
-        return !errors.email && !errors.password
+        return errors
     }
 
-    const login = async (event) => {
+    const handleLogin = async (event) => {
         event.preventDefault()
-        const isValid = handleFormValidation(inputs)
-        if (!isValid) return
+        const errors = FormValidation()
+        if (Object.keys(errors).length) {
+            setError(errors)
+            return
+        }
 
         setLoading(true)
         try {
@@ -58,12 +56,17 @@ export function LoginPage() {
 
             const data = await response.json()
             if (!response.ok) {
-                setError((prev) => ({...prev, general: data.message || 'آدرس ایمیل یا رمزعبور اشتباه است'}))
+                const errors = {}
+                console.log(data)
+                Object.entries(data).forEach(([field, message]) => {
+                    errors[field] = message[0]
+                })
+
+                setError(errors)
                 return
             }
 
             localStorage.setItem(import.meta.env.VITE_AUTH_TOKEN_KEY, data.token)
-            setMessage('شما با موفقیت لاگین شدید')
             navigate('/')
 
         } catch (error) {
@@ -86,47 +89,41 @@ export function LoginPage() {
                     </div>
                     <div className="p-8">
                         <p className="my-5">
-                            {message && <span className="text-green-500">{message}</span>}
                             {error.general && <span className="text-red-500 block text-sm mt-1">{error.general}</span>}
                         </p>
-                        <form onSubmit={login} id="loginForm" className="space-y-6">
-                            <div>
-                                <label className="block text-gray-700 font-semibold mb-2">
-                                    <span className="text-red-500">*</span> ایمیل
-                                </label>
+                        <form onSubmit={handleLogin} id="loginForm" className="space-y-6">
+                            <Field>
+                                <Label htmlFor="email">آدرس ایمیل</Label>
                                 <div className="relative">
-                                    <input onChange={handleChange} type="text" name="email"
-                                        className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition"
-                                        placeholder="example@email.com" required/>
-                                    {error.email && <span className="text-red-500 block text-sm mt-1">{error.email}</span>}
+                                    <Input onChange={handleChange} type="email" name="email" id="email"
+                                           placeholder="example@email.com" value={inputs.email} className="p-5"/>
+                                    {error.email &&
+                                        <span className="text-red-500 block text-sm mt-1">{error.email}</span>}
                                 </div>
-                            </div>
-                            <div>
-                                <label className="block text-gray-700 font-semibold mb-2">
-                                    <span className="text-red-500">*</span> رمز عبور
-                                </label>
+                            </Field>
+                            <Field>
+                                <Label htmlFor="password">رمزعبور</Label>
                                 <div className="relative">
-                                    <input onChange={handleChange} type="password" name="password"
-                                        className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition"
-                                        placeholder="••••••••" required/>
-                                    {error.password && <span className="text-red-500 block text-sm mt-1">{error.password}</span>}
+                                    <Input onChange={handleChange} type="password" name="password" id="password"
+                                           placeholder="••••••••" value={inputs.password} className="p-5"/>
+                                    {error.password &&
+                                        <span className="text-red-500 block text-sm mt-1">{error.password}</span>}
                                 </div>
-                            </div>
+                            </Field>
                             <div className="flex items-center justify-between">
                                 <label className="flex items-center">
-                                    <input type="checkbox"
-                                           className="w-4 h-4 text-primary rounded border-gray-300 focus:ring-primary"/>
+                                    <Checkbox/>
                                     <span className="mr-2 text-sm text-gray-600">مرا به خاطر بسپار</span>
                                 </label>
-                                <Link to='/forgot-password' className="text-sm text-primary hover:text-primary-dark transition">
-                                    رمز عبور را فراموش کرده‌اید؟
+                                <Link to='/forgot-password'
+                                      className="text-sm text-primary hover:text-primary-dark transition">
+                                رمز عبور را فراموش کرده‌اید؟
                                 </Link>
                             </div>
-                            <button type="submit"
-                                className={`w-full bg-primary text-white py-3 rounded-lg font-bold hover:bg-primary-dark
-                                 transition transform hover:scale-[1.02] duration-200 ${loading ? 'opacity-50' : ''}`} disabled={loading}>
-                                ورود به سامانه
-                            </button>
+                            <Button className={`w-full bg-primary text-white py-3 rounded-lg p-5
+                                ${loading ? 'opacity-50' : ''}`} disabled={loading}>
+                                {loading ? 'در حال ورود...' : 'ورود'}
+                            </Button>
                             <div className="text-center mt-6">
                                 <p className="text-gray-600">
                                     حساب کاربری ندارید؟

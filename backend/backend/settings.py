@@ -126,6 +126,7 @@ AUTH_USER_MODEL = 'accounts.User'
 
 # REST_FRAMEWORK
 REST_FRAMEWORK = {
+    'NON_FIELD_ERRORS_KEY': 'general',
     'TEST_REQUEST_DEFAULT_FORMAT': 'json',
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework.authentication.TokenAuthentication',
