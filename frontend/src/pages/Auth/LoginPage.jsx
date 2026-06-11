@@ -28,7 +28,6 @@ export function LoginPage() {
             password: '',
             general: ''
         }
-        console.log(inputs)
         if (!inputs.email.trim()) {
             errors.email = 'وارد کردن آدرس ایمیل الزامی است'
         }
@@ -59,7 +58,7 @@ export function LoginPage() {
 
             const data = await response.json()
             if (!response.ok) {
-                setError((prev) => ({...prev, general: data.message || 'نام کاربری یا رمزعبور اشتباه است'}))
+                setError((prev) => ({...prev, general: data.message || 'آدرس ایمیل یا رمزعبور اشتباه است'}))
                 return
             }
 
@@ -86,9 +85,6 @@ export function LoginPage() {
                         <p className="text-blue-100 mt-2">لطفاً وارد حساب کاربری خود شوید</p>
                     </div>
                     <div className="p-8">
-                        <div id="errorMessage" className="hidden bg-red-50 border-r-4 border-red-500 p-3 mb-4 rounded">
-                            <p className="text-red-700 text-sm">❌ نام کاربری یا رمز عبور اشتباه است</p>
-                        </div>
                         <p className="my-5">
                             {message && <span className="text-green-500">{message}</span>}
                             {error.general && <span className="text-red-500 block text-sm mt-1">{error.general}</span>}
@@ -99,7 +95,7 @@ export function LoginPage() {
                                     <span className="text-red-500">*</span> ایمیل
                                 </label>
                                 <div className="relative">
-                                    <input onChange={handleChange} type="text" name="username"
+                                    <input onChange={handleChange} type="text" name="email"
                                         className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition"
                                         placeholder="example@email.com" required/>
                                     {error.email && <span className="text-red-500 block text-sm mt-1">{error.email}</span>}
