@@ -81,53 +81,63 @@ export function LoginPage() {
         <>
             <title>Login Page</title>
 
-            <div className="min-h-screen flex items-center justify-center p-4">
-                <div className="bg-white rounded-2xl shadow-2xl max-w-md w-full overflow-hidden">
-                    <div className="bg-primary p-6 text-center">
-                        <h2 className="text-2xl font-bold text-white">خوش آمدید</h2>
-                        <p className="text-blue-100 mt-2">لطفاً وارد حساب کاربری خود شوید</p>
+            <div className="min-h-screen flex items-center flex-col justify-center p-4 bg-body-bg">
+                <Link to="/" className="flex items-center gap-3 mb-8">
+                    <img className="w-10" src="/logo.png" alt="logo"/>
+                    <div>
+                        <p className="font-bold text-xl">لینگــولند</p>
+                        <span className="text-sm">آموزشگاه آنلاین زبان انگلیسی</span>
                     </div>
+                </Link>
+                <div className="bg-white rounded-xl max-w-md w-full overflow-hidden">
                     <div className="p-8">
+                        <div className="text-center">
+                            <p className="font-bold mb-10 text-xl">ورود به حساب کاربری</p>
+                        </div>
                         <p className="my-5">
                             {error.general && <span className="text-red-500 block text-sm mt-1">{error.general}</span>}
                         </p>
                         <form onSubmit={handleLogin} id="loginForm" className="space-y-6">
-                            <Field>
-                                <Label htmlFor="email">آدرس ایمیل</Label>
-                                <div className="relative">
+                            <Field className="gap-3">
+                                <Label className={`${error.email ? 'text-destructive' : ''}`} htmlFor="email">آدرس
+                                    ایمیل</Label>
+                                <div className="relative space-y-2">
                                     <Input onChange={handleChange} type="email" name="email" id="email"
-                                           placeholder="example@email.com" value={inputs.email} className="p-5"/>
+                                           placeholder="example@email.com" value={inputs.email} className="p-5"
+                                           aria-invalid={!!error.email}/>
                                     {error.email &&
-                                        <span className="text-red-500 block text-sm mt-1">{error.email}</span>}
+                                        <span className="text-destructive block text-sm">{error.email}</span>}
                                 </div>
                             </Field>
-                            <Field>
-                                <Label htmlFor="password">رمزعبور</Label>
-                                <div className="relative">
+                            <Field className="gap-3">
+                                <Label className={`${error.password ? 'text-destructive' : ''}`}
+                                       htmlFor="password">رمزعبور</Label>
+                                <div className="relative space-y-2">
                                     <Input onChange={handleChange} type="password" name="password" id="password"
-                                           placeholder="••••••••" value={inputs.password} className="p-5"/>
+                                           placeholder="••••••••" value={inputs.password} className="p-5"
+                                           aria-invalid={!!error.password}/>
                                     {error.password &&
-                                        <span className="text-red-500 block text-sm mt-1">{error.password}</span>}
+                                        <span className="text-destructive block text-sm">{error.password}</span>}
                                 </div>
                             </Field>
                             <div className="flex items-center justify-between">
-                                <label className="flex items-center">
-                                    <Checkbox/>
-                                    <span className="mr-2 text-sm text-gray-600">مرا به خاطر بسپار</span>
-                                </label>
+                                <div className="flex items-center gap-2">
+                                    <Checkbox id="remember-me"/>
+                                    <Label htmlFor="remember-me">مرا به خاطر بسپار</Label>
+                                </div>
                                 <Link to='/forgot-password'
-                                      className="text-sm text-primary hover:text-primary-dark transition">
-                                رمز عبور را فراموش کرده‌اید؟
+                                      className="text-sm text-primary font-semibold">
+                                    رمز عبور را فراموش کرده‌اید؟
                                 </Link>
                             </div>
                             <Button className={`w-full bg-primary text-white py-3 rounded-lg p-5
                                 ${loading ? 'opacity-50' : ''}`} disabled={loading}>
-                                {loading ? 'در حال ورود...' : 'ورود'}
+                                {loading ? 'در حال ورود ...' : 'ورود'}
                             </Button>
-                            <div className="text-center mt-6">
-                                <p className="text-gray-600">
+                            <div className="text-center">
+                                <p className="text-gray-600 text-sm">
                                     حساب کاربری ندارید؟
-                                    <Link to='/register' className="text-primary font-semibold hover:underline">
+                                    <Link to='/register' className="text-primary mr-1 font-semibold hover:underline">
                                         ثبت‌نام کنید
                                     </Link>
                                 </p>

@@ -1,26 +1,26 @@
-Vazirmatn Variable Font
-=======================
+Estedad Variable Font
+=====================
 
-This download contains Vazirmatn as both a variable font and static fonts.
+This download contains Estedad as both a variable font and static fonts.
 
-Vazirmatn is a variable font with this axis:
+Estedad is a variable font with this axis:
   wght
 
 This means all the styles are contained in a single file:
-  Vazirmatn/Vazirmatn-VariableFont_wght.ttf
+  Estedad-VariableFont_wght.ttf
 
 If your app fully supports variable fonts, you can now pick intermediate styles
 that aren’t available as static fonts. Not all apps support variable fonts, and
-in those cases you can use the static font files for Vazirmatn:
-  Vazirmatn/static/Vazirmatn-Thin.ttf
-  Vazirmatn/static/Vazirmatn-ExtraLight.ttf
-  Vazirmatn/static/Vazirmatn-Light.ttf
-  Vazirmatn/static/Vazirmatn-Regular.ttf
-  Vazirmatn/static/Vazirmatn-Medium.ttf
-  Vazirmatn/static/Vazirmatn-SemiBold.ttf
-  Vazirmatn/static/Vazirmatn-Bold.ttf
-  Vazirmatn/static/Vazirmatn-ExtraBold.ttf
-  Vazirmatn/static/Vazirmatn-Black.ttf
+in those cases you can use the static font files for Estedad:
+  static/Estedad-Thin.ttf
+  static/Estedad-ExtraLight.ttf
+  static/Estedad-Light.ttf
+  static/Estedad-Regular.ttf
+  static/Estedad-Medium.ttf
+  static/Estedad-SemiBold.ttf
+  static/Estedad-Bold.ttf
+  static/Estedad-ExtraBold.ttf
+  static/Estedad-Black.ttf
 
 Get started
 -----------

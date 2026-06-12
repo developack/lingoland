@@ -5,19 +5,12 @@
 /*---break---*/
 @custom-variant dark (&:is(.dark *));
 
-@font-face {
-    font-family: "Rubik";
-    src: url('../public/font/Rubik/Rubik-VariableFont_wght.ttf') format("truetype");
-    font-weight: 100 900;
-    font-style: normal;
-    font-display: swap;
-}
 
 @font-face {
-    font-family: "Rubik";
-    src: url("../public/font/Rubik/Rubik-Italic-VariableFont_wght.ttf") format("truetype");
+    font-family: "Estedad";
+    src: url('../public/font/Estedad/Estedad-VariableFont_wght.ttf') format("truetype");
     font-weight: 100 900;
-    font-style: italic;
+    font-style: normal;
     font-display: swap;
 }
 
@@ -25,7 +18,7 @@
     /** BreakPoints **/
     --breakpoint-xs: 22.5rem;
     /** Fonts **/
-    --font-rubik: "Rubik", sans-serif;
+    --font-estedad: "Estedad", sans-serif;
     /** Colors **/
     --color-primary: #2563EB;
     --color-primary-shadow: #2563EB38;
@@ -104,7 +97,7 @@
     @apply font-sans;
     }
     body {
-        font-family: var(--font-rubik);
+        font-family: var(--font-estedad);
         background-color: var(--color-body-bg);
     @apply bg-background text-foreground;
     }
