@@ -48,16 +48,12 @@ export function LoginPage() {
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({
-                    email: inputs.email,
-                    password: inputs.password
-                })
+                body: JSON.stringify(inputs)
             })
 
             const data = await response.json()
             if (!response.ok) {
                 const errors = {}
-                console.log(data)
                 Object.entries(data).forEach(([field, message]) => {
                     errors[field] = message[0]
                 })
