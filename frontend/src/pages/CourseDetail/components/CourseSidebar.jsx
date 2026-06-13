@@ -48,8 +48,7 @@ export function CourseSidebar({ handleEnrollment }) {
             <div className="flex flex-col gap-4 pt-5 border-t border-border">
                 {authToken
                     ? <button onClick={handleEnrollment}
-                              className="flex-1 bg-secondary text-white py-3 rounded-xl font-bold">ثبت‌نام در
-                        دوره</button>
+                              className="flex-1 bg-success text-white py-3 rounded-xl font-bold">ثبت‌نام در دوره</button>
                     :
                     <span className="bg-cta/10 text-cta text-sm p-5 rounded-xl">جهت ثبت‌نام در دوره وارد حساب کاربری خود شوید</span>
                 }

@@ -39,7 +39,7 @@ export function CourseDetailPage() {
         }
 
         void fetchCourseDetailData()
-    }, [])
+    }, [slug, authToken])
 
     useEffect(() => {
         if (!course.id) return
