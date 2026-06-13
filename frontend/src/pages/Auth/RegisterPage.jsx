@@ -64,6 +64,7 @@ export function RegisterPage() {
                 body: JSON.stringify(inputs)
             })
             const data = await response.json()
+
             if (!response.ok) {
                 const errors = {}
                 Object.entries(data).forEach(([field, message]) => {
@@ -74,7 +75,8 @@ export function RegisterPage() {
                 return
             }
 
-            navigate('/')
+            localStorage.setItem(import.meta.env.VITE_AUTH_TOKEN_KEY, data.token)
+            navigate('/dashboard')
 
         } catch (error) {
             console.log(error)

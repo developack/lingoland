@@ -99,7 +99,7 @@ export function ProfilePage() {
 
                     <div className="bg-white border border-border rounded-xl p-6 max-w-3xl">
                         <p className="my-2">
-                            {message && <span className="text-white p-3 rounded-xl bg-secondary block text-xs">{message}</span>}
+                            {message && <span className="text-white p-3 rounded-xl bg-success block text-xs">{message}</span>}
                         </p>
                         <div className="flex items-center gap-4 mb-6">
                             <img src="/avatar.png" className="w-20 h-20 rounded-full object-cover border border-border"

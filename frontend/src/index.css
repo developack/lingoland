@@ -5,7 +5,6 @@
 /*---break---*/
 @custom-variant dark (&:is(.dark *));
 
-
 @font-face {
     font-family: "Estedad";
     src: url('../public/font/Estedad/Estedad-VariableFont_wght.ttf') format("truetype");
@@ -22,7 +21,7 @@
     /** Colors **/
     --color-primary: #2563EB;
     --color-primary-shadow: #2563EB38;
-    --color-secondary: #10B981;
+    --color-success: #10B981;
     --color-cta: #F59E0B;
     --color-cta-shadow: #F59E0B38;
     --color-text: #1F2937;
@@ -33,7 +32,7 @@
     /** Shadows **/
     --shadow-regular: 0 20px 16px -16px #7385af75;
     --shadow-primary: 0 20px 16px -16px #2563EB80;
-    --shadow-secondary: 0 20px 16px -16px #10B98180;
+    --shadow-success: 0 20px 16px -16px #10B98180;
     --shadow-cta: 0 20px 16px -16px #F59E0B80;
     /** Animations **/
     --animate-indicator: indicator 1s infinite;
