@@ -28,7 +28,7 @@ export function ArticlesPage() {
 
             <Header/>
 
-            <section className="bg-gray-50 min-h-screen py-12">
+            <section className="min-h-screen py-12">
                 <div className="container mx-auto px-4">
 
                     <div className="grid lg:grid-cols-4 gap-8">

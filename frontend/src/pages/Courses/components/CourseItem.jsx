@@ -1,4 +1,5 @@
 import { Link } from "react-router"
+import { Button } from "@/components/ui/button"
 import { BASE_URL } from "@/config/api";
 
 
@@ -41,12 +42,10 @@ export function CourseItem({ course }) {
                     </div>
                 </div>
                 <div className="mt-5 flex items-end justify-between">
-                    <Link
-                        to={`/course/${course.slug}`}
-                        className="text-sm rounded-xl text-primary bg-primary/5 p-2 font-medium transition-colors hover:text-white hover:bg-primary">
-                        مشاهده دوره
-                    </Link>
-                    <span className="text-sm text-secondary font-bold">{course.price}</span>
+                    <Button asChild variant="secondary" className="h-10">
+                        <Link to={`/course/${course.slug}`}>مشاهده دوره</Link>
+                    </Button>
+                    <span className="text-sm text-success font-bold">{course.price}</span>
                 </div>
             </div>
         </div>

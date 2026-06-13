@@ -1,4 +1,5 @@
 import { Link } from "react-router"
+import { Button } from "@/components/ui/button"
 
 
 export function HeroSection() {
@@ -25,9 +26,12 @@ export function HeroSection() {
                     </p>
                 </div>
                 <div className="flex items-center gap-5">
-                    <Link to="/courses" className="bg-primary text-white rounded-xl py-3 px-5 text-sm">شروع
-                        کنید</Link>
-                    <Link to="" className="bg-button rounded-xl py-3 px-5 text-sm">مشاهده امکانات</Link>
+                    <Button className="h-10" asChild>
+                        <Link to="/courses" className="bg-primary text-white rounded-xl py-3 px-5 text-sm">شروع کنید</Link>
+                    </Button>
+                    <Button className="h-10" asChild variant="secondary">
+                        <Link to="" className="bg-button rounded-xl py-3 px-5 text-sm">مشاهده امکانات</Link>
+                    </Button>
                 </div>
             </div>
             <figure className="flex justify-end">

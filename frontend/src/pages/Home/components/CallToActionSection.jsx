@@ -1,4 +1,5 @@
 import { Link } from "react-router"
+import { Button } from "@/components/ui/button"
 
 
 export function CallToActionSection() {
@@ -15,8 +16,9 @@ export function CallToActionSection() {
                         ارتقا دهید
                     </p>
                 </div>
-                <Link to="/courses" className="bg-primary text-white rounded-xl py-3 px-5 text-sm">ثبت‌نام
-                    کنید</Link>
+                <Button className="h-10" asChild>
+                    <Link to="/courses" className="bg-primary text-white rounded-xl py-3 px-5 text-sm">ثبت‌نام کنید</Link>
+                </Button>
             </div>
         </section>
     )

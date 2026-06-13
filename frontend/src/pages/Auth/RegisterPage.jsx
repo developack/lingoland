@@ -1,10 +1,9 @@
 import {Link, useNavigate} from 'react-router'
-import { useState, useEffect } from "react"
+import { useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Field } from "@/components/ui/field"
 import { Label } from "@/components/ui/label"
-import {Checkbox} from "@/components/ui/checkbox.jsx";
 
 
 export function RegisterPage() {

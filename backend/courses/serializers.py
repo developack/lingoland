@@ -56,7 +56,9 @@ class LessonDetailSerializer(serializers.ModelSerializer):
 
     def get_is_complete(self, obj):
         user = self.context['request'].user
-        return obj.is_complete(user)
+        if user.is_authenticated:
+            return obj.is_complete(user)
+        return False
 
 # ============================================================ #
 

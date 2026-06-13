@@ -88,7 +88,7 @@ export function CourseDetailPage() {
 
             <Header/>
             <div className="container grid grid-cols-[3fr_1fr] gap-10 flex-1 mt-20 items-start">
-                <div className="max-w-6xl mx-auto bg-white rounded-2xl overflow-hidden">
+                <div className="bg-white rounded-2xl overflow-hidden">
                     <div className="p-8">
 
                         <CourseHero course={course} />

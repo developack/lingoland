@@ -4,12 +4,12 @@ import { Link } from "react-router"
 export function ProfileDropdown({ userProfile, onLogout }) {
     return (
         <div className="relative group">
-            <div className="flex items-center gap-3 cursor-pointer rounded-xl border border-gray-200 bg-white px-4 py-2 shadow-sm transition hover:bg-gray-50 min-w-[180px]">
+            <div className="flex items-center gap-3 cursor-pointer rounded-xl border border-gray-200 bg-white px-4 py-2 transition hover:bg-gray-50 w-[170px]">
                 <img
                     src={userProfile?.user_profile?.avatar ? `${BASE_URL}${userProfile.user_profile.avatar}` : '/avatar.png'}
                     alt="avatar" className="h-8 w-8 rounded-full object-cover"/>
                 <div className="flex flex-col">
-                    <span className="text-sm font-semibold text-gray-800">
+                    <span className="text-sm font-semibold text-gray-800 max-w-[100px] overflow-hidden truncate">
                         {userProfile?.username}
                     </span>
                 </div>
