@@ -1,8 +1,9 @@
+import { Button } from "@/components/ui/button"
+import { useState } from "react"
 
 
-export function CourseSidebar({ handleEnrollment }) {
+export function CourseSidebar({ handleEnrollment, isEnrolled, loading }) {
     const authToken = localStorage.getItem(import.meta.env.VITE_AUTH_TOKEN_KEY)
-
     return (
         <aside className="bg-white rounded-xl p-5 sticky top-[110px]">
             <div className="grid grid-cols-2 md:grid-cols-1 gap-1 mb-5">
@@ -46,11 +47,13 @@ export function CourseSidebar({ handleEnrollment }) {
                 </div>
             </div>
             <div className="flex flex-col gap-4 pt-5 border-t border-border">
-                {authToken
-                    ? <button onClick={handleEnrollment}
-                              className="flex-1 bg-success text-white py-3 rounded-xl font-bold">ثبت‌نام در دوره</button>
-                    :
-                    <span className="bg-cta/10 text-cta text-sm p-5 rounded-xl">جهت ثبت‌نام در دوره وارد حساب کاربری خود شوید</span>
+                {loading
+                    ? <div className="skeleton h-10 rounded-xl"></div>
+                    : authToken
+                        ? isEnrolled
+                            ? <Button variant="secondary" className="h-10">ثبت‌نام شده</Button>
+                            : <Button onClick={handleEnrollment} className="h-10 bg-success text-white py-3 rounded-xl transition hover:bg-success/80">ثبت‌نام در دوره</Button>
+                        : <span className="bg-cta/10 text-cta text-sm p-5 rounded-xl">جهت ثبت‌نام در دوره وارد حساب کاربری خود شوید</span>
                 }
             </div>
         </aside>

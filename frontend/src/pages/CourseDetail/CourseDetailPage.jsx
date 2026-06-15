@@ -15,6 +15,7 @@ export function CourseDetailPage() {
     const navigate = useNavigate()
     const [ course, setCourse ] = useState({})
     const [ comments, setComments ] = useState([])
+    const [ loading, setLoading ] = useState(true)
     const { slug } = useParams()
 
     useEffect(() => {
@@ -31,10 +32,19 @@ export function CourseDetailPage() {
                     method: 'GET',
                     headers: headers
                 })
+
+                if (response.status === 404) {
+                    console.log(response.status)
+                    navigate('/404')
+                }
+
                 const data = await response.json()
                 setCourse(data)
+
             } catch (error) {
                 console.log('Error fetching courses:', error)
+            } finally {
+                setLoading(false)
             }
         }
 
@@ -87,7 +97,7 @@ export function CourseDetailPage() {
             <title>{course.title}</title>
 
             <Header/>
-            <div className="container grid grid-cols-[3fr_1fr] gap-10 flex-1 mt-20 items-start">
+                <div className="container grid grid-cols-[3fr_1fr] gap-10 flex-1 mt-20 items-start">
                 <div className="bg-white rounded-2xl overflow-hidden">
                     <div className="p-8">
 
@@ -105,7 +115,7 @@ export function CourseDetailPage() {
                         </div>
                     </div>
                 </div>
-                <CourseSidebar handleEnrollment={handleEnrollment}/>
+                <CourseSidebar handleEnrollment={handleEnrollment} isEnrolled={course.is_enrolled} loading={loading}/>
             </div>
             <Footer/>
         </>

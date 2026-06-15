@@ -43,7 +43,7 @@ export function CourseItem({ course }) {
                 </div>
                 <div className="mt-5 flex items-end justify-between">
                     <Button asChild variant="secondary" className="h-10">
-                        <Link to={`/course/${course.slug}`}>مشاهده دوره</Link>
+                        <Link className="py-3 px-5" to={`/course/${course.slug}`}>مشاهده دوره</Link>
                     </Button>
                     <span className="text-sm text-success font-bold">{course.price}</span>
                 </div>
