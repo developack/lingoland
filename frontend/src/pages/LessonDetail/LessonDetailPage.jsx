@@ -3,12 +3,14 @@ import { useParams } from "react-router"
 import { Comments } from "../../features/comment/components/Comments.jsx";
 import { LearningHeader } from "../../features/lms/components/LearningHeader.jsx"
 import { LessonsSidebarNavigation } from "../../features/lms/components/LessonsSidebarNavigation.jsx"
+import { toast } from "sonner"
 
 
 export function LessonDetailPage() {
     const authToken = localStorage.getItem(import.meta.env.VITE_AUTH_TOKEN_KEY)
     const [ lesson, setLesson ] = useState({})
     const [ learningContext, setLearningContext ] = useState({})
+    const [ loading, setLoading ] = useState(true)
     const [ comments, setComments ] = useState([])
     const { slug } = useParams()
 
@@ -52,6 +54,8 @@ export function LessonDetailPage() {
 
             } catch (error) {
                 console.log(error)
+            } finally {
+                setLoading(false)
             }
         }
 
@@ -87,6 +91,7 @@ export function LessonDetailPage() {
 
             const data = await response.json()
             setLesson(prev => ({...prev, is_complete: true, progress_percentage: data.progress_percentage}))
+            toast.success('درس با موفقیت تکمیل شد')
 
         } catch (error) {
             console.log(error)
@@ -96,11 +101,11 @@ export function LessonDetailPage() {
     return (
         <div className="min-h-screen bg-slate-50 flex flex-col">
 
-            <LearningHeader learningContext={learningContext} />
+            <LearningHeader learningContext={learningContext} loading={loading} />
 
             <div className="flex flex-1 overflow-hidden">
 
-                <LessonsSidebarNavigation learningContext={learningContext} lessonId={lesson.id} />
+                <LessonsSidebarNavigation learningContext={learningContext} lessonId={lesson.id} loading={loading} />
 
                 <main className="flex-1 overflow-y-auto p-8 container">
                     <div className="mx-auto max-w-4xl bg-white p-8 rounded-xl shadow-sm">
@@ -110,7 +115,7 @@ export function LessonDetailPage() {
                                 {lesson.title}
                             </h2>
                             <button type="button" onClick={handleMarkComplete} className={`rounded-lg px-4 py-2 text-sm font-medium transition
-                             ${lesson.is_complete ? 'bg-green-500 text-white' : 'bg-indigo-600 text-white hover:bg-indigo-700'}`}>
+                             ${lesson.is_complete ? 'bg-success text-white' : 'bg-primary text-white hover:bg-indigo-700'}`}>
                                 {lesson.is_complete ? 'درس تکمیل شد ✓' : 'تکمیل درس'}
                             </button>
                         </div>

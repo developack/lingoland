@@ -1,12 +1,13 @@
 import { Link, useNavigate } from "react-router"
 import { useEffect, useState } from "react"
-import { ProfileDropdown } from "../../../shared/components/Header/ProfileDropdown"
+import { ProfileDropdown } from "@/shared/components/Header/ProfileDropdown.jsx"
 
 
-export function LearningHeader({ learningContext }) {
+export function LearningHeader({ learningContext, loading }) {
     const navigate = useNavigate()
     const authToken = localStorage.getItem(import.meta.env.VITE_AUTH_TOKEN_KEY)
     const [ userProfile, setUserProfile ] = useState(null)
+    const [ profileLoading, setProfileLoading ] = useState(true)
 
     useEffect(() => {
         const fetchUserProfileData = async () => {
@@ -26,6 +27,8 @@ export function LearningHeader({ learningContext }) {
 
             } catch (error) {
                 console.log(error)
+            } finally {
+                setProfileLoading(false)
             }
         }
         void fetchUserProfileData()
@@ -58,15 +61,18 @@ export function LearningHeader({ learningContext }) {
                 </div>
             </Link>
             <div className="w-100">
-                <div className="mb-1 flex justify-between gap-5 items-center text-sm">
-                    <span className="text-xs whitespace-nowrap">درصد پیشرفت دوره</span>
-                    <div className="h-2 w-full rounded-full bg-slate-200">
-                        <div className="h-2 rounded-full bg-secondary" style={{width: `${learningContext.progress_percentage}%`}}/>
+                {loading
+                    ? <div className="skeleton w-[400px] h-3"></div>
+                    : <div className="mb-1 flex justify-between gap-5 items-center text-sm">
+                        <span className="text-xs whitespace-nowrap">درصد پیشرفت دوره</span>
+                        <div className="h-2 w-full rounded-full bg-slate-200">
+                            <div className="h-2 rounded-full bg-success" style={{width: `${learningContext.progress_percentage}%`}}/>
+                        </div>
+                        <span className="text-xs">{learningContext.progress_percentage}%</span>
                     </div>
-                    <span className="text-xs">{learningContext.progress_percentage}%</span>
-                </div>
+                }
             </div>
-            <ProfileDropdown userProfile={userProfile} onLogout={handleLogout}/>
+            <ProfileDropdown userProfile={userProfile} onLogout={handleLogout} loading={profileLoading}/>
         </header>
     )
 }

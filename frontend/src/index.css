@@ -107,7 +107,7 @@
 
 @layer components {
     .skeleton {
-        @apply relative overflow-hidden rounded-md bg-slate-200;
+        @apply relative overflow-hidden rounded-xl bg-slate-200;
     }
 
     .skeleton::after {
