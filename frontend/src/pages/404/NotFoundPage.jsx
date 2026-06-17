@@ -29,10 +29,6 @@ export function NotFoundPage() {
                                 بازگشت به خانه
                             </Link>
                         </Button>
-
-                        <Button variant="secondary" onClick={() => window.history.back()} className="h-10">
-                            صفحه قبلی
-                        </Button>
                     </div>
 
                     <div className="mt-10">

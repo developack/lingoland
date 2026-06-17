@@ -34,7 +34,6 @@ export function CourseDetailPage() {
                 })
 
                 if (response.status === 404) {
-                    console.log(response.status)
                     navigate('/404')
                 }
 
@@ -100,13 +99,9 @@ export function CourseDetailPage() {
                 <div className="container grid grid-cols-[3fr_1fr] gap-10 flex-1 mt-20 items-start">
                 <div className="bg-white rounded-2xl overflow-hidden">
                     <div className="p-8">
-
                         <CourseHero course={course} />
-
                         <CourseContent course={course}/>
-
                         <LessonsList lessons={course.lessons} is_enrolled={course.is_enrolled}/>
-
                         <div>
                             <h2 className="text-xl font-bold text-gray-800 mb-4 border-b-2 border-blue-500 pb-2 inline-block">
                                 دیدگاه‌های دوره
