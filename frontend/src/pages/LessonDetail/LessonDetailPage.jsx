@@ -11,6 +11,7 @@ export function LessonDetailPage() {
     const [ lesson, setLesson ] = useState({})
     const [ learningContext, setLearningContext ] = useState({})
     const [ loading, setLoading ] = useState(true)
+    const [ lessonLoading, setLessonLoading ] = useState(true)
     const [ comments, setComments ] = useState([])
     const { slug } = useParams()
 
@@ -30,6 +31,9 @@ export function LessonDetailPage() {
 
             } catch (error) {
                 console.log(error)
+                toast.error('خطا در برقراری ارتباط با سرور')
+            } finally {
+                setLessonLoading(false)
             }
         }
 
@@ -111,19 +115,42 @@ export function LessonDetailPage() {
                     <div className="mx-auto max-w-4xl bg-white p-8 rounded-xl shadow-sm">
 
                         <div className="flex items-center justify-between mb-8 pb-5 border-b border-border">
-                            <h2 className="text-2xl font-bold">
-                                {lesson.title}
-                            </h2>
-                            <button type="button" onClick={handleMarkComplete} className={`rounded-lg px-4 py-2 text-sm font-medium transition
-                             ${lesson.is_complete ? 'bg-success text-white' : 'bg-primary text-white hover:bg-indigo-700'}`}>
-                                {lesson.is_complete ? 'درس تکمیل شد ✓' : 'تکمیل درس'}
-                            </button>
+                            {lessonLoading
+                                ? <div className="skeleton w-[30%] h-[32px]"></div>
+                                : <h2 className="text-2xl font-bold">{lesson.title}</h2>
+                            }
+                            {lessonLoading
+                                ? <div className="skeleton w-[137px] h-[36px]"></div>
+                                : <button type="button" onClick={handleMarkComplete} className={`rounded-lg px-4 py-2 text-sm font-medium transition
+                                    ${lesson.is_complete ? 'bg-success text-white' : 'bg-primary text-white hover:bg-indigo-700'}`}>
+                                    {lesson.is_complete ? 'درس تکمیل شد ✓' : 'تکمیل درس'}
+                                </button>}
                         </div>
 
                         <div className="rounded-xl bg-white">
                             <p className="mb-5 bg-gray-100 rounded-xl p-5">{lesson.excerpt}</p>
-                            <p className="text-slate-700 leading-7">
-                                {lesson.content}
+                            <p className="text-slate-700 leading-7 min-h-70">
+
+                                {lessonLoading
+                                    ? <div className="flex flex-col gap-10">
+                                        <div className="flex flex-col gap-3">
+                                            <p className="w-full h-3.5 skeleton"></p>
+                                            <p className="w-full h-3.5 skeleton"></p>
+                                            <p className="w-[50%] h-3.5 skeleton"></p>
+                                        </div>
+                                        <div className="flex flex-col gap-3">
+                                            <p className="w-full h-3.5 skeleton"></p>
+                                            <p className="w-full h-3.5 skeleton"></p>
+                                            <p className="w-[50%] h-3.5 skeleton"></p>
+                                        </div>
+                                        <div className="flex flex-col gap-3">
+                                            <p className="w-full h-3.5 skeleton"></p>
+                                            <p className="w-full h-3.5 skeleton"></p>
+                                            <p className="w-[50%] h-3.5 skeleton"></p>
+                                        </div>
+                                    </div>
+                                    : lesson.content
+                                }
                             </p>
                         </div>
                         <div className="mt-8">

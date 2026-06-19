@@ -5,6 +5,7 @@ import { Input } from "@/components/ui/input"
 import { Field } from "@/components/ui/field"
 import { Label } from "@/components/ui/label"
 import { Checkbox } from "@/components/ui/checkbox"
+import { toast } from "sonner"
 
 
 export function LoginPage() {
@@ -19,7 +20,7 @@ export function LoginPage() {
     const handleChange = (event) => {
         const { name, value } = event.target
         setInputs((prev) => ({...prev, [name]: value}))
-        setError((prev) => ({...prev, [name]: '', general: ''}))
+        setError((prev) => ({...prev, [name]: ''}))
     }
 
     const FormValidation = () => {
@@ -66,8 +67,7 @@ export function LoginPage() {
             navigate('/')
 
         } catch (error) {
-            console.log(error)
-            setError((prev) => ({...prev, general: 'خطا در برقراری ارتباط با سرور'}))
+            toast.error('خطا در برقراری ارتباط با سرور')
         } finally {
             setLoading(false)
         }
@@ -90,9 +90,6 @@ export function LoginPage() {
                         <div className="text-center">
                             <p className="font-bold mb-10 text-xl">ورود به حساب کاربری</p>
                         </div>
-                        <p className="my-5">
-                            {error.general && <span className="text-red-500 block text-sm mt-1">{error.general}</span>}
-                        </p>
                         <form onSubmit={handleLogin} id="loginForm" className="space-y-6">
                             <Field className="gap-3">
                                 <Label className={`${error.email ? 'text-destructive' : ''}`} htmlFor="email">آدرس

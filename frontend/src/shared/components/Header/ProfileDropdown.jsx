@@ -12,9 +12,9 @@ export function ProfileDropdown({ userProfile, onLogout, loading }) {
                         <img src={userProfile?.user_profile?.avatar ? `${BASE_URL}${userProfile.user_profile.avatar}` : '/avatar.png'}
                             alt="avatar" className="h-8 w-8 rounded-full object-cover"/>
                         <div className="flex flex-col">
-                    <span className="text-sm font-semibold text-gray-800 max-w-[100px] overflow-hidden truncate">
-                        {userProfile?.username}
-                    </span>
+                            <span className="text-sm font-semibold text-gray-800 max-w-[100px] overflow-hidden truncate">
+                                {userProfile ? userProfile.username  : 'مهمان'}
+                            </span>
                         </div>
                     </div>
                     <div

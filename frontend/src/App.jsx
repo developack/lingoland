@@ -26,29 +26,29 @@ import './App.css'
 function App() {
     return (
         <>
-                <Toaster position="bottom-left" />
-                <Routes>
-                        <Route index element={<HomePage />} />
-                        <Route path="/login" element={<LoginPage />} />
-                        <Route path="/register" element={<RegisterPage />} />
-                        <Route path="/forgot-password" element={<ForgotPasswordPage />} />
-                        <Route path="/cart" element={<CartPage />} />
-                        <Route path="/checkout" element={<CheckoutPage />} />
-                        <Route path="/articles" element={<ArticlesPage />} />
-                        <Route path="/article/:slug" element={<ArticleDetailPage />} />
-                        <Route path="/courses" element={<CoursesPage />} />
-                        <Route path="/course/:slug" element={<CourseDetailPage />} />
-                        <Route path="/lesson/:slug" element={<LessonDetailPage />} />
-                        <Route path="/topic/:slug" element={<TopicDetailPage />} />
-                        <Route path="/quiz/:slug" element={<QuizDetailPage />} />
-                        <Route path="/dictionary" element={<DictionaryPage />} />
-                        <Route path="/dashboard" element={<DashboardPage />} />
-                        <Route path="/my-courses" element={<MyCoursesPage />} />
-                        <Route path="/comments" element={<CommentsPage />} />
-                        <Route path="/orders" element={<OrdersPage />} />
-                        <Route path="/profile" element={<ProfilePage />} />
-                        <Route path="*" element={<NotFoundPage />} />
-                </Routes>
+            <Toaster position="bottom-left" />
+            <Routes>
+                <Route index element={<HomePage />} />
+                <Route path="/login" element={<LoginPage />} />
+                <Route path="/register" element={<RegisterPage />} />
+                <Route path="/forgot-password" element={<ForgotPasswordPage />} />
+                <Route path="/cart" element={<CartPage />} />
+                <Route path="/checkout" element={<CheckoutPage />} />
+                <Route path="/articles" element={<ArticlesPage />} />
+                <Route path="/article/:slug" element={<ArticleDetailPage />} />
+                <Route path="/courses" element={<CoursesPage />} />
+                <Route path="/course/:slug" element={<CourseDetailPage />} />
+                <Route path="/lesson/:slug" element={<LessonDetailPage />} />
+                <Route path="/topic/:slug" element={<TopicDetailPage />} />
+                <Route path="/quiz/:slug" element={<QuizDetailPage />} />
+                <Route path="/dictionary" element={<DictionaryPage />} />
+                <Route path="/dashboard" element={<DashboardPage />} />
+                <Route path="/my-courses" element={<MyCoursesPage />} />
+                <Route path="/comments" element={<CommentsPage />} />
+                <Route path="/orders" element={<OrdersPage />} />
+                <Route path="/profile" element={<ProfilePage />} />
+                <Route path="*" element={<NotFoundPage />} />
+            </Routes>
         </>
     )
 }

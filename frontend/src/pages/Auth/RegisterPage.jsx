@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Field } from "@/components/ui/field"
 import { Label } from "@/components/ui/label"
+import { toast } from "sonner"
 
 
 export function RegisterPage() {
@@ -20,7 +21,7 @@ export function RegisterPage() {
     const handleChange = (event) => {
         const { name, value } = event.target
         setInputs((prev) => ({...prev, [name]: value}))
-        setError((prev) => ({...prev, [name]: '', general: ''}))
+        setError((prev) => ({...prev, [name]: ''}))
     }
 
     const formValidation = () => {
@@ -78,7 +79,7 @@ export function RegisterPage() {
             navigate('/dashboard')
 
         } catch (error) {
-            console.log(error)
+            toast.error('خطا در برقراری ارتباط با سرور')
         } finally {
             setLoading(false)
         }
@@ -101,9 +102,6 @@ export function RegisterPage() {
                         <div className="text-center">
                             <p className="font-bold mb-10 text-xl">ساخت حساب کاربری جدید</p>
                         </div>
-                        <p className="my-5">
-                            {error.general && <span className="text-red-500 block text-sm mt-1">{error.general}</span>}
-                        </p>
                         <form onSubmit={handleRegister} id="registerForm" className="space-y-6">
                             <Field className="gap-3">
                                 <Label className={`${error.username ? 'text-destructive' : ''}`} htmlFor="username">
