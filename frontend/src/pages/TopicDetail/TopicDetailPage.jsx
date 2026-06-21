@@ -1,16 +1,17 @@
 import { useState, useEffect } from "react"
 import { useParams } from "react-router"
-import { Comments } from "../../features/comment/components/Comments.jsx";
-import { LearningHeader } from "../../features/lms/components/LearningHeader.jsx";
-import { LessonsSidebarNavigation } from "../../features/lms/components/LessonsSidebarNavigation.jsx"
+import { Comments } from "@/features/comment/components/Comments";
+import { LearningHeader } from "@/features/lms/components/LearningHeader";
+import { LessonsSidebarNavigation } from "@/features/lms/components/LessonsSidebarNavigation"
+import { useLmsContext } from "@/hooks/useLmsContext"
 
 
 export function TopicDetailPage() {
     const authToken = localStorage.getItem(import.meta.env.VITE_AUTH_TOKEN_KEY)
-    const [ topic, setTopic ] = useState({})
-    const [ learningContext, setLearningContext ] = useState({})
-    const [ comments, setComments ] = useState([])
     const { slug } = useParams()
+    const [ topic, setTopic ] = useState({})
+    const [ comments, setComments ] = useState([])
+    const { learningContext, loading, reload } = useLmsContext(topic?.course)
 
     useEffect(() => {
         const fetchTopicDetailData = async () => {
@@ -34,30 +35,6 @@ export function TopicDetailPage() {
     }, [slug]);
 
     useEffect(() => {
-        if (!topic.course) return
-
-        const fetchLearningContextData = async () => {
-            try{
-                const response = await fetch(`/api/course/${topic.course}/learning-context/`, {
-                    method: 'GET',
-                    headers: {
-                        "Content-Type": "application/json",
-                        "Authorization": `Token ${authToken}`
-                    }
-                })
-
-                const data = await response.json()
-                setLearningContext(data)
-
-            } catch (error) {
-                console.log(error)
-            }
-        }
-
-        void fetchLearningContextData()
-    }, [topic.course])
-
-    useEffect(() => {
         if (!topic.id) return
 
         const fetchTopicCommentsData = async () => {
@@ -76,11 +53,11 @@ export function TopicDetailPage() {
     return (
         <div className="min-h-screen bg-slate-50 flex flex-col">
 
-            <LearningHeader learningContext={learningContext} />
+            <LearningHeader learningContext={learningContext} loading={loading} />
 
             <div className="flex flex-1 overflow-hidden">
 
-                <LessonsSidebarNavigation learningContext={learningContext} lessonId={topic.lesson} stepId={topic.id} />
+                <LessonsSidebarNavigation learningContext={learningContext} lessonId={topic.lesson} stepId={topic.id} loading={loading} />
 
                 <main className="flex-1 overflow-y-auto p-8 container">
                     <div className="mx-auto max-w-4xl">

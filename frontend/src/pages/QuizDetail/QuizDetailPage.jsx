@@ -1,16 +1,17 @@
 import { useState, useEffect } from "react"
 import { useParams } from "react-router"
 import { QuizQuestions } from "./components/QuizQuestions"
-import { LearningHeader } from "../../features/lms/components/LearningHeader.jsx";
-import { LessonsSidebarNavigation } from "../../features/lms/components/LessonsSidebarNavigation.jsx"
+import { LearningHeader } from "@/features/lms/components/LearningHeader"
+import { LessonsSidebarNavigation } from "@/features/lms/components/LessonsSidebarNavigation"
+import { useLmsContext } from "@/hooks/useLmsContext"
 
 
 export function QuizDetailPage() {
     const authToken = localStorage.getItem(import.meta.env.VITE_AUTH_TOKEN_KEY)
-    const [ quiz, setQuiz ] = useState({})
-    const [ learningContext, setLearningContext ] = useState({})
-    const [ choices, setChoices ] = useState([])
     const { slug } = useParams()
+    const [ quiz, setQuiz ] = useState({})
+    const [ choices, setChoices ] = useState([])
+    const { learningContext, loading, reload } = useLmsContext(quiz?.course)
 
     useEffect(() => {
         const fetchQuizDetailData = async () => {
@@ -33,30 +34,6 @@ export function QuizDetailPage() {
 
         void fetchQuizDetailData()
     }, [slug]);
-
-    useEffect(() => {
-        if (!quiz.course) return
-
-        const fetchLearningContextData = async () => {
-            try{
-                const response = await fetch(`/api/course/${quiz.course}/learning-context/`, {
-                    method: 'GET',
-                    headers: {
-                        "Content-Type": "application/json",
-                        "Authorization": `Token ${authToken}`
-                    }
-                })
-
-                const data = await response.json()
-                setLearningContext(data)
-
-            } catch (error) {
-                console.log(error)
-            }
-        }
-
-        void fetchLearningContextData()
-    }, [quiz.course])
 
     const handleChoices = (event) => {
         const question = event.target.dataset.question
@@ -98,11 +75,11 @@ export function QuizDetailPage() {
     return (
         <div className="min-h-screen bg-slate-50 flex flex-col">
 
-            <LearningHeader learningContext={learningContext} />
+            <LearningHeader learningContext={learningContext} loading={loading} />
 
             <div className="flex flex-1 overflow-hidden">
 
-                <LessonsSidebarNavigation learningContext={learningContext} lessonId={quiz.lesson} stepId={quiz.id} />
+                <LessonsSidebarNavigation learningContext={learningContext} lessonId={quiz.lesson} stepId={quiz.id} loading={loading} />
 
                 <main className="flex-1 overflow-y-auto p-8 container">
                     <div className="mx-auto max-w-4xl">

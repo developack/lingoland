@@ -33,21 +33,6 @@ export function LessonsSidebarNavigation({ learningContext, lessonId, stepId='',
                         <p className="w-full h-3 skeleton"></p>
                         <p className="w-[50%] h-3 skeleton"></p>
                     </div>
-                    <div className="flex flex-col gap-2 p-4">
-                        <p className="w-full h-3 skeleton"></p>
-                        <p className="w-full h-3 skeleton"></p>
-                        <p className="w-[50%] h-3 skeleton"></p>
-                    </div>
-                    <div className="flex flex-col gap-2 p-4">
-                        <p className="w-full h-3 skeleton"></p>
-                        <p className="w-full h-3 skeleton"></p>
-                        <p className="w-[50%] h-3 skeleton"></p>
-                    </div>
-                    <div className="flex flex-col gap-2 p-4">
-                        <p className="w-full h-3 skeleton"></p>
-                        <p className="w-full h-3 skeleton"></p>
-                        <p className="w-[50%] h-3 skeleton"></p>
-                    </div>
                 </>
                 : <div>
                     {learningContext?.lessons?.map((lesson) => {

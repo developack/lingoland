@@ -1,19 +1,21 @@
 import { useState, useEffect } from "react"
 import { useParams } from "react-router"
-import { Comments } from "../../features/comment/components/Comments.jsx";
-import { LearningHeader } from "../../features/lms/components/LearningHeader.jsx"
-import { LessonsSidebarNavigation } from "../../features/lms/components/LessonsSidebarNavigation.jsx"
+import { Comments } from "../../features/comment/components/Comments"
+import { LearningHeader } from "../../features/lms/components/LearningHeader"
+import { LessonsSidebarNavigation } from "../../features/lms/components/LessonsSidebarNavigation"
+import { ServerError } from "@/shared/components/Messages/ServerError"
+import { useLmsContext } from "@/hooks/useLmsContext"
 import { toast } from "sonner"
 
 
 export function LessonDetailPage() {
     const authToken = localStorage.getItem(import.meta.env.VITE_AUTH_TOKEN_KEY)
+    const { slug } = useParams()
     const [ lesson, setLesson ] = useState({})
-    const [ learningContext, setLearningContext ] = useState({})
-    const [ loading, setLoading ] = useState(true)
+    const [ error, setError ] = useState('')
     const [ lessonLoading, setLessonLoading ] = useState(true)
     const [ comments, setComments ] = useState([])
-    const { slug } = useParams()
+    const { learningContext, loading, reload } = useLmsContext(lesson?.course)
 
     useEffect(() => {
         const fetchLessonDetailData = async () => {
@@ -30,7 +32,7 @@ export function LessonDetailPage() {
                 setLesson(data)
 
             } catch (error) {
-                console.log(error)
+                setError('خطا در برقراری ارتباط با سرور')
                 toast.error('خطا در برقراری ارتباط با سرور')
             } finally {
                 setLessonLoading(false)
@@ -41,34 +43,7 @@ export function LessonDetailPage() {
     }, [slug]);
 
     useEffect(() => {
-        if (!lesson.course) return
-
-        const fetchLearningContextData = async () => {
-            try{
-                const response = await fetch(`/api/course/${lesson.course}/learning-context/`, {
-                    method: 'GET',
-                    headers: {
-                        "Content-Type": "application/json",
-                        "Authorization": `Token ${authToken}`
-                    }
-                })
-
-                const data = await response.json()
-                setLearningContext(data)
-
-            } catch (error) {
-                console.log(error)
-            } finally {
-                setLoading(false)
-            }
-        }
-
-        void fetchLearningContextData()
-    }, [lesson.course])
-
-    useEffect(() => {
         if (!lesson.id) return
-
         const fetchLessonCommentsData = async () => {
             try {
                 const response = await fetch(`/api/comments/lesson/${lesson.id}/`)
@@ -96,7 +71,7 @@ export function LessonDetailPage() {
             const data = await response.json()
             setLesson(prev => ({...prev, is_complete: true, progress_percentage: data.progress_percentage}))
             toast.success('درس با موفقیت تکمیل شد')
-
+            await reload()
         } catch (error) {
             console.log(error)
         }
@@ -130,7 +105,7 @@ export function LessonDetailPage() {
                         <div className="rounded-xl bg-white">
                             <p className="mb-5 bg-gray-100 rounded-xl p-5">{lesson.excerpt}</p>
                             <p className="text-slate-700 leading-7 min-h-70">
-
+                                {error && <ServerError />}
                                 {lessonLoading
                                     ? <div className="flex flex-col gap-10">
                                         <div className="flex flex-col gap-3">
