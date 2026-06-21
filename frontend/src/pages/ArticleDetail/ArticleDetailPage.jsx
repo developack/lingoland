@@ -6,12 +6,12 @@ import { Comments } from "../../features/comment/components/Comments.jsx";
 import { ArticleSidebar } from "./components/ArticleSidebar"
 import { ArticleContent } from "./components/ArticleContent"
 import { ArticleHeader } from "./components/ArticleHeader"
+import { useComments } from "@/hooks/useComments"
 
 
 export function ArticleDetailPage() {
-    const BASE_URL = import.meta.env.VITE_API_BASE_URL
     const [ article, setArticle ] = useState({})
-    const [ comments, setComments ] = useState([])
+    const [ comments, setComments ] = useComments('article', article?.id)
     const { slug } = useParams()
 
     useEffect(() => {
@@ -31,23 +31,6 @@ export function ArticleDetailPage() {
         void fetchArticleData()
     }, [])
 
-
-    useEffect(() => {
-        if (!article.id) return
-
-        const fetchArticleCommentsData = async () => {
-            try {
-                const response = await fetch(`/api/comments/article/${article?.id}/`)
-                const data = await response.json()
-                setComments(data)
-            } catch (error) {
-                console.log(error)
-            }
-        }
-
-        void fetchArticleCommentsData()
-    }, [article.id])
-
     return (
         <>
             <title>Article Detail Page</title>
@@ -65,8 +48,7 @@ export function ArticleDetailPage() {
                                     <h2 className="text-xl font-bold text-gray-800 mb-4 border-b-2 border-blue-500 pb-2 inline-block">
                                         دیدگاه‌ها
                                     </h2>
-                                    <Comments comments={comments} setComments={setComments} slug={article.slug}
-                                              type='Article'/>
+                                    <Comments comments={comments} setComments={setComments} slug={article.slug} type='Article'/>
                                 </div>
                             </article>
                         </main>

@@ -1,10 +1,11 @@
 import { useState, useEffect } from "react"
 import { useParams } from "react-router"
-import { Comments } from "../../features/comment/components/Comments"
-import { LearningHeader } from "../../features/lms/components/LearningHeader"
-import { LessonsSidebarNavigation } from "../../features/lms/components/LessonsSidebarNavigation"
-import { ServerError } from "@/shared/components/Messages/ServerError"
+import { useComments } from "@/hooks/useComments"
 import { useLmsContext } from "@/hooks/useLmsContext"
+import { Comments } from "@/features/comment/components/Comments"
+import { LearningHeader } from "@/features/lms/components/LearningHeader"
+import { LessonsSidebarNavigation } from "@/features/lms/components/LessonsSidebarNavigation"
+import { ServerError } from "@/shared/components/Messages/ServerError"
 import { toast } from "sonner"
 
 
@@ -14,7 +15,7 @@ export function LessonDetailPage() {
     const [ lesson, setLesson ] = useState({})
     const [ error, setError ] = useState('')
     const [ lessonLoading, setLessonLoading ] = useState(true)
-    const [ comments, setComments ] = useState([])
+    const [ comments, setComments ] = useComments('lesson', lesson?.id)
     const { learningContext, loading, reload } = useLmsContext(lesson?.course)
 
     useEffect(() => {
@@ -41,22 +42,6 @@ export function LessonDetailPage() {
 
         void fetchLessonDetailData()
     }, [slug]);
-
-    useEffect(() => {
-        if (!lesson.id) return
-        const fetchLessonCommentsData = async () => {
-            try {
-                const response = await fetch(`/api/comments/lesson/${lesson.id}/`)
-                const data = await response.json()
-
-                setComments(data)
-            } catch (error) {
-                console.log(error)
-            }
-        }
-
-        void fetchLessonCommentsData()
-    }, [lesson.id])
 
     const handleMarkComplete = async () => {
         try {

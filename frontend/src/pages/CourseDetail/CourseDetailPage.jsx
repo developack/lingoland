@@ -8,15 +8,16 @@ import { CourseSidebar } from "./components/CourseSidebar"
 import { CourseContent } from "./components/CourseContent"
 import { CourseHero } from "./components/CourseHero"
 import { useNavigate } from "react-router"
+import { useComments } from "@/hooks/useComments"
 
 
 export function CourseDetailPage() {
     const authToken = localStorage.getItem(import.meta.env.VITE_AUTH_TOKEN_KEY)
+    const { slug } = useParams()
     const navigate = useNavigate()
     const [ course, setCourse ] = useState({})
-    const [ comments, setComments ] = useState([])
     const [ loading, setLoading ] = useState(true)
-    const { slug } = useParams()
+    const [ comments, setComments ] = useComments('course', course?.id)
 
     useEffect(() => {
         const fetchCourseDetailData = async () => {
@@ -49,22 +50,6 @@ export function CourseDetailPage() {
 
         void fetchCourseDetailData()
     }, [slug, authToken])
-
-    useEffect(() => {
-        if (!course.id) return
-
-        const fetchCourseCommentsData = async () => {
-            try {
-                const response = await fetch(`/api/comments/course/${course?.id}/`)
-                const data = await response.json()
-                setComments(data)
-            } catch (error) {
-                console.log(error)
-            }
-        }
-
-        void fetchCourseCommentsData()
-    }, [course.id])
 
     const handleEnrollment = async () => {
         if (!authToken) return

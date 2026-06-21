@@ -47,6 +47,7 @@ class MyCommentsListView(APIView):
 # ============================================================ #
 
 class CommentsListView(APIView):
+    permission_classes = (IsAuthenticated,)
 
     def get(self, request, *args, **kwargs):
         content_type = kwargs.get('type')

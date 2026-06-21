@@ -4,13 +4,14 @@ import { Comments } from "@/features/comment/components/Comments";
 import { LearningHeader } from "@/features/lms/components/LearningHeader";
 import { LessonsSidebarNavigation } from "@/features/lms/components/LessonsSidebarNavigation"
 import { useLmsContext } from "@/hooks/useLmsContext"
+import { useComments } from "@/hooks/useComments"
 
 
 export function TopicDetailPage() {
     const authToken = localStorage.getItem(import.meta.env.VITE_AUTH_TOKEN_KEY)
     const { slug } = useParams()
     const [ topic, setTopic ] = useState({})
-    const [ comments, setComments ] = useState([])
+    const [ comments, setComments ] = useComments('topic', topic?.id)
     const { learningContext, loading, reload } = useLmsContext(topic?.course)
 
     useEffect(() => {
@@ -33,22 +34,6 @@ export function TopicDetailPage() {
 
         void fetchTopicDetailData()
     }, [slug]);
-
-    useEffect(() => {
-        if (!topic.id) return
-
-        const fetchTopicCommentsData = async () => {
-            try {
-                const response = await fetch(`/api/comments/topic/${topic.id}/`)
-                const data = await response.json()
-                setComments(data)
-            } catch (error) {
-                console.log(error)
-            }
-        }
-
-        void fetchTopicCommentsData()
-    }, [topic.id])
 
     return (
         <div className="min-h-screen bg-slate-50 flex flex-col">
