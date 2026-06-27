@@ -1,13 +1,12 @@
-import { PanelHeader } from "../../../features/user-panel/components/PanelHeader"
-import { PanelSidebar } from "../../../features/user-panel/components/PanelSidebar"
-import {useState, useEffect} from "react"
-import {replace} from "react-router";
+import { PanelHeader } from "@/features/user-panel/components/PanelHeader"
+import { PanelSidebar } from "@/features/user-panel/components/PanelSidebar"
+import { useState, useEffect } from "react"
+import { toast } from "sonner"
 
 
 export function ProfilePage() {
     const authToken = localStorage.getItem(import.meta.env.VITE_AUTH_TOKEN_KEY)
     const [ inputs, setInputs ] = useState({})
-    const [ message, setMessage ] = useState('')
     const [ error, setError ] = useState({ username: "", email: ""})
 
     useEffect(() => {
@@ -78,7 +77,7 @@ export function ProfilePage() {
 
             const data = await response.json()
             if (response.ok) {
-                setMessage('Profile updated successfully')
+                toast.success('پروفایل کاربری با موفقیت ویرایش شد')
             }
 
         } catch (error) {
@@ -98,9 +97,6 @@ export function ProfilePage() {
                     </div>
 
                     <div className="bg-white border border-border rounded-xl p-6 max-w-3xl">
-                        <p className="my-2">
-                            {message && <span className="text-white p-3 rounded-xl bg-success block text-xs">{message}</span>}
-                        </p>
                         <div className="flex items-center gap-4 mb-6">
                             <img src="/avatar.png" className="w-20 h-20 rounded-full object-cover border border-border"
                                  alt="profile"/>

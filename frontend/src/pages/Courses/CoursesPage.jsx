@@ -13,11 +13,12 @@ export function CoursesPage() {
     const [ courses, setCourses ] = useState([])
     const [ loading, setLoading ] = useState(true)
     const [ error, setError ] = useState('')
+    const [ page, setPage ] = useState(1)
 
     useEffect(() => {
         const fetchCoursesData = async () => {
             try {
-                const response = await fetch('/api/courses/')
+                const response = await fetch(`/api/courses/?page=${page}`)
                 const data = await response.json()
                 if (response.ok) {
                     setCourses(data)
@@ -32,7 +33,7 @@ export function CoursesPage() {
         }
 
         void fetchCoursesData()
-    }, [])
+    }, [page])
 
     return (
         <>
@@ -96,7 +97,7 @@ export function CoursesPage() {
                 </aside>
                 <div className="flex flex-col gap-10">
                     {error && <ServerError />}
-                    <CoursesGrid courses={courses} loading={loading}/>
+                    <CoursesGrid courses={courses} loading={loading} page={page} setPage={setPage}/>
                 </div>
             </div>
             <Footer/>

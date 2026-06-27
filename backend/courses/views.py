@@ -4,6 +4,7 @@ from rest_framework.response import Response
 from rest_framework.generics import get_object_or_404
 from rest_framework.permissions import IsAuthenticated
 from permissions import IsEnrolledInCourse
+from backend.pagination import CustomPagination
 from courses.serializers import TopicSerializer
 from courses.serializers import LessonSerializer
 from courses.serializers import CourseSerializer
@@ -14,11 +15,14 @@ from courses.models import Course, Lesson, LessonActivity, Topic, Enrollment
 
 
 class CoursesListView(APIView):
+    pagination_class = CustomPagination
 
     def get(self, request):
         courses = Course.objects.all()
-        serializer = CourseSerializer(courses, many=True)
-        return Response(serializer.data, status=status.HTTP_200_OK)
+        paginator = self.pagination_class()
+        page = paginator.paginate_queryset(courses, request)
+        serializer = CourseSerializer(page, many=True)
+        return paginator.get_paginated_response(serializer.data)
 
 # ============================================================ #
 
