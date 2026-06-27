@@ -14,17 +14,21 @@ export function CoursesPage() {
     const [ loading, setLoading ] = useState(true)
     const [ error, setError ] = useState('')
     const [ page, setPage ] = useState(1)
+    const [ search, setSearch ] = useState('')
+    const [ ordering, setOrdering ] = useState('')
 
     useEffect(() => {
         const fetchCoursesData = async () => {
             try {
-                const response = await fetch(`/api/courses/?page=${page}`)
+                const response = await fetch(`/api/courses/?page=${page}&search=${search}&ordering=${ordering}`)
+
                 const data = await response.json()
                 if (response.ok) {
                     setCourses(data)
                 }
 
             } catch (error) {
+                console.log(error)
                 setError('خطا هنگام برقراری ارتباط با سرور')
                 toast.error('خطا هنگام برقراری ارتباط با سرور')
             } finally {
@@ -33,7 +37,18 @@ export function CoursesPage() {
         }
 
         void fetchCoursesData()
-    }, [page])
+    }, [page, search, ordering])
+
+    const handleSearch = (event) => {
+        setSearch(event.target.value)
+        setPage(1)
+    }
+
+    const handleOrdering = (event) => {
+        setOrdering(event.target.value)
+        setPage(1)
+        console.log(ordering)
+    }
 
     return (
         <>
@@ -48,20 +63,16 @@ export function CoursesPage() {
                                 جستجو
                             </h3>
 
-                            <Input type="text" placeholder="جستجوی دروه..."/>
+                            <Input type="text" onInput={handleSearch} value={search} placeholder="جستجوی دروه..."/>
                         </div>
                         <div className="bg-white rounded-2xl p-5 shadow-sm">
                             <h3 className="font-bold text-lg mb-4">
                                 مرتب‌سازی
                             </h3>
 
-                            <select
-                                className="w-full border border-gray-200 rounded-xl px-4 py-3"
-                            >
-                                <option>جدیدترین</option>
-                                <option>قدیمی‌ترین</option>
-                                <option>محبوب‌ترین</option>
-                                <option>بیشترین بازدید</option>
+                            <select onChange={handleOrdering} className="w-full border border-gray-200 rounded-xl px-4 py-3">
+                                <option value="id">جدیدترین</option>
+                                <option value="-id">قدیمی‌ترین</option>
                             </select>
                         </div>
                         <div className="bg-white rounded-2xl p-5 shadow-sm">

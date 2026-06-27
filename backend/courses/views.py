@@ -18,7 +18,16 @@ class CoursesListView(APIView):
     pagination_class = CustomPagination
 
     def get(self, request):
-        courses = Course.objects.all()
+        search = request.query_params.get('search')
+        ordering = request.query_params.get('ordering')
+        courses = Course.objects.all().order_by('id')
+
+        if ordering:
+            courses = courses.order_by(ordering)
+
+        if search:
+            courses = courses.filter(title__icontains=search)
+
         paginator = self.pagination_class()
         page = paginator.paginate_queryset(courses, request)
         serializer = CourseSerializer(page, many=True)

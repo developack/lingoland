@@ -6,11 +6,12 @@ import { ArticlesGrid } from "./components/ArticlesGrid"
 
 export function ArticlesPage() {
     const [ articles, setArticles ] = useState([])
+    const [ page, setPage ] = useState(1)
 
     useEffect(() => {
         const fetchArticlesData = async () => {
             try {
-                const response = await fetch('/api/articles/')
+                const response = await fetch(`/api/articles/?page=${page}`)
                 const data = await response.json()
                 setArticles(data)
 
@@ -21,7 +22,7 @@ export function ArticlesPage() {
         }
 
         void fetchArticlesData()
-    }, [])
+    }, [page])
     return (
         <>
             <title>Articles Page</title>
@@ -137,7 +138,7 @@ export function ArticlesPage() {
 
                         <main className="lg:col-span-3">
 
-                            <ArticlesGrid articles={articles} />
+                            <ArticlesGrid articles={articles} page={page} setPage={setPage} />
 
                         </main>
 

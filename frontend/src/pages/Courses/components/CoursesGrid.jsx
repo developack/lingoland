@@ -16,12 +16,14 @@ export function CoursesGrid({ courses, loading, page, setPage }) {
                         <CoursesPageCard/>
                         <CoursesPageCard/>
                     </>
-                    : courses.results.map((course) => (
-                        <CourseItem key={course.id} course={course}/>
-                    ))
+                    : courses?.results?.length > 0
+                        ?  courses.results.map((course) => (
+                            <CourseItem key={course.id} course={course}/>
+                        ))
+                        : <div className="col-span-3 text-center py-10">هیچ دوره‌ای پیدا نشد.</div>
                 }
             </div>
-            <Pagination result={courses} page={page} setPage={setPage} />
+            {courses?.results?.length > 0 && <Pagination result={courses} page={page} setPage={setPage} />}
         </>
     )
 }
