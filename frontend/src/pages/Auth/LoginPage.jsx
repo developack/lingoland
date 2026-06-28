@@ -44,7 +44,7 @@ export function LoginPage() {
 
         setLoading(true)
         try {
-            const response = await fetch('/api/login/', {
+            const response = await fetch('/api/token/', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -63,7 +63,8 @@ export function LoginPage() {
                 return
             }
 
-            localStorage.setItem(import.meta.env.VITE_AUTH_TOKEN_KEY, data.token)
+            localStorage.setItem(import.meta.env.VITE_ACCESS_KEY, data.access)
+            localStorage.setItem(import.meta.env.VITE_REFRESH_KEY, data.refresh)
             navigate('/')
 
         } catch (error) {

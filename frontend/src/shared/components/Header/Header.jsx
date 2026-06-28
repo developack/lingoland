@@ -4,11 +4,13 @@ import { Link, NavLink } from 'react-router'
 import { AuthButtons } from "./AuthButtons"
 import { ProfileDropdown } from "./ProfileDropdown"
 import { CartButton } from "./CartButton"
+import { refreshAccessToken } from "@/api/auth"
 
 
 export function Header() {
     const navigate = useNavigate()
-    const authToken = localStorage.getItem(import.meta.env.VITE_AUTH_TOKEN_KEY)
+    const refresh_token = localStorage.getItem(import.meta.env.VITE_REFRESH_KEY)
+    const [ access, setAccess ] = useState(localStorage.getItem(import.meta.env.VITE_VITE_ACCESS_KEY))
     const [ userProfile, setUserProfile ] = useState(null)
     const [ loading, setLoading ] = useState(true)
 
@@ -18,13 +20,22 @@ export function Header() {
                 const response = await fetch('/api/user-profile/', {
                     method: 'GET',
                     headers: {
-                        "Authorization": `Token ${authToken}`,
+                        "Authorization": `Bearer ${access}`,
                         "Content-Type": "application/json"
                     }
                 })
                 const data = await response.json()
                 if (response.ok) {
                     setUserProfile(data)
+                }
+                else if (response.status === 401) {
+                    const newAccess = await refreshAccessToken(refresh_token)
+
+                    // if (!newAccess) {
+                    //     navigate('/login')
+                    //     return
+                    // }
+                    setAccess(newAccess)
                 }
 
             } catch (error) {
@@ -34,23 +45,13 @@ export function Header() {
             }
         }
         void fetchUserProfileData()
-    }, [authToken])
+    }, [access])
 
-    const handleLogout = async () => {
-        try {
-             await fetch('/api/logout/', {
-                method: 'POST',
-                headers: {
-                    "Authorization": `Token ${authToken}`,
-                }
-            })
-        } catch (error) {
-            console.log(error)
-        } finally {
-            localStorage.removeItem(import.meta.env.VITE_AUTH_TOKEN_KEY)
-            setUserProfile(null)
-            navigate('/')
-        }
+    const handleLogout = () => {
+        localStorage.removeItem(import.meta.env.VITE_ACCESS_KEY)
+        localStorage.removeItem(import.meta.env.VITE_REFRESH_KEY)
+        setUserProfile(null)
+        navigate('/')
     }
     return (
         <>

@@ -19,7 +19,7 @@ import { CommentsPage } from "@/pages/UserPanel/Comments/CommentsPage.jsx"
 import { OrdersPage } from "@/pages/UserPanel/Orders/OrdersPage.jsx"
 import { ProfilePage } from "@/pages/UserPanel/Profile/ProfilePage.jsx"
 import { NotFoundPage } from "@/pages/404/NotFoundPage"
-import { Toaster } from "@/components/ui/sonner"
+import { Toaster } from "sonner"
 import './App.css'
 
 

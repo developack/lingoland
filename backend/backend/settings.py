@@ -1,6 +1,7 @@
 import os
 from pathlib import Path
 from dotenv import load_dotenv
+from datetime import timedelta
 load_dotenv()
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -34,7 +35,6 @@ INSTALLED_APPS = [
     'comments.apps.CommentsConfig',
     'orders.apps.OrdersConfig',
     'rest_framework',
-    'rest_framework.authtoken'
 ]
 
 MIDDLEWARE = [
@@ -129,8 +129,13 @@ REST_FRAMEWORK = {
     'NON_FIELD_ERRORS_KEY': 'general',
     'TEST_REQUEST_DEFAULT_FORMAT': 'json',
     'DEFAULT_AUTHENTICATION_CLASSES': (
-        'rest_framework.authentication.TokenAuthentication',
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
     ),
     'DEFAULT_PAGINATION_CLASS': 'backend.pagination.CustomPagination',
     'PAGE_SIZE': 2,
+}
+
+SIMPLE_JWT = {
+    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=10),
+    "REFRESH_TOKEN_LIFETIME": timedelta(minutes=12),
 }

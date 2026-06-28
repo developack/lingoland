@@ -10,5 +10,5 @@ urlpatterns = [
     path('', include('quizzes.urls', namespace='quizzes')),
     path('', include('articles.urls', namespace='articles')),
     path('', include('comments.urls', namespace='comments')),
-    path('', include('orders.urls', namespace='orders'))
+    path('', include('orders.urls', namespace='orders')),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
