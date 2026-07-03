@@ -68,6 +68,7 @@ export function LoginPage() {
             navigate('/')
 
         } catch (error) {
+            console.log(typeof error)
             toast.error('خطا در برقراری ارتباط با سرور')
         } finally {
             setLoading(false)

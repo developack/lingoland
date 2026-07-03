@@ -1,9 +1,8 @@
 
 
-export const apiFetch = async (endpoint, options={}) => {
+export const apiRequest = async (endpoint, options={}) => {
     const authToken = '' //after implementing useAuth hook
     let headers = {"Content-Type": options.contentType ? options.contentType : "application/json"}
-    let error = ''
 
     if (authToken) {
         headers.Authorization = `Bearer ${authToken}`
@@ -25,21 +24,11 @@ export const apiFetch = async (endpoint, options={}) => {
             return await response.json()
         }
 
-        switch (response.status) {
-            case 401:
-                error = '401 error'
-                break
-            case 500:
-                error = '500 error'
-                break
-            case 403:
-                error = '403 error'
-                break
-        }
-
-        return error
+        if (response.status === 401) return {status: 401, message: '401 error', data: response}
+        if (response.status === 403) return {status: 403, message: '403 error', data: response}
+        if (response.status === 500) return {status: 500, message: '500 error', data: response}
 
     } catch (error) {
-        return 'خطا در برقراری ارتباط با سرور'
+        return error
     }
 }

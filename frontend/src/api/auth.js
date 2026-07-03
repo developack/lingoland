@@ -1,3 +1,54 @@
+import { apiRequest } from "@/api/client"
+import { saveTokens } from "@/utils/token"
+
+export const login = async (credentials) => {
+    const options = {
+        method: 'GET',
+        data: credentials
+    }
+    try {
+        const result = await apiRequest('/api/token/', options)
+        saveTokens(result)
+
+        return result
+
+    } catch (error) {
+        console.log(error)
+    }
+}
+
+
+export const logout = () => {
+
+}
+
+
+export const refresh = () => {
+
+}
+
+
+export const verify = () => {
+
+}
+
+
+export const getCurrentUser = () => {
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 export const refreshAccessToken = async (refreshToken) => {
