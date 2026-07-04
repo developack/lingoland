@@ -1,4 +1,4 @@
-
+import { ApiError } from "@/api/ApiError"
 
 export const apiRequest = async (endpoint, options={}) => {
     const authToken = '' //after implementing useAuth hook
@@ -17,13 +17,12 @@ export const apiRequest = async (endpoint, options={}) => {
         config.body = options.data
     }
 
-    try {
-        const response = await fetch(endpoint, config)
-        if (response.ok) {
-            return await response.json()
-        }
+    const response = await fetch(endpoint, config)
+    const data = await response.json()
 
-    } catch (error) {
-        return error
+    if (!response.ok) {
+        throw new ApiError(response.status, response.statusText, data)
     }
+
+    return data
 }

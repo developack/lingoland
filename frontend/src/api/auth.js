@@ -1,20 +1,17 @@
 import { apiRequest } from "@/api/client"
 import { saveTokens } from "@/utils/token"
 
+
 export const login = async (credentials) => {
     const options = {
-        method: 'GET',
+        method: 'POST',
         data: credentials
     }
-    try {
-        const result = await apiRequest('/api/token/', options)
-        saveTokens(result)
 
-        return result
+    const data = await apiRequest('/api/token/', options)
+    saveTokens(data)
 
-    } catch (error) {
-        console.log(error)
-    }
+    return data
 }
 
 

@@ -51,7 +51,7 @@ export function LoginPage() {
                 },
                 body: JSON.stringify(inputs)
             })
-
+            console.log(response)
             const data = await response.json()
             if (!response.ok) {
                 const errors = {}
