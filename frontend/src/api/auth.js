@@ -1,18 +1,15 @@
 import { apiRequest } from "@/api/client"
-import { saveTokens } from "@/utils/token"
-import {ApiError} from "@/api/ApiError.js";
+import { saveTokens, removeTokens } from "@/utils/token"
+import {ApiError} from "@/api/ApiError"
 
 
 export const login = async (credentials) => {
-    const options = {
-        method: 'POST',
-        data: credentials
-    }
 
     try {
-        const data = await apiRequest('/api/token/', options)
+        const data = await apiRequest('/api/token/', {method: 'POST', data: credentials})
         saveTokens(data)
-        return data
+        //Get user profile
+        return await apiRequest('/api/user-profile', {method: 'GET'})
 
     } catch (error) {
         const errors = {}
@@ -28,7 +25,7 @@ export const login = async (credentials) => {
 
 
 export const logout = () => {
-
+    removeTokens()
 }
 
 

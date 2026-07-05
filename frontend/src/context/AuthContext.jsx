@@ -1,13 +1,28 @@
-import { createContext } from "react";
+import { createContext, useState, useEffect } from "react"
+import { login as authLogin } from "@/api/auth"
+import { logout as authLogout } from "@/api/auth"
 
 
-const AuthContext  = createContext()
+export const AuthContext  = createContext()
 
 export function AuthProvider({ children }) {
-    const authToken = localStorage.getItem(import.meta.env.VITE_AUTH_TOKEN_KEY)
+    const [ user, setUser ] = useState(null)
+    const [ isAuthenticated, setIsAuthenticated ] = useState(false)
+
+    const login = async (credentials) => {
+        const user = await authLogin(credentials)
+        setUser(user)
+        setIsAuthenticated(true)
+    }
+
+    const logout = () => {
+        authLogout()
+        setUser(null)
+        setIsAuthenticated(false)
+    }
 
     return(
-        <AuthContext.Provider value={{ authToken }}>
+        <AuthContext.Provider value={{ user, isAuthenticated, login, logout }}>
             {children}
         </AuthContext.Provider>
     )
