@@ -1,5 +1,6 @@
 import { apiRequest } from "@/api/client"
 import { saveTokens } from "@/utils/token"
+import {ApiError} from "@/api/ApiError.js";
 
 
 export const login = async (credentials) => {
@@ -8,10 +9,21 @@ export const login = async (credentials) => {
         data: credentials
     }
 
-    const data = await apiRequest('/api/token/', options)
-    saveTokens(data)
+    try {
+        const data = await apiRequest('/api/token/', options)
+        saveTokens(data)
+        return data
 
-    return data
+    } catch (error) {
+        const errors = {}
+        if (error instanceof ApiError) {
+            Object.entries(error.data).forEach(([field, message]) => {
+                errors[field] = message[0]
+            })
+            throw errors
+        }
+        throw error
+    }
 }
 
 
@@ -33,11 +45,6 @@ export const verify = () => {
 export const getCurrentUser = () => {
 
 }
-
-
-
-
-
 
 
 

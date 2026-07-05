@@ -5,6 +5,7 @@ import { Input } from "@/components/ui/input"
 import { Field } from "@/components/ui/field"
 import { Label } from "@/components/ui/label"
 import { Checkbox } from "@/components/ui/checkbox"
+import { login } from "@/api/auth"
 import { toast } from "sonner"
 
 
@@ -41,35 +42,15 @@ export function LoginPage() {
             setError(errors)
             return
         }
-
         setLoading(true)
+
         try {
-            const response = await fetch('/api/token/', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(inputs)
-            })
-            console.log(response)
-            const data = await response.json()
-            if (!response.ok) {
-                const errors = {}
-                Object.entries(data).forEach(([field, message]) => {
-                    errors[field] = message[0]
-                })
-
-                setError(errors)
-                return
-            }
-
-            localStorage.setItem(import.meta.env.VITE_ACCESS_KEY, data.access)
-            localStorage.setItem(import.meta.env.VITE_REFRESH_KEY, data.refresh)
+            await login(inputs)
             navigate('/')
 
         } catch (error) {
-            console.log(typeof error)
-            toast.error('خطا در برقراری ارتباط با سرور')
+            setError(error.errors)
+
         } finally {
             setLoading(false)
         }
