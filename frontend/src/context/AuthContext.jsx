@@ -1,28 +1,52 @@
 import { createContext, useState, useEffect } from "react"
 import { login as authLogin } from "@/api/auth"
 import { logout as authLogout } from "@/api/auth"
+import { getCurrentUser } from "@/api/auth"
+import { getTokens, removeTokens } from "@/utils/token"
 
 
 export const AuthContext  = createContext()
 
 export function AuthProvider({ children }) {
     const [ user, setUser ] = useState(null)
-    const [ isAuthenticated, setIsAuthenticated ] = useState(false)
+    const [ loading, setLoading ] = useState(true)
+    const isAuthenticated = !!user
 
     const login = async (credentials) => {
         const user = await authLogin(credentials)
         setUser(user)
-        setIsAuthenticated(true)
     }
 
     const logout = () => {
         authLogout()
         setUser(null)
-        setIsAuthenticated(false)
     }
 
+    useEffect(() => {
+
+        const initializeAuth = async () => {
+            try {
+                const tokens = getTokens()
+
+                if (tokens.access) {
+                    setUser(await getCurrentUser())
+                }
+
+            } catch (error) {
+                setUser(null)
+                removeTokens()
+
+            } finally {
+                setLoading(false)
+            }
+        }
+
+        void initializeAuth()
+
+    }, []);
+
     return(
-        <AuthContext.Provider value={{ user, isAuthenticated, login, logout }}>
+        <AuthContext.Provider value={{ login, logout, loading, user, isAuthenticated }}>
             {children}
         </AuthContext.Provider>
     )
