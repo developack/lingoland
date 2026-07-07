@@ -33,8 +33,9 @@ export function AuthProvider({ children }) {
                 }
 
             } catch (error) {
-                setUser(null)
-                removeTokens()
+                console.log(error)
+                // setUser(null)
+                // removeTokens()
 
             } finally {
                 setLoading(false)

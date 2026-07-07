@@ -8,7 +8,6 @@ export const login = async (credentials) => {
     try {
         const data = await apiRequest('/api/token/', {method: 'POST', data: credentials})
         saveTokens(data)
-        //Get user profile
         return await getCurrentUser()
 
     } catch (error) {
@@ -41,6 +40,6 @@ export const verify = () => {
 
 export const getCurrentUser = async () => {
 
-    return await apiRequest('/api/user-profile', {method: 'GET'})
+    return await apiRequest('/api/user-profile/', {method: 'GET'})
 
 }

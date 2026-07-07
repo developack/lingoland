@@ -19,6 +19,7 @@ import { CommentsPage } from "@/pages/UserPanel/Comments/CommentsPage.jsx"
 import { OrdersPage } from "@/pages/UserPanel/Orders/OrdersPage.jsx"
 import { ProfilePage } from "@/pages/UserPanel/Profile/ProfilePage.jsx"
 import { NotFoundPage } from "@/pages/404/NotFoundPage"
+import { ProtectedRoute } from "@/routes/ProtectedRoute"
 import { Toaster } from "sonner"
 import './App.css'
 
@@ -38,16 +39,19 @@ function App() {
                 <Route path="/article/:slug" element={<ArticleDetailPage />} />
                 <Route path="/courses" element={<CoursesPage />} />
                 <Route path="/course/:slug" element={<CourseDetailPage />} />
-                <Route path="/lesson/:slug" element={<LessonDetailPage />} />
-                <Route path="/topic/:slug" element={<TopicDetailPage />} />
-                <Route path="/quiz/:slug" element={<QuizDetailPage />} />
                 <Route path="/dictionary" element={<DictionaryPage />} />
-                <Route path="/dashboard" element={<DashboardPage />} />
-                <Route path="/my-courses" element={<MyCoursesPage />} />
-                <Route path="/comments" element={<CommentsPage />} />
-                <Route path="/orders" element={<OrdersPage />} />
-                <Route path="/profile" element={<ProfilePage />} />
                 <Route path="*" element={<NotFoundPage />} />
+
+                <Route element={<ProtectedRoute />}>
+                    <Route path="/dashboard" element={<DashboardPage />} />
+                    <Route path="/my-courses" element={<MyCoursesPage />} />
+                    <Route path="/comments" element={<CommentsPage />} />
+                    <Route path="/orders" element={<OrdersPage />} />
+                    <Route path="/profile" element={<ProfilePage />} />
+                    <Route path="/lesson/:slug" element={<LessonDetailPage />} />
+                    <Route path="/topic/:slug" element={<TopicDetailPage />} />
+                    <Route path="/quiz/:slug" element={<QuizDetailPage />} />
+                </Route>
             </Routes>
         </>
     )

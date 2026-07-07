@@ -9,10 +9,12 @@ import { CourseContent } from "./components/CourseContent"
 import { CourseHero } from "./components/CourseHero"
 import { useNavigate } from "react-router"
 import { useComments } from "@/hooks/useComments"
+import { apiRequest } from "@/api/client"
+import { useAuth } from "@/hooks/useAuth"
 
 
 export function CourseDetailPage() {
-    const authToken = localStorage.getItem(import.meta.env.VITE_AUTH_TOKEN_KEY)
+    const { isAuthenticated } = useAuth()
     const { slug } = useParams()
     const navigate = useNavigate()
     const [ course, setCourse ] = useState({})
@@ -22,23 +24,7 @@ export function CourseDetailPage() {
     useEffect(() => {
         const fetchCourseDetailData = async () => {
             try {
-                let headers = {
-                    "Content-Type": "application/json"
-                }
-                if (authToken) {
-                    headers.Authorization = `Token ${authToken}`
-                }
-
-                const response = await fetch(`/api/course/${slug}/`, {
-                    method: 'GET',
-                    headers: headers
-                })
-
-                if (response.status === 404) {
-                    navigate('/404')
-                }
-
-                const data = await response.json()
+                const data = await apiRequest(`/api/course/${slug}/`, {method: 'GET'})
                 setCourse(data)
 
             } catch (error) {
@@ -49,27 +35,14 @@ export function CourseDetailPage() {
         }
 
         void fetchCourseDetailData()
-    }, [slug, authToken])
+    }, [slug])
 
     const handleEnrollment = async () => {
-        if (!authToken) return
+        if (!isAuthenticated) return
 
         try {
-            const response = await fetch('/api/order/', {
-                method: 'POST',
-                headers: {
-                    "Content-Type": "application/json",
-                    "Authorization": `Token ${authToken}`
-                },
-                body: JSON.stringify({
-                    courses: [slug]
-                })
-            })
-            const data = await response.json()
-            console.log(data)
-            if (response.ok) {
-                navigate('/cart')
-            }
+            await apiRequest('/api/order/', {method: 'POST', data: { courses: [slug] }})
+            navigate('/cart')
 
         } catch (error) {
             console.log(error)
@@ -95,7 +68,7 @@ export function CourseDetailPage() {
                         </div>
                     </div>
                 </div>
-                <CourseSidebar handleEnrollment={handleEnrollment} isEnrolled={course.is_enrolled} loading={loading}/>
+                {/*<CourseSidebar handleEnrollment={handleEnrollment} isEnrolled={course.is_enrolled} loading={loading}/>*/}
             </div>
             <Footer/>
         </>

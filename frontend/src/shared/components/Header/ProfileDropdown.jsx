@@ -1,7 +1,11 @@
 import { Link } from "react-router"
+import { useAuth } from "@/hooks/useAuth"
+import { BASE_URL } from "@/config/api"
 
 
-export function ProfileDropdown({ userProfile, onLogout, loading }) {
+export function ProfileDropdown() {
+    const { loading, logout, user } = useAuth()
+
     return (
         <>
             {loading
@@ -9,11 +13,11 @@ export function ProfileDropdown({ userProfile, onLogout, loading }) {
                 : <div className="relative group">
                     <div
                         className="flex items-center gap-3 cursor-pointer rounded-xl border border-gray-200 bg-white px-4 py-2 transition hover:bg-gray-50 w-[170px]">
-                        <img src={userProfile?.user_profile?.avatar ? `${BASE_URL}${userProfile.user_profile.avatar}` : '/avatar.png'}
+                        <img src={user?.user_profile?.avatar ? `${BASE_URL}${user.user_profile.avatar}` : '/avatar.png'}
                             alt="avatar" className="h-8 w-8 rounded-full object-cover"/>
                         <div className="flex flex-col">
                             <span className="text-sm font-semibold text-gray-800 max-w-[100px] overflow-hidden truncate">
-                                {userProfile ? userProfile.username  : 'مهمان'}
+                                {user ? user.username  : 'مهمان'}
                             </span>
                         </div>
                     </div>
@@ -40,7 +44,7 @@ export function ProfileDropdown({ userProfile, onLogout, loading }) {
                             حساب کاربری
                         </Link>
                         <div className="my-2 h-px bg-gray-100"/>
-                        <button onClick={onLogout}
+                        <button onClick={logout}
                                 className="w-full rounded-xl px-4 py-3 text-right text-sm text-red-500 transition hover:bg-red-50">
                             خروج از حساب
                         </button>

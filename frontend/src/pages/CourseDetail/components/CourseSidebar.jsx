@@ -1,13 +1,14 @@
 import { Button } from "@/components/ui/button"
+import { useAuth } from "@/hooks/useAuth"
 
 
-export function CourseSidebar({ handleEnrollment, isEnrolled, loading }) {
-    const authToken = localStorage.getItem(import.meta.env.VITE_AUTH_TOKEN_KEY)
+export function CourseSidebar({ handleEnrollment, isEnrolled }) {
+    const { isAuthenticated, loading } = useAuth()
     let enrollmentContent
 
     if(loading) {
         enrollmentContent = <div className="skeleton h-10 rounded-xl"></div>
-    } else if(!authToken) {
+    } else if(!isAuthenticated) {
         enrollmentContent = <span className="bg-cta/10 text-cta text-sm p-5 rounded-xl">
             جهت ثبت‌نام در دوره وارد حساب کاربری خود شوید
         </span>

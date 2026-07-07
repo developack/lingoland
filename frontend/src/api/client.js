@@ -1,11 +1,12 @@
 import { ApiError } from "@/api/ApiError"
+import { getTokens } from "@/utils/token"
 
 export const apiRequest = async (endpoint, options={}) => {
-    const authToken = '' //after implementing useAuth hook
+    const { access } = getTokens()
     let headers = {"Content-Type": options.contentType ? options.contentType : "application/json"}
 
-    if (authToken) {
-        headers.Authorization = `Bearer ${authToken}`
+    if (access) {
+        headers.Authorization = `Bearer ${access}`
     }
 
     let config = {
@@ -14,7 +15,7 @@ export const apiRequest = async (endpoint, options={}) => {
     }
 
     if (options.data) {
-        config.body = options.data
+        config.body = JSON.stringify(options.data)
     }
 
     const response = await fetch(endpoint, config)

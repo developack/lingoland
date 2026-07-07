@@ -1,58 +1,13 @@
-import { useState, useEffect } from "react"
-import { useNavigate } from "react-router"
 import { Link, NavLink } from 'react-router'
 import { AuthButtons } from "./AuthButtons"
 import { ProfileDropdown } from "./ProfileDropdown"
 import { CartButton } from "./CartButton"
-import { refreshAccessToken } from "@/api/auth"
+import { useAuth } from "@/hooks/useAuth"
 
 
 export function Header() {
-    const navigate = useNavigate()
-    const refresh_token = localStorage.getItem(import.meta.env.VITE_REFRESH_KEY)
-    const [ access, setAccess ] = useState(localStorage.getItem(import.meta.env.VITE_VITE_ACCESS_KEY))
-    const [ userProfile, setUserProfile ] = useState(null)
-    const [ loading, setLoading ] = useState(true)
+    const { loading, isAuthenticated } = useAuth()
 
-    useEffect(() => {
-        const fetchUserProfileData = async () => {
-            try {
-                const response = await fetch('/api/user-profile/', {
-                    method: 'GET',
-                    headers: {
-                        "Authorization": `Bearer ${access}`,
-                        "Content-Type": "application/json"
-                    }
-                })
-                const data = await response.json()
-                if (response.ok) {
-                    setUserProfile(data)
-                }
-                else if (response.status === 401) {
-                    const newAccess = await refreshAccessToken(refresh_token)
-
-                    // if (!newAccess) {
-                    //     navigate('/login')
-                    //     return
-                    // }
-                    setAccess(newAccess)
-                }
-
-            } catch (error) {
-                console.log(error)
-            } finally {
-                setLoading(false)
-            }
-        }
-        void fetchUserProfileData()
-    }, [access])
-
-    const handleLogout = () => {
-        localStorage.removeItem(import.meta.env.VITE_ACCESS_KEY)
-        localStorage.removeItem(import.meta.env.VITE_REFRESH_KEY)
-        setUserProfile(null)
-        navigate('/')
-    }
     return (
         <>
             <header className="p-5 bg-body-bg/80 backdrop-filter backdrop-blur-md shadow-xs sticky top-0 z-10">
@@ -84,7 +39,7 @@ export function Header() {
                         <CartButton />
                         {
                             loading ? <div className="skeleton h-12 w-[170px] rounded-xl"></div> :
-                            userProfile ? <ProfileDropdown userProfile={userProfile} onLogout={handleLogout} /> : <AuthButtons />
+                            isAuthenticated ? <ProfileDropdown /> : <AuthButtons />
                         }
                     </div>
                 </div>

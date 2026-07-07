@@ -5,11 +5,12 @@ import { Input } from "@/components/ui/input"
 import { Field } from "@/components/ui/field"
 import { Label } from "@/components/ui/label"
 import { Checkbox } from "@/components/ui/checkbox"
-import { login } from "@/api/auth"
+import { useAuth } from "@/hooks/useAuth"
 import { toast } from "sonner"
 
 
 export function LoginPage() {
+    const { login } = useAuth()
     const navigate = useNavigate()
     const [ error, setError ] = useState({})
     const [ loading, setLoading ] = useState(false)
@@ -46,6 +47,7 @@ export function LoginPage() {
 
         try {
             await login(inputs)
+            toast.success('شما با موفقیت وارد سیستم شدید')
             navigate('/')
 
         } catch (error) {
@@ -75,25 +77,25 @@ export function LoginPage() {
                         </div>
                         <form onSubmit={handleLogin} id="loginForm" className="space-y-6">
                             <Field className="gap-3">
-                                <Label className={`${error.email ? 'text-destructive' : ''}`} htmlFor="email">آدرس
+                                <Label className={`${error?.email ? 'text-destructive' : ''}`} htmlFor="email">آدرس
                                     ایمیل</Label>
                                 <div className="relative space-y-2">
                                     <Input onChange={handleChange} type="email" name="email" id="email"
                                            placeholder="example@email.com" value={inputs.email} className="p-5"
-                                           aria-invalid={!!error.email}/>
-                                    {error.email &&
-                                        <span className="text-destructive block text-sm">{error.email}</span>}
+                                           aria-invalid={!!error?.email}/>
+                                    {error?.email &&
+                                        <span className="text-destructive block text-sm">{error?.email}</span>}
                                 </div>
                             </Field>
                             <Field className="gap-3">
-                                <Label className={`${error.password ? 'text-destructive' : ''}`}
+                                <Label className={`${error?.password ? 'text-destructive' : ''}`}
                                        htmlFor="password">رمزعبور</Label>
                                 <div className="relative space-y-2">
                                     <Input onChange={handleChange} type="password" name="password" id="password"
                                            placeholder="••••••••" value={inputs.password} className="p-5"
-                                           aria-invalid={!!error.password}/>
-                                    {error.password &&
-                                        <span className="text-destructive block text-sm">{error.password}</span>}
+                                           aria-invalid={!!error?.password}/>
+                                    {error?.password &&
+                                        <span className="text-destructive block text-sm">{error?.password}</span>}
                                 </div>
                             </Field>
                             <div className="flex items-center justify-between">
