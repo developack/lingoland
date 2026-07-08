@@ -1,6 +1,7 @@
 import { apiRequest } from "@/api/client"
 import { saveTokens, removeTokens } from "@/utils/token"
-import {ApiError} from "@/api/ApiError"
+import { ApiError } from "@/api/ApiError"
+import { getTokens } from "@/utils/token"
 
 
 export const login = async (credentials) => {
@@ -28,18 +29,13 @@ export const logout = () => {
 }
 
 
-export const refresh = () => {
-
+export const refresh = async () => {
+    const { refresh } = getTokens()
+    const { access } = await apiRequest('api/token/refresh/', {method: 'POST', data: {refresh}, skipRefresh: true})
+    saveTokens({access, refresh})
+    return access
 }
-
-
-export const verify = () => {
-
-}
-
 
 export const getCurrentUser = async () => {
-
     return await apiRequest('/api/user-profile/', {method: 'GET'})
-
 }

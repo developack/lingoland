@@ -2,7 +2,8 @@ import { createContext, useState, useEffect } from "react"
 import { login as authLogin } from "@/api/auth"
 import { logout as authLogout } from "@/api/auth"
 import { getCurrentUser } from "@/api/auth"
-import { getTokens, removeTokens } from "@/utils/token"
+import { getTokens } from "@/utils/token"
+import { ApiError } from "@/api/ApiError"
 
 
 export const AuthContext  = createContext()
@@ -23,7 +24,6 @@ export function AuthProvider({ children }) {
     }
 
     useEffect(() => {
-
         const initializeAuth = async () => {
             try {
                 const tokens = getTokens()
@@ -33,10 +33,9 @@ export function AuthProvider({ children }) {
                 }
 
             } catch (error) {
-                console.log(error)
-                // setUser(null)
-                // removeTokens()
-
+                if (error instanceof ApiError && error.status === 401) {
+                    logout()
+                }
             } finally {
                 setLoading(false)
             }
