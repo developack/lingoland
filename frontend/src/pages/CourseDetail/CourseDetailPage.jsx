@@ -68,7 +68,7 @@ export function CourseDetailPage() {
                         </div>
                     </div>
                 </div>
-                {/*<CourseSidebar handleEnrollment={handleEnrollment} isEnrolled={course.is_enrolled} loading={loading}/>*/}
+                <CourseSidebar handleEnrollment={handleEnrollment} isEnrolled={course.is_enrolled} loading={loading}/>
             </div>
             <Footer/>
         </>

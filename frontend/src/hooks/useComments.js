@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react"
+import { apiRequest } from "@/api/client"
 
 
 export const useComments = (type, id) => {
-    const authToken = localStorage.getItem(import.meta.env.VITE_AUTH_TOKEN_KEY)
     const [ comments, setComments ] = useState([])
 
     useEffect(() => {
@@ -10,14 +10,7 @@ export const useComments = (type, id) => {
 
         const fetchCommentsData = async () => {
             try {
-                const response = await fetch(`/api/comments/${type}/${id}/`, {
-                    method: 'GET',
-                    headers: {
-                        "Content-Type": "application/json",
-                        'Authorization': `Token ${authToken}`
-                    }
-                })
-                const data = await response.json()
+                const data = await apiRequest(`/api/comments/${type}/${id}/`, {method: 'GET'})
                 setComments(data)
             } catch (error) {
                 console.log(error)
